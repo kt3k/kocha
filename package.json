@@ -1,0 +1,25 @@
+{
+  "name": "macha",
+  "version": "0.1.0",
+  "description": "Mostly Mocha compatible simpler test runner.",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kt3k/macha.git"
+  },
+  "keywords": [
+    "mocha",
+    "test",
+    "bdd",
+    "tdd"
+  ],
+  "author": "Yoshiya Hinosawa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kt3k/macha/issues"
+  },
+  "homepage": "https://github.com/kt3k/macha#readme"
+}
