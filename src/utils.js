@@ -149,26 +149,6 @@ exports.trim = function (str) {
 }
 
 /**
- * Parse the given `qs`.
- *
- * @api private
- * @param {string} qs
- * @return {Object}
- */
-exports.parseQuery = function (qs) {
-  return reduce(qs.replace('?', '').split('&'), function (obj, pair) {
-    var i = pair.indexOf('=')
-    var key = pair.slice(0, i)
-    var val = pair.slice(++i)
-
-    // Due to how the URLSearchParams API treats spaces
-    obj[key] = decodeURIComponent(val.replace(/\+/g, '%20'))
-
-    return obj
-  }, {})
-}
-
-/**
  * Highlight the given string of `js`.
  *
  * @api private
@@ -290,7 +270,7 @@ exports.stringify = function (value) {
     // IE7/IE8 has a bizarre String constructor; needs to be coerced
     // into an array and back to obj.
     if (typeHint === 'string' && typeof value === 'object') {
-      value = reduce(value.split(''), function (acc, char, idx) {
+      value = value.split('').reduce(function (acc, char, idx) {
         acc[idx] = char
         return acc
       }, {})
@@ -584,7 +564,7 @@ exports.stackTraceFilter = function () {
   } else {
     cwd = (typeof location === 'undefined'
       ? window.location
-      : location).href.replace(/\/[^/]*$/, '/')
+      : window.location).href.replace(/\/[^/]*$/, '/')
     slash = '/'
   }
 
@@ -607,7 +587,7 @@ exports.stackTraceFilter = function () {
   return function (stack) {
     stack = stack.split('\n')
 
-    stack = reduce(stack, function (list, line) {
+    stack = stack.reduce(function (list, line) {
       if (isMochaInternal(line)) {
         return list
       }

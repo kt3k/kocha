@@ -5,6 +5,8 @@ const { describe, it, macha } = require('./')
 
 const reporter = new Reporter(macha, { files: [__filename] })
 
+if (reporter) {}
+
 const add = (a, b) => a + b
 
 describe('add', () => {
