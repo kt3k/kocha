@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/kt3k/macha/issues"
   },
-  "homepage": "https://github.com/kt3k/macha#readme"
+  "homepage": "https://github.com/kt3k/macha#readme",
+  "dependencies": {
+    "mocha-better-spec-reporter": "^3.1.0"
+  }
 }

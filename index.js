@@ -42,6 +42,7 @@ class Suite extends EventEmitter {
     this.suites = []
     this.skipped = skipped
     this.parent = parent
+    this.root = parent == null // True if root suite
   }
 
   isSkipped () {
@@ -50,6 +51,20 @@ class Suite extends EventEmitter {
     }
 
     return this.skipped
+  }
+
+  /**
+   * Bubbles the event to the parent suite.
+   * @param {string} event The event name
+   * @param {any} arg The argument
+   * @param {Error?} err The error object
+   */
+  bubbleEvent (event, arg, err) {
+    if (this.parent) {
+      this.parent.bubbleEvent(event, arg, err)
+    } else {
+      this.emit(event, arg, err)
+    }
   }
 
   setBeforeCb (cb) {
@@ -84,6 +99,26 @@ class Suite extends EventEmitter {
     this.tests.push(test)
   }
 
+  setTimeout (timeout) {
+    this.timeoutDuration = timeout
+  }
+
+  getTimeout () {
+    return typeof this.timeoutDuration === 'number' ? this.timeoutDuration : this.parent.getTimeout()
+  }
+
+  /**
+   * Returns the full title including the parent's title.
+   */
+  fullTitle () {
+    if (this.parent.root) {
+      return this.title
+    }
+
+    return `${this.parent.fullTitle()} ${this.title}`
+  }
+
+
   runBeforeEachCb () {
     if (this.parent) {
       return this.parent.runBeforeEachCb().then(() => runCb(this.beforeEachCb))
@@ -101,10 +136,13 @@ class Suite extends EventEmitter {
   }
 
   run () {
+    this.bubbleEvent('suite', this)
+
     return runCb(this.beforeCb)
       .then(() => this.runTests())
       .then(() => this.runSuites())
       .then(() => runCb(this.afterCb))
+      .then(() => this.bubbleEvent('suite end', this))
   }
 
   runTests () {
@@ -120,6 +158,7 @@ class Macha extends Suite {
   constructor () {
     super('root', false, null)
 
+    this.timeoutDuration = 2000
     this.currentSuite = this
   }
 
@@ -133,7 +172,7 @@ class Macha extends Suite {
   }
 
   it (description, cb, skipped) {
-    this.currentSuite.addTest(new Test(description, cb, skipped, parent))
+    this.currentSuite.addTest(new Test(description, cb, skipped, this.currentSuite))
   }
 
   before (cb) {
@@ -151,20 +190,66 @@ class Macha extends Suite {
   afterEach (cb) {
     this.currentSuite.addAfterEachCb(cb)
   }
+
+  timeout (timeout) {
+    this.currentSuite.setTimeout(timeout)
+  }
+
+  /**
+   * Runs the tests. Private API.
+   * @return {Promise}
+   */
+  run () {
+    this.emit('start')
+    return super.run()
+      .then(() => this.emit('end'))
+  }
 }
 
 class Test {
   /**
-   * @param {string} description The description of the test case
+   * @param {string} title The title of the test case
    * @param {Function} test The function which implements the test case
    * @param {boolean} skipped True iff the case is skipped
    * @param {Suite} parent The parent suite
    */
-  constructor (description, test, skipped, parent) {
-    this.description = description
+  constructor (title, test, skipped, parent) {
+    this.title = title
     this.test = test
     this.skipped = skipped
     this.parent = parent
+    this.state = null
+    this.pending = true
+  }
+
+  fail (e) {
+    this.pending = false
+    this.state = 'failed'
+    this.parent.bubbleEvent('test end', this)
+    this.parent.bubbleEvent('fail', this, e)
+  }
+
+  pass () {
+    this.pending = false
+    this.state = 'passed'
+    this.parent.bubbleEvent('test end', this)
+    this.parent.bubbleEvent('pass', this)
+  }
+
+  /**
+   * Returns the timeout duration.
+   * @return {number}
+   */
+  timeout () {
+    return this.parent.getTimeout()
+  }
+
+  fullTitle () {
+    if (this.parent.root) {
+      return this.title
+    }
+
+    return `${this.parent.fullTitle()} ${this.title}`
   }
 
   /**
@@ -174,12 +259,13 @@ class Test {
   run () {
     return this.parent.runBeforeEachCb()
       .then(() => runCb(this.test))
+      .then(() => { this.pass() }, e => { this.fail(e) })
       .then(() => this.parent.runAfterEachCb())
   }
 }
 
 const macha = new Macha()
-
+exports.macha = macha
 exports.describe = (title, cb) => { macha.describe(title, cb, false) }
 exports.describe.skip = (title, cb) => { macha.describe(title, cb, true) }
 exports.it = (description, cb) => { macha.it(description, cb, false) }
@@ -188,8 +274,4 @@ exports.before = cb => { macha.before(cb) }
 exports.beforeEach= cb => { macha.beforeEach(cb) }
 exports.after = cb => { macha.after(cb) }
 exports.afterEach = cb => { macha.after(each) }
-
-exports.describe.skip = (title, cb) => {}
-exports.it.skip = (spec, cb) => {}
-
-setTimeout(() => { macha.run() })
+exports.timeout = timeout => { macha.timeout(timeout) }
