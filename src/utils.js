@@ -1,11 +1,3 @@
-'use strict'
-
-/* eslint-env browser */
-
-/**
- * Module dependencies.
- */
-
 var JSON = require('json3')
 var basename = require('path').basename
 var debug = require('debug')('mocha:watch')
@@ -22,151 +14,9 @@ var toISOString = require('./to-iso-string')
 /**
  * Ignored directories.
  */
-
 var ignore = ['node_modules', '.git']
 
 exports.inherits = require('util').inherits
-
-/**
- * Escape special characters in the given string of html.
- *
- * @api private
- * @param  {string} html
- * @return {string}
- */
-exports.escape = function (html) {
-  return String(html)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-}
-
-/**
- * Array#forEach (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Function} fn
- * @param {Object} scope
- */
-exports.forEach = function (arr, fn, scope) {
-  for (var i = 0, l = arr.length; i < l; i++) {
-    fn.call(scope, arr[i], i)
-  }
-}
-
-/**
- * Array#map (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Function} fn
- * @param {Object} scope
- * @return {Array}
- */
-exports.map = function (arr, fn, scope) {
-  var result = []
-  for (var i = 0, l = arr.length; i < l; i++) {
-    result.push(fn.call(scope, arr[i], i, arr))
-  }
-  return result
-}
-
-/**
- * Array#indexOf (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Object} obj to find index of
- * @param {number} start
- * @return {number}
- */
-var indexOf = exports.indexOf = function (arr, obj, start) {
-  for (var i = start || 0, l = arr.length; i < l; i++) {
-    if (arr[i] === obj) {
-      return i
-    }
-  }
-  return -1
-}
-
-/**
- * Array#reduce (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Function} fn
- * @param {Object} val Initial value.
- * @return {*}
- */
-var reduce = exports.reduce = function (arr, fn, val) {
-  var rval = val
-
-  for (var i = 0, l = arr.length; i < l; i++) {
-    rval = fn(rval, arr[i], i, arr)
-  }
-
-  return rval
-}
-
-/**
- * Array#filter (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Function} fn
- * @return {Array}
- */
-exports.filter = function (arr, fn) {
-  var ret = []
-
-  for (var i = 0, l = arr.length; i < l; i++) {
-    var val = arr[i]
-    if (fn(val, i, arr)) {
-      ret.push(val)
-    }
-  }
-
-  return ret
-}
-
-/**
- * Array#some (<=IE8)
- *
- * @api private
- * @param {Array} arr
- * @param {Function} fn
- * @return {Array}
- */
-exports.some = function (arr, fn) {
-  for (var i = 0, l = arr.length; i < l; i++) {
-    if (fn(arr[i])) {
-      return true
-    }
-  }
-  return false
-}
-
-/**
- * Object.keys (<=IE8)
- *
- * @api private
- * @param {Object} obj
- * @return {Array} keys
- */
-exports.keys = typeof Object.keys === 'function' ? Object.keys : function (obj) {
-  var keys = []
-  var has = Object.prototype.hasOwnProperty // for `window` on <=IE8
-
-  for (var key in obj) {
-    if (has.call(obj, key)) {
-      keys.push(key)
-    }
-  }
-
-  return keys
-}
 
 /**
  * Watch the given `files` for changes
@@ -429,7 +279,7 @@ var type = exports.type = function type (value) {
 exports.stringify = function (value) {
   var typeHint = type(value)
 
-  if (!~indexOf(['object', 'array', 'function'], typeHint)) {
+  if (!~['object', 'array', 'function'].indexOf(typeHint)) {
     if (typeHint === 'buffer') {
       var json = value.toJSON()
       // Based on the toJSON result
@@ -585,7 +435,7 @@ exports.canonicalize = function canonicalize (value, stack, typeHint) {
 
   stack = stack || []
 
-  if (indexOf(stack, value) !== -1) {
+  if (stack.indexOf(value) !== -1) {
     return '[Circular]'
   }
 
