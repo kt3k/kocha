@@ -25,14 +25,27 @@ describe('add', () => {
 
 # APIs
 
+```js
+const {
+  describe,
+  it,
+  before,
+  beforeEach,
+  after,
+  afterEach,
+  timeout
+} = require('macha')
+```
+
 ## describe(title, callback)
+## describe.skip(title, callback)
 ## it(spec, callback)
+## it.skip(spec, callback)
 ## before(callback)
 ## beforeEach(callback)
 ## after(callback)
 ## afterEach(callback)
-## describe.skip(title, callback)
-## it.skip(spec, callback)
+## timeout(timeout)
 
 # License
 
