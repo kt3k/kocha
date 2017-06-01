@@ -778,19 +778,3 @@ exports.stackTraceFilter = function () {
     return stack.join('\n')
   }
 }
-
-/**
- * Crude, but effective.
- * @api
- * @param {*} value
- * @returns {boolean} Whether or not `value` is a Promise
- */
-exports.isPromise = function isPromise (value) {
-  return typeof value === 'object' && typeof value.then === 'function'
-}
-
-/**
- * It's a noop.
- * @api
- */
-exports.noop = function () {}
