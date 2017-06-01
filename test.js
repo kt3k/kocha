@@ -1,4 +1,4 @@
-const assert = require('assert')
+const assert = require('power-assert')
 const Reporter = require('./src/reporters/spec')
 
 const { describe, it, macha } = require('./')
