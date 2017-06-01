@@ -23,6 +23,10 @@
   },
   "homepage": "https://github.com/kt3k/macha#readme",
   "dependencies": {
-    "mocha-better-spec-reporter": "^3.1.0"
+    "debug": "^2.6.8",
+    "diff": "^3.2.0",
+    "glob": "^7.1.2",
+    "json3": "^3.3.2",
+    "supports-color": "^3.2.3"
   }
 }

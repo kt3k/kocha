@@ -238,18 +238,36 @@ class Test {
 
   /**
    * Returns the timeout duration.
+   *
+   * I/F for Reporter
    * @return {number}
    */
   timeout () {
     return this.parent.getTimeout()
   }
 
+  /**
+   * Gets the full title of the context.
+   *
+   * I/F for Reporter
+   * @return {string}
+   */
   fullTitle () {
     if (this.parent.root) {
       return this.title
     }
 
     return `${this.parent.fullTitle()} ${this.title}`
+  }
+
+  /**
+   * Returns the threshold number by which the test case is considered slow.
+   *
+   * I/F for Reporter
+   * @return {number}
+   */
+  slow () {
+    return
   }
 
   /**

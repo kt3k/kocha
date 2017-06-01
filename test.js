@@ -1,5 +1,5 @@
 const assert = require('assert')
-const Reporter = require('mocha-better-spec-reporter')
+const Reporter = require('./src/reporters/spec')
 
 const { describe, it, macha } = require('./')
 
