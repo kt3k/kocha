@@ -203,7 +203,7 @@ exports.list = function (failures) {
     // explicitly show diff
     if (err.showDiff !== false && sameType(actual, expected) && expected !== undefined) {
       escape = false
-      if (!(utils.isString(actual) && utils.isString(expected))) {
+      if (!(typeof actual === 'string' && typeof expected === 'string')) {
         err.actual = actual = utils.stringify(actual)
         err.expected = expected = utils.stringify(expected)
       }

@@ -57,17 +57,6 @@ exports.forEach = function (arr, fn, scope) {
 }
 
 /**
- * Test if the given obj is type of string.
- *
- * @api private
- * @param {Object} obj
- * @return {boolean}
- */
-exports.isString = function (obj) {
-  return typeof obj === 'string'
-}
-
-/**
  * Array#map (<=IE8)
  *
  * @api private

@@ -4,7 +4,6 @@ const Reporter = require('./src/reporters/spec')
 const { describe, it, macha } = require('./')
 
 const reporter = new Reporter(macha, { files: [__filename] })
-console.log(reporter)
 
 const add = (a, b) => a + b
 
