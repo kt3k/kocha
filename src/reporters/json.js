@@ -1,16 +1,16 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
 
-var Base = require('./base');
+var Base = require('./base')
 
 /**
  * Expose `JSON`.
  */
 
-exports = module.exports = JSONReporter;
+exports = module.exports = JSONReporter
 
 /**
  * Initialize a new `JSON` reporter.
@@ -19,29 +19,29 @@ exports = module.exports = JSONReporter;
  * @param {Runner} runner
  */
 function JSONReporter (runner) {
-  Base.call(this, runner);
+  Base.call(this, runner)
 
-  var self = this;
-  var tests = [];
-  var pending = [];
-  var failures = [];
-  var passes = [];
+  var self = this
+  var tests = []
+  var pending = []
+  var failures = []
+  var passes = []
 
   runner.on('test end', function (test) {
-    tests.push(test);
-  });
+    tests.push(test)
+  })
 
   runner.on('pass', function (test) {
-    passes.push(test);
-  });
+    passes.push(test)
+  })
 
   runner.on('fail', function (test) {
-    failures.push(test);
-  });
+    failures.push(test)
+  })
 
   runner.on('pending', function (test) {
-    pending.push(test);
-  });
+    pending.push(test)
+  })
 
   runner.on('end', function () {
     var obj = {
@@ -50,12 +50,12 @@ function JSONReporter (runner) {
       pending: pending.map(clean),
       failures: failures.map(clean),
       passes: passes.map(clean)
-    };
+    }
 
-    runner.testResults = obj;
+    runner.testResults = obj
 
-    process.stdout.write(JSON.stringify(obj, null, 2));
-  });
+    process.stdout.write(JSON.stringify(obj, null, 2))
+  })
 }
 
 /**
@@ -73,7 +73,7 @@ function clean (test) {
     duration: test.duration,
     currentRetry: test.currentRetry(),
     err: errorJSON(test.err || {})
-  };
+  }
 }
 
 /**
@@ -84,9 +84,9 @@ function clean (test) {
  * @return {Object}
  */
 function errorJSON (err) {
-  var res = {};
+  var res = {}
   Object.getOwnPropertyNames(err).forEach(function (key) {
-    res[key] = err[key];
-  }, err);
-  return res;
+    res[key] = err[key]
+  }, err)
+  return res
 }

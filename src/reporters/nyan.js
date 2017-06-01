@@ -1,17 +1,17 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
 
-var Base = require('./base');
-var inherits = require('../utils').inherits;
+var Base = require('./base')
+var inherits = require('../utils').inherits
 
 /**
  * Expose `Dot`.
  */
 
-exports = module.exports = NyanCat;
+exports = module.exports = NyanCat
 
 /**
  * Initialize a new `Dot` matrix test reporter.
@@ -21,50 +21,50 @@ exports = module.exports = NyanCat;
  */
 
 function NyanCat (runner) {
-  Base.call(this, runner);
+  Base.call(this, runner)
 
-  var self = this;
-  var width = Base.window.width * 0.75 | 0;
-  var nyanCatWidth = this.nyanCatWidth = 11;
+  var self = this
+  var width = Base.window.width * 0.75 | 0
+  var nyanCatWidth = this.nyanCatWidth = 11
 
-  this.colorIndex = 0;
-  this.numberOfLines = 4;
-  this.rainbowColors = self.generateColors();
-  this.scoreboardWidth = 5;
-  this.tick = 0;
-  this.trajectories = [[], [], [], []];
-  this.trajectoryWidthMax = (width - nyanCatWidth);
+  this.colorIndex = 0
+  this.numberOfLines = 4
+  this.rainbowColors = self.generateColors()
+  this.scoreboardWidth = 5
+  this.tick = 0
+  this.trajectories = [[], [], [], []]
+  this.trajectoryWidthMax = (width - nyanCatWidth)
 
   runner.on('start', function () {
-    Base.cursor.hide();
-    self.draw();
-  });
+    Base.cursor.hide()
+    self.draw()
+  })
 
   runner.on('pending', function () {
-    self.draw();
-  });
+    self.draw()
+  })
 
   runner.on('pass', function () {
-    self.draw();
-  });
+    self.draw()
+  })
 
   runner.on('fail', function () {
-    self.draw();
-  });
+    self.draw()
+  })
 
   runner.on('end', function () {
-    Base.cursor.show();
+    Base.cursor.show()
     for (var i = 0; i < self.numberOfLines; i++) {
-      write('\n');
+      write('\n')
     }
-    self.epilogue();
-  });
+    self.epilogue()
+  })
 }
 
 /**
  * Inherit from `Base.prototype`.
  */
-inherits(NyanCat, Base);
+inherits(NyanCat, Base)
 
 /**
  * Draw the nyan cat
@@ -73,12 +73,12 @@ inherits(NyanCat, Base);
  */
 
 NyanCat.prototype.draw = function () {
-  this.appendRainbow();
-  this.drawScoreboard();
-  this.drawRainbow();
-  this.drawNyanCat();
-  this.tick = !this.tick;
-};
+  this.appendRainbow()
+  this.drawScoreboard()
+  this.drawRainbow()
+  this.drawNyanCat()
+  this.tick = !this.tick
+}
 
 /**
  * Draw the "scoreboard" showing the number
@@ -88,21 +88,21 @@ NyanCat.prototype.draw = function () {
  */
 
 NyanCat.prototype.drawScoreboard = function () {
-  var stats = this.stats;
+  var stats = this.stats
 
   function draw (type, n) {
-    write(' ');
-    write(Base.color(type, n));
-    write('\n');
+    write(' ')
+    write(Base.color(type, n))
+    write('\n')
   }
 
-  draw('green', stats.passes);
-  draw('fail', stats.failures);
-  draw('pending', stats.pending);
-  write('\n');
+  draw('green', stats.passes)
+  draw('fail', stats.failures)
+  draw('pending', stats.pending)
+  write('\n')
 
-  this.cursorUp(this.numberOfLines);
-};
+  this.cursorUp(this.numberOfLines)
+}
 
 /**
  * Append the rainbow.
@@ -111,17 +111,17 @@ NyanCat.prototype.drawScoreboard = function () {
  */
 
 NyanCat.prototype.appendRainbow = function () {
-  var segment = this.tick ? '_' : '-';
-  var rainbowified = this.rainbowify(segment);
+  var segment = this.tick ? '_' : '-'
+  var rainbowified = this.rainbowify(segment)
 
   for (var index = 0; index < this.numberOfLines; index++) {
-    var trajectory = this.trajectories[index];
+    var trajectory = this.trajectories[index]
     if (trajectory.length >= this.trajectoryWidthMax) {
-      trajectory.shift();
+      trajectory.shift()
     }
-    trajectory.push(rainbowified);
+    trajectory.push(rainbowified)
   }
-};
+}
 
 /**
  * Draw the rainbow.
@@ -130,16 +130,16 @@ NyanCat.prototype.appendRainbow = function () {
  */
 
 NyanCat.prototype.drawRainbow = function () {
-  var self = this;
+  var self = this
 
   this.trajectories.forEach(function (line) {
-    write('\u001b[' + self.scoreboardWidth + 'C');
-    write(line.join(''));
-    write('\n');
-  });
+    write('\u001b[' + self.scoreboardWidth + 'C')
+    write(line.join(''))
+    write('\n')
+  })
 
-  this.cursorUp(this.numberOfLines);
-};
+  this.cursorUp(this.numberOfLines)
+}
 
 /**
  * Draw the nyan cat
@@ -147,33 +147,33 @@ NyanCat.prototype.drawRainbow = function () {
  * @api private
  */
 NyanCat.prototype.drawNyanCat = function () {
-  var self = this;
-  var startWidth = this.scoreboardWidth + this.trajectories[0].length;
-  var dist = '\u001b[' + startWidth + 'C';
-  var padding = '';
+  var self = this
+  var startWidth = this.scoreboardWidth + this.trajectories[0].length
+  var dist = '\u001b[' + startWidth + 'C'
+  var padding = ''
 
-  write(dist);
-  write('_,------,');
-  write('\n');
+  write(dist)
+  write('_,------,')
+  write('\n')
 
-  write(dist);
-  padding = self.tick ? '  ' : '   ';
-  write('_|' + padding + '/\\_/\\ ');
-  write('\n');
+  write(dist)
+  padding = self.tick ? '  ' : '   '
+  write('_|' + padding + '/\\_/\\ ')
+  write('\n')
 
-  write(dist);
-  padding = self.tick ? '_' : '__';
-  var tail = self.tick ? '~' : '^';
-  write(tail + '|' + padding + this.face() + ' ');
-  write('\n');
+  write(dist)
+  padding = self.tick ? '_' : '__'
+  var tail = self.tick ? '~' : '^'
+  write(tail + '|' + padding + this.face() + ' ')
+  write('\n')
 
-  write(dist);
-  padding = self.tick ? ' ' : '  ';
-  write(padding + '""  "" ');
-  write('\n');
+  write(dist)
+  padding = self.tick ? ' ' : '  '
+  write(padding + '""  "" ')
+  write('\n')
 
-  this.cursorUp(this.numberOfLines);
-};
+  this.cursorUp(this.numberOfLines)
+}
 
 /**
  * Draw nyan cat face.
@@ -183,16 +183,16 @@ NyanCat.prototype.drawNyanCat = function () {
  */
 
 NyanCat.prototype.face = function () {
-  var stats = this.stats;
+  var stats = this.stats
   if (stats.failures) {
-    return '( x .x)';
+    return '( x .x)'
   } else if (stats.pending) {
-    return '( o .o)';
+    return '( o .o)'
   } else if (stats.passes) {
-    return '( ^ .^)';
+    return '( ^ .^)'
   }
-  return '( - .-)';
-};
+  return '( - .-)'
+}
 
 /**
  * Move cursor up `n`.
@@ -202,8 +202,8 @@ NyanCat.prototype.face = function () {
  */
 
 NyanCat.prototype.cursorUp = function (n) {
-  write('\u001b[' + n + 'A');
-};
+  write('\u001b[' + n + 'A')
+}
 
 /**
  * Move cursor down `n`.
@@ -213,8 +213,8 @@ NyanCat.prototype.cursorUp = function (n) {
  */
 
 NyanCat.prototype.cursorDown = function (n) {
-  write('\u001b[' + n + 'B');
-};
+  write('\u001b[' + n + 'B')
+}
 
 /**
  * Generate rainbow colors.
@@ -223,19 +223,19 @@ NyanCat.prototype.cursorDown = function (n) {
  * @return {Array}
  */
 NyanCat.prototype.generateColors = function () {
-  var colors = [];
+  var colors = []
 
   for (var i = 0; i < (6 * 7); i++) {
-    var pi3 = Math.floor(Math.PI / 3);
-    var n = (i * (1.0 / 6));
-    var r = Math.floor(3 * Math.sin(n) + 3);
-    var g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3);
-    var b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3);
-    colors.push(36 * r + 6 * g + b + 16);
+    var pi3 = Math.floor(Math.PI / 3)
+    var n = (i * (1.0 / 6))
+    var r = Math.floor(3 * Math.sin(n) + 3)
+    var g = Math.floor(3 * Math.sin(n + 2 * pi3) + 3)
+    var b = Math.floor(3 * Math.sin(n + 4 * pi3) + 3)
+    colors.push(36 * r + 6 * g + b + 16)
   }
 
-  return colors;
-};
+  return colors
+}
 
 /**
  * Apply rainbow to the given `str`.
@@ -246,12 +246,12 @@ NyanCat.prototype.generateColors = function () {
  */
 NyanCat.prototype.rainbowify = function (str) {
   if (!Base.useColors) {
-    return str;
+    return str
   }
-  var color = this.rainbowColors[this.colorIndex % this.rainbowColors.length];
-  this.colorIndex += 1;
-  return '\u001b[38;5;' + color + 'm' + str + '\u001b[0m';
-};
+  var color = this.rainbowColors[this.colorIndex % this.rainbowColors.length]
+  this.colorIndex += 1
+  return '\u001b[38;5;' + color + 'm' + str + '\u001b[0m'
+}
 
 /**
  * Stdout helper.
@@ -259,5 +259,5 @@ NyanCat.prototype.rainbowify = function (str) {
  * @param {string} string A message to write to stdout.
  */
 function write (string) {
-  process.stdout.write(string);
+  process.stdout.write(string)
 }

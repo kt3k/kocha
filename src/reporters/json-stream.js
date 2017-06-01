@@ -1,17 +1,17 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
 
-var Base = require('./base');
-var JSON = require('json3');
+var Base = require('./base')
+var JSON = require('json3')
 
 /**
  * Expose `List`.
  */
 
-exports = module.exports = List;
+exports = module.exports = List
 
 /**
  * Initialize a new `List` test reporter.
@@ -20,29 +20,29 @@ exports = module.exports = List;
  * @param {Runner} runner
  */
 function List (runner) {
-  Base.call(this, runner);
+  Base.call(this, runner)
 
-  var self = this;
-  var total = runner.total;
+  var self = this
+  var total = runner.total
 
   runner.on('start', function () {
-    console.log(JSON.stringify(['start', { total: total }]));
-  });
+    console.log(JSON.stringify(['start', { total: total }]))
+  })
 
   runner.on('pass', function (test) {
-    console.log(JSON.stringify(['pass', clean(test)]));
-  });
+    console.log(JSON.stringify(['pass', clean(test)]))
+  })
 
   runner.on('fail', function (test, err) {
-    test = clean(test);
-    test.err = err.message;
-    test.stack = err.stack || null;
-    console.log(JSON.stringify(['fail', test]));
-  });
+    test = clean(test)
+    test.err = err.message
+    test.stack = err.stack || null
+    console.log(JSON.stringify(['fail', test]))
+  })
 
   runner.on('end', function () {
-    process.stdout.write(JSON.stringify(['end', self.stats]));
-  });
+    process.stdout.write(JSON.stringify(['end', self.stats]))
+  })
 }
 
 /**
@@ -59,5 +59,5 @@ function clean (test) {
     fullTitle: test.fullTitle(),
     duration: test.duration,
     currentRetry: test.currentRetry()
-  };
+  }
 }

@@ -7,10 +7,10 @@ const { EventEmitter } = require('events')
 const isAsyncCb = cb => cb.length > 0
 
 /**
- * @param {Function} cb The callback function
+ * @param {Function} func The callback function
  * @return {Promise}
  */
-const runAsyncCb = cb => new Promise(resolve => cb(result => {
+const runAsyncCb = func => new Promise(resolve => func(result => {
   if (result instanceof Error) { throw result }
   if (result) { throw new Error(`done() invoked with non-Error: ${result}`) }
 
@@ -22,7 +22,6 @@ const runAsyncCb = cb => new Promise(resolve => cb(result => {
  * @return {Promise}
  */
 const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve(cb())
-
 
 class Suite extends EventEmitter {
   /**
@@ -117,7 +116,6 @@ class Suite extends EventEmitter {
 
     return `${this.parent.fullTitle()} ${this.title}`
   }
-
 
   runBeforeEachCb () {
     if (this.parent) {
@@ -267,7 +265,7 @@ class Test {
    * @return {number}
    */
   slow () {
-    return
+
   }
 
   /**
@@ -289,7 +287,7 @@ exports.describe.skip = (title, cb) => { macha.describe(title, cb, true) }
 exports.it = (description, cb) => { macha.it(description, cb, false) }
 exports.it.skip = (description, cb) => { macha.it(description, cb, true) }
 exports.before = cb => { macha.before(cb) }
-exports.beforeEach= cb => { macha.beforeEach(cb) }
+exports.beforeEach = cb => { macha.beforeEach(cb) }
 exports.after = cb => { macha.after(cb) }
-exports.afterEach = cb => { macha.after(each) }
+exports.afterEach = cb => { macha.after(cb) }
 exports.timeout = timeout => { macha.timeout(timeout) }

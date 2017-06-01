@@ -1,23 +1,23 @@
-'use strict';
+'use strict'
 
 /**
  * Module dependencies.
  */
 
-var Base = require('./base');
-var utils = require('../utils');
+var Base = require('./base')
+var utils = require('../utils')
 
 /**
  * Constants
  */
 
-var SUITE_PREFIX = '$';
+var SUITE_PREFIX = '$'
 
 /**
  * Expose `Markdown`.
  */
 
-exports = module.exports = Markdown;
+exports = module.exports = Markdown
 
 /**
  * Initialize a new `Markdown` reporter.
@@ -26,74 +26,74 @@ exports = module.exports = Markdown;
  * @param {Runner} runner
  */
 function Markdown (runner) {
-  Base.call(this, runner);
+  Base.call(this, runner)
 
-  var level = 0;
-  var buf = '';
+  var level = 0
+  var buf = ''
 
   function title (str) {
-    return Array(level).join('#') + ' ' + str;
+    return Array(level).join('#') + ' ' + str
   }
 
   function mapTOC (suite, obj) {
-    var ret = obj;
-    var key = SUITE_PREFIX + suite.title;
+    var ret = obj
+    var key = SUITE_PREFIX + suite.title
 
-    obj = obj[key] = obj[key] || { suite: suite };
+    obj = obj[key] = obj[key] || { suite: suite }
     suite.suites.forEach(function (suite) {
-      mapTOC(suite, obj);
-    });
+      mapTOC(suite, obj)
+    })
 
-    return ret;
+    return ret
   }
 
   function stringifyTOC (obj, level) {
-    ++level;
-    var buf = '';
-    var link;
+    ++level
+    var buf = ''
+    var link
     for (var key in obj) {
       if (key === 'suite') {
-        continue;
+        continue
       }
       if (key !== SUITE_PREFIX) {
-        link = ' - [' + key.substring(1) + ']';
-        link += '(#' + utils.slug(obj[key].suite.fullTitle()) + ')\n';
-        buf += Array(level).join('  ') + link;
+        link = ' - [' + key.substring(1) + ']'
+        link += '(#' + utils.slug(obj[key].suite.fullTitle()) + ')\n'
+        buf += Array(level).join('  ') + link
       }
-      buf += stringifyTOC(obj[key], level);
+      buf += stringifyTOC(obj[key], level)
     }
-    return buf;
+    return buf
   }
 
   function generateTOC (suite) {
-    var obj = mapTOC(suite, {});
-    return stringifyTOC(obj, 0);
+    var obj = mapTOC(suite, {})
+    return stringifyTOC(obj, 0)
   }
 
-  generateTOC(runner.suite);
+  generateTOC(runner.suite)
 
   runner.on('suite', function (suite) {
-    ++level;
-    var slug = utils.slug(suite.fullTitle());
-    buf += '<a name="' + slug + '"></a>' + '\n';
-    buf += title(suite.title) + '\n';
-  });
+    ++level
+    var slug = utils.slug(suite.fullTitle())
+    buf += '<a name="' + slug + '"></a>' + '\n'
+    buf += title(suite.title) + '\n'
+  })
 
   runner.on('suite end', function () {
-    --level;
-  });
+    --level
+  })
 
   runner.on('pass', function (test) {
-    var code = utils.clean(test.body);
-    buf += test.title + '.\n';
-    buf += '\n```js\n';
-    buf += code + '\n';
-    buf += '```\n\n';
-  });
+    var code = utils.clean(test.body)
+    buf += test.title + '.\n'
+    buf += '\n```js\n'
+    buf += code + '\n'
+    buf += '```\n\n'
+  })
 
   runner.on('end', function () {
-    process.stdout.write('# TOC\n');
-    process.stdout.write(generateTOC(runner.suite));
-    process.stdout.write(buf);
-  });
+    process.stdout.write('# TOC\n')
+    process.stdout.write(generateTOC(runner.suite))
+    process.stdout.write(buf)
+  })
 }
