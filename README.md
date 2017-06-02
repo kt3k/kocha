@@ -1,19 +1,19 @@
-# Tencha v0.1.0
+# Kocha v0.1.0
 
 > Simpler Mocha clone, no globals, lint friendly
 
 # :cd: Install
 
-    npm install tencha --save-dev
+    npm install kocha --save-dev
 
 # Use in node.js
 
-Require `describe`, `it` etc from tencha, and write tests as in `mocha`:
+Require `describe`, `it` etc from kocha, and write tests as in `mocha`:
 
 `test.js`:
 
 ```js
-const { describe, it } = require('tencha')
+const { describe, it } = require('kocha')
 const assert = require('assert')
 
 describe('add', () => {
@@ -25,9 +25,9 @@ describe('add', () => {
 })
 ```
 
-Then run it by `tencha` command.
+Then run it by `kocha` command.
 
-    node_modules/.bin/tencha test.js
+    node_modules/.bin/kocha test.js
 
 This outputs the report like mocha.
 
@@ -46,7 +46,7 @@ const {
   after,
   afterEach,
   timeout
-} = require('tencha')
+} = require('kocha')
 ```
 
 ## describe(title, callback)
@@ -61,7 +61,7 @@ const {
 
 # Name
 
-Tencha (碾茶) is a type of green tea made in Japan in which the tea leaves are steamed and dried immediately after harvest to prevent oxidization.
+Kocha (紅茶) means tea (of western style) in Japanese.
 
 # License
 

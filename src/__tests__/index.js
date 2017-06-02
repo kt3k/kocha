@@ -1,7 +1,7 @@
 const td = require('testdouble')
 const assert = require('power-assert')
-const tencha = require('../')
-const runner = tencha.runner
+const kocha = require('../')
+const runner = kocha.runner
 
 describe('Runner', t => {
   afterEach(() => {
@@ -26,7 +26,7 @@ describe('Runner', t => {
     it('registers the test suite and emits suite event with it', () => {
       td.replace(runner, 'emit')
 
-      tencha.describe('title', () => {})
+      kocha.describe('title', () => {})
 
       const suite = runner.suites[0]
 
@@ -41,12 +41,12 @@ describe('Runner', t => {
     })
 
     it('constructs the test suite structure according to the nesting of describe calls', () => {
-      tencha.describe('foo', () => {
-        tencha.describe('bar', () => {
-          tencha.describe('baz', () => {
+      kocha.describe('foo', () => {
+        kocha.describe('bar', () => {
+          kocha.describe('baz', () => {
           })
         })
-        tencha.describe('quux', () => {
+        kocha.describe('quux', () => {
         })
       })
 
@@ -61,7 +61,7 @@ describe('Runner', t => {
     it('registers the test case and emits `test end` and `pass` event when the test passes', () => {
       td.replace(runner, 'emit')
 
-      tencha.it('foo', () => {})
+      kocha.it('foo', () => {})
 
       const test = runner.tests[0]
 
@@ -78,7 +78,7 @@ describe('Runner', t => {
     it('registers the test case and emits `test end` and `fail` event when the test fails', () => {
       td.replace(runner, 'emit')
 
-      tencha.it('foo', () => { throw new Error('foo') })
+      kocha.it('foo', () => { throw new Error('foo') })
 
       const test = runner.tests[0]
 
@@ -95,7 +95,7 @@ describe('Runner', t => {
     it('registers the async test case and emit pass event when the done is called', () => {
       td.replace(runner, 'emit')
 
-      tencha.it('foo', done => { setTimeout(() => done(), 100) })
+      kocha.it('foo', done => { setTimeout(() => done(), 100) })
 
       const test = runner.tests[0]
 
@@ -114,7 +114,7 @@ describe('Runner', t => {
 
       const error = new Error('abc')
 
-      tencha.it('foo', done => { setTimeout(() => done(error), 100) })
+      kocha.it('foo', done => { setTimeout(() => done(error), 100) })
 
       const test = runner.tests[0]
 
@@ -131,7 +131,7 @@ describe('Runner', t => {
     it('registers the async test case and emit fail event when the done is called with non-error non-null object', () => {
       td.replace(runner, 'emit')
 
-      tencha.it('foo', done => { setTimeout(() => done({}), 100) })
+      kocha.it('foo', done => { setTimeout(() => done({}), 100) })
 
       const test = runner.tests[0]
 
@@ -146,13 +146,13 @@ describe('Runner', t => {
     })
 
     it('constructs the test suite structure according to the calls', () => {
-      tencha.it('foo', () => {})
+      kocha.it('foo', () => {})
 
-      tencha.describe('bar', () => {
-        tencha.it('baz', () => {})
+      kocha.describe('bar', () => {
+        kocha.it('baz', () => {})
 
-        tencha.describe('spam', () => {
-          tencha.it('ham', () => {})
+        kocha.describe('spam', () => {
+          kocha.it('ham', () => {})
         })
       })
 
@@ -166,8 +166,8 @@ describe('Runner', t => {
         it('returns the full title', () => {
           let testCase
 
-          tencha.describe('foo', () => {
-            tencha.it('bar', () => {})
+          kocha.describe('foo', () => {
+            kocha.it('bar', () => {})
           })
 
           runner.on('pass', test => {
@@ -184,8 +184,8 @@ describe('Runner', t => {
         it('returns the timeout duration of the test case', () => {
           let testCase
 
-          tencha.describe('foo', () => {
-            tencha.it('bar', () => {})
+          kocha.describe('foo', () => {
+            kocha.it('bar', () => {})
           })
 
           runner.on('pass', test => {
@@ -202,8 +202,8 @@ describe('Runner', t => {
         it('returns the slow threshold of the test case', () => {
           let testCase
 
-          tencha.describe('foo', () => {
-            tencha.it('bar', () => {})
+          kocha.describe('foo', () => {
+            kocha.it('bar', () => {})
           })
 
           runner.on('pass', test => {
