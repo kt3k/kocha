@@ -3,13 +3,13 @@ const assert = require('power-assert')
 const kocha = require('../')
 const runner = kocha.runner
 
-describe('Runner', t => {
+describe('kocha', t => {
   afterEach(() => {
     td.reset()
     runner.clear()
   })
 
-  describe('run', () => {
+  describe('runner.run', () => {
     it('runs the tests and emits start, end, suite and `suite end` events', () => {
       td.replace(runner, 'emit')
 
@@ -54,6 +54,34 @@ describe('Runner', t => {
       assert(runner.suites[0].suites[0].title === 'bar')
       assert(runner.suites[0].suites[1].title === 'quux')
       assert(runner.suites[0].suites[0].suites[0].title === 'baz')
+    })
+  })
+
+  describe('describe.skip', () => {
+    it('registers the skipped test suite', () => {
+      kocha.describe.skip('foo', () => {})
+
+      assert(runner.suites[0].title === 'foo')
+      assert(runner.suites[0].isSkipped())
+    })
+
+    it('registers the skipped test suite and it has effect to its child suites', () => {
+      kocha.describe.skip('foo', () => {
+        kocha.describe('bar', () => {
+        })
+      })
+
+      assert(runner.suites[0].suites[0].title === 'bar')
+      assert(runner.suites[0].suites[0].isSkipped())
+    })
+    it('registers the skipped test suite and it does not have effect to its sibling suites', () => {
+      kocha.describe.skip('foo', () => {})
+      kocha.describe('bar', () => {})
+
+      assert(runner.suites[0].title === 'foo')
+      assert(runner.suites[0].isSkipped())
+      assert(runner.suites[1].title === 'bar')
+      assert(!runner.suites[1].isSkipped())
     })
   })
 
@@ -178,6 +206,20 @@ describe('Runner', t => {
             assert(testCase.fullTitle() === 'foo bar')
           })
         })
+
+        it('returns its title when registered out of any suite', () => {
+          let testCase
+
+          kocha.it('foo', () => {})
+
+          runner.on('pass', test => {
+            testCase = test
+          })
+
+          return runner.run().then(() => {
+            assert(testCase.fullTitle() === 'foo')
+          })
+        })
       })
 
       describe('timeout', () => {
@@ -214,6 +256,25 @@ describe('Runner', t => {
             assert(testCase.slow() === 1000)
           })
         })
+      })
+    })
+  })
+
+  describe('it.skip', () => {
+    it('registers the skipped test case and emits `pending` and `test end` event', () => {
+      td.replace(runner, 'emit')
+
+      kocha.it.skip('foo', () => { throw new Error('foo') })
+
+      const test = runner.tests[0]
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('suite', runner))
+        td.verify(runner.emit('pending', test))
+        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('suite end', runner))
+        td.verify(runner.emit('end'))
       })
     })
   })

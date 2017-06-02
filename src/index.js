@@ -229,18 +229,29 @@ class Test {
     this.pending = true
   }
 
+  isSkipped () {
+    return this.skipped || this.parent.isSkipped()
+  }
+
   fail (e) {
     this.pending = false
     this.state = 'failed'
-    this.parent.bubbleEvent('test end', this)
     this.parent.bubbleEvent('fail', this, e)
+    this.parent.bubbleEvent('test end', this)
   }
 
   pass () {
     this.pending = false
     this.state = 'passed'
-    this.parent.bubbleEvent('test end', this)
     this.parent.bubbleEvent('pass', this)
+    this.parent.bubbleEvent('test end', this)
+  }
+
+  skip () {
+    this.pending = true
+    this.state = 'pending'
+    this.parent.bubbleEvent('pending', this)
+    this.parent.bubbleEvent('test end', this)
   }
 
   /**
@@ -282,6 +293,12 @@ class Test {
    * @return {Promise}
    */
   run () {
+    if (this.isSkipped()) {
+      this.skip()
+
+      return Promise.resolve()
+    }
+
     return this.parent.runBeforeEachCb()
       .then(() => runCb(this.test))
       .then(() => { this.pass() }, e => { this.fail(e) })
