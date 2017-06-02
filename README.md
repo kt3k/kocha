@@ -61,7 +61,7 @@ const {
 
 # Name
 
-Kocha (紅茶) means tea (of western style) in Japanese.
+Kocha (紅茶, pronounced like ko-cha, not ko-ka) means black tea in Japanese.
 
 # License
 
