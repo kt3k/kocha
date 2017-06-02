@@ -10,9 +10,9 @@ const isAsyncCb = cb => cb.length > 0
  * @param {Function} func The callback function
  * @return {Promise}
  */
-const runAsyncCb = func => new Promise(resolve => func(result => {
-  if (result instanceof Error) { throw result }
-  if (result) { throw new Error(`done() invoked with non-Error: ${result}`) }
+const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
+  if (result instanceof Error) { return reject(result) }
+  if (result) { return reject(new Error(`done() invoked with non-Error: ${result}`)) }
 
   resolve()
 }))
@@ -61,8 +61,12 @@ class Suite extends EventEmitter {
   bubbleEvent (event, arg, err) {
     if (this.parent) {
       this.parent.bubbleEvent(event, arg, err)
-    } else {
+    } else if (err) {
       this.emit(event, arg, err)
+    } else if (arg) {
+      this.emit(event, arg)
+    } else {
+      this.emit(event)
     }
   }
 
@@ -198,9 +202,14 @@ class Macha extends Suite {
    * @return {Promise}
    */
   run () {
-    this.emit('start')
+    this.bubbleEvent('start')
     return super.run()
-      .then(() => this.emit('end'))
+      .then(() => this.bubbleEvent('end'))
+  }
+
+  clear () {
+    this.tests.splice(0)
+    this.suites.splice(0)
   }
 }
 
@@ -265,7 +274,7 @@ class Test {
    * @return {number}
    */
   slow () {
-
+    return 1000
   }
 
   /**
@@ -291,3 +300,5 @@ exports.beforeEach = cb => { macha.beforeEach(cb) }
 exports.after = cb => { macha.after(cb) }
 exports.afterEach = cb => { macha.after(cb) }
 exports.timeout = timeout => { macha.timeout(timeout) }
+exports.Suite = Suite
+exports.Test = Test

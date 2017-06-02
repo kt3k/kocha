@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "standard",
     "fix": "standard --fix",
-    "test": "mocha test.js"
+    "test": "mocha --require ./src/__tests__/loader.js \"src{/,**/}__tests__/**/*.js\"",
+    "cov": "nyc --reporter=lcov npm test"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,12 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.1",
     "power-assert": "^1.4.2",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "testdouble": "^2.1.2"
+  },
+  "standard": {
+    "env": [
+      "mocha"
+    ]
   }
 }
