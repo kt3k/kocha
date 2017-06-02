@@ -1,7 +1,7 @@
 {
   "name": "macha",
   "version": "0.1.0",
-  "description": "Mostly Mocha compatible simpler test runner.",
+  "description": "Simpler Mocha clone, no globals, lint friendly",
   "main": "src/index.js",
   "scripts": {
     "lint": "standard",

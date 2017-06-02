@@ -1,6 +1,6 @@
 # Macha
 
-> Mostly Mocha compatible simpler test runner.
+> Simpler Mocha clone, no globals, lint friendly
 
 # :cd: Install
 
