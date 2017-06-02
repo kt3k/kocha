@@ -8,7 +8,7 @@
     "fix": "standard --fix",
     "test": "mocha --require ./src/__tests__/loader.js \"src{/,**/}__tests__/**/*.js\"",
     "cov": "nyc --reporter=lcov npm test",
-    "codecov": "npm run codecov && codecov"
+    "codecov": "npm run cov && codecov"
   },
   "repository": {
     "type": "git",
