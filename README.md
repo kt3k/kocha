@@ -33,6 +33,8 @@ This outputs the report like mocha.
 
 # Use in karma
 
+TBD
+
 # APIs
 
 ```js
