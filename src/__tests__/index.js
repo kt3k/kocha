@@ -1,9 +1,9 @@
 const td = require('testdouble')
 const assert = require('power-assert')
-const macha = require('../')
-const runner = macha.macha
+const tencha = require('../')
+const runner = tencha.runner
 
-describe('macha', t => {
+describe('Runner', t => {
   afterEach(() => {
     td.reset()
     runner.clear()
@@ -26,7 +26,7 @@ describe('macha', t => {
     it('registers the test suite and emits suite event with it', () => {
       td.replace(runner, 'emit')
 
-      macha.describe('title', () => {})
+      tencha.describe('title', () => {})
 
       const suite = runner.suites[0]
 
@@ -41,12 +41,12 @@ describe('macha', t => {
     })
 
     it('constructs the test suite structure according to the nesting of describe calls', () => {
-      macha.describe('foo', () => {
-        macha.describe('bar', () => {
-          macha.describe('baz', () => {
+      tencha.describe('foo', () => {
+        tencha.describe('bar', () => {
+          tencha.describe('baz', () => {
           })
         })
-        macha.describe('quux', () => {
+        tencha.describe('quux', () => {
         })
       })
 
@@ -61,7 +61,7 @@ describe('macha', t => {
     it('registers the test case and emits `test end` and `pass` event when the test passes', () => {
       td.replace(runner, 'emit')
 
-      macha.it('foo', () => {})
+      tencha.it('foo', () => {})
 
       const test = runner.tests[0]
 
@@ -78,7 +78,7 @@ describe('macha', t => {
     it('registers the test case and emits `test end` and `fail` event when the test fails', () => {
       td.replace(runner, 'emit')
 
-      macha.it('foo', () => { throw new Error('foo') })
+      tencha.it('foo', () => { throw new Error('foo') })
 
       const test = runner.tests[0]
 
@@ -95,7 +95,7 @@ describe('macha', t => {
     it('registers the async test case and emit pass event when the done is called', () => {
       td.replace(runner, 'emit')
 
-      macha.it('foo', done => { setTimeout(() => done(), 100) })
+      tencha.it('foo', done => { setTimeout(() => done(), 100) })
 
       const test = runner.tests[0]
 
@@ -114,7 +114,7 @@ describe('macha', t => {
 
       const error = new Error('abc')
 
-      macha.it('foo', done => { setTimeout(() => done(error), 100) })
+      tencha.it('foo', done => { setTimeout(() => done(error), 100) })
 
       const test = runner.tests[0]
 
@@ -131,7 +131,7 @@ describe('macha', t => {
     it('registers the async test case and emit fail event when the done is called with non-error non-null object', () => {
       td.replace(runner, 'emit')
 
-      macha.it('foo', done => { setTimeout(() => done({}), 100) })
+      tencha.it('foo', done => { setTimeout(() => done({}), 100) })
 
       const test = runner.tests[0]
 
@@ -146,13 +146,13 @@ describe('macha', t => {
     })
 
     it('constructs the test suite structure according to the calls', () => {
-      macha.it('foo', () => {})
+      tencha.it('foo', () => {})
 
-      macha.describe('bar', () => {
-        macha.it('baz', () => {})
+      tencha.describe('bar', () => {
+        tencha.it('baz', () => {})
 
-        macha.describe('spam', () => {
-          macha.it('ham', () => {})
+        tencha.describe('spam', () => {
+          tencha.it('ham', () => {})
         })
       })
 
@@ -166,8 +166,8 @@ describe('macha', t => {
         it('returns the full title', () => {
           let testCase
 
-          macha.describe('foo', () => {
-            macha.it('bar', () => {})
+          tencha.describe('foo', () => {
+            tencha.it('bar', () => {})
           })
 
           runner.on('pass', test => {
@@ -184,8 +184,8 @@ describe('macha', t => {
         it('returns the timeout duration of the test case', () => {
           let testCase
 
-          macha.describe('foo', () => {
-            macha.it('bar', () => {})
+          tencha.describe('foo', () => {
+            tencha.it('bar', () => {})
           })
 
           runner.on('pass', test => {
@@ -202,8 +202,8 @@ describe('macha', t => {
         it('returns the slow threshold of the test case', () => {
           let testCase
 
-          macha.describe('foo', () => {
-            macha.it('bar', () => {})
+          tencha.describe('foo', () => {
+            tencha.it('bar', () => {})
           })
 
           runner.on('pass', test => {

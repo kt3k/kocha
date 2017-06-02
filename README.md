@@ -1,17 +1,19 @@
-# Macha
+# Tencha
 
 > Simpler Mocha clone, no globals, lint friendly
 
 # :cd: Install
 
-    npm install macha --save-dev
+    npm install tencha --save-dev
 
-# Usage
+# Use in node.js
 
-Require `describe`, `it` etc from macha, and use it as in `mocha`:
+Require `describe`, `it` etc from tencha, and write tests as in `mocha`:
+
+`test.js`:
 
 ```js
-const { describe, it } = require('macha')
+const { describe, it } = require('tencha')
 const assert = require('assert')
 
 describe('add', () => {
@@ -22,6 +24,14 @@ describe('add', () => {
   })
 })
 ```
+
+Then run it by `tencha` command.
+
+    node_modules/.bin/tencha test.js
+
+This outputs the report like mocha.
+
+# Use in karma
 
 # APIs
 
@@ -34,7 +44,7 @@ const {
   after,
   afterEach,
   timeout
-} = require('macha')
+} = require('tencha')
 ```
 
 ## describe(title, callback)
@@ -46,6 +56,10 @@ const {
 ## after(callback)
 ## afterEach(callback)
 ## timeout(timeout)
+
+# Name
+
+Tencha (碾茶) is a type of green tea made in Japan in which the tea leaves are steamed and dried immediately after harvest to prevent oxidization.
 
 # License
 

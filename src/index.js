@@ -156,7 +156,7 @@ class Suite extends EventEmitter {
   }
 }
 
-class Macha extends Suite {
+class Runner extends Suite {
   constructor () {
     super('root', false, null)
 
@@ -289,16 +289,17 @@ class Test {
   }
 }
 
-const macha = new Macha()
-exports.macha = macha
-exports.describe = (title, cb) => { macha.describe(title, cb, false) }
-exports.describe.skip = (title, cb) => { macha.describe(title, cb, true) }
-exports.it = (description, cb) => { macha.it(description, cb, false) }
-exports.it.skip = (description, cb) => { macha.it(description, cb, true) }
-exports.before = cb => { macha.before(cb) }
-exports.beforeEach = cb => { macha.beforeEach(cb) }
-exports.after = cb => { macha.after(cb) }
-exports.afterEach = cb => { macha.after(cb) }
-exports.timeout = timeout => { macha.timeout(timeout) }
+const runner = new Runner()
+exports.runner = runner
+exports.describe = (title, cb) => { runner.describe(title, cb, false) }
+exports.describe.skip = (title, cb) => { runner.describe(title, cb, true) }
+exports.it = (description, cb) => { runner.it(description, cb, false) }
+exports.it.skip = (description, cb) => { runner.it(description, cb, true) }
+exports.before = cb => { runner.before(cb) }
+exports.beforeEach = cb => { runner.beforeEach(cb) }
+exports.after = cb => { runner.after(cb) }
+exports.afterEach = cb => { runner.after(cb) }
+exports.timeout = timeout => { runner.timeout(timeout) }
 exports.Suite = Suite
 exports.Test = Test
+exports.Runner = Runner
