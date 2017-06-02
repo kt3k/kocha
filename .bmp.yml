@@ -1,0 +1,5 @@
+version: 0.1.0
+commit: 'chore(version): bump to v%.%.%'
+files:
+  README.md: v%.%.%
+  package.json: '"version": "%.%.%"'

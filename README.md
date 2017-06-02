@@ -1,4 +1,4 @@
-# Tencha
+# Tencha v0.1.0
 
 > Simpler Mocha clone, no globals, lint friendly
 
