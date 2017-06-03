@@ -1,5 +1,28 @@
 const { EventEmitter } = require('events')
 
+/**
+ * @param {Function} cb The callback function
+ * @return {boolean}
+ */
+const isAsyncCb = cb => cb.length > 0
+
+/**
+ * @param {Function} func The callback function
+ * @return {Promise}
+ */
+const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
+  if (result instanceof Error) { return reject(result) }
+  if (result) { return reject(new Error(`done() invoked with non-Error: ${result}`)) }
+
+  resolve()
+}))
+
+/**
+ * @param {Function} cb The callback function
+ * @return {Promise}
+ */
+const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve(cb())
+
 class TestNode extends EventEmitter {
   /**
    * @param {string} title The title of the test suite
@@ -67,3 +90,4 @@ class TestNode extends EventEmitter {
 }
 
 module.exports = TestNode
+module.exports.runCb = runCb
