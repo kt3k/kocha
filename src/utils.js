@@ -9,7 +9,7 @@ var readdirSync = require('fs').readdirSync
 var statSync = require('fs').statSync
 var watchFile = require('fs').watchFile
 var lstatSync = require('fs').lstatSync
-var toISOString = require('./to-iso-string')
+var toISOString = require('to-iso-string')
 
 /**
  * Ignored directories.
