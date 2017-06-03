@@ -1,4 +1,4 @@
-const { EventEmitter } = require('events')
+const TestNode = require('./test-node')
 
 /**
  * @param {Function} cb The callback function
@@ -23,51 +23,21 @@ const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
  */
 const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve(cb())
 
-class Suite extends EventEmitter {
+class Suite extends TestNode {
   /**
    * @param {string} title The title of the test suite
    * @param {boolean} skipped True iff the suite is skipped
    * @param {Suite} parent The parent suite
    */
   constructor (title, skipped, parent) {
-    super()
+    super(title, skipped, parent)
 
-    this.title = title
     this.beforeCb = () => {}
     this.beforeEachCb = () => {}
     this.afterCb = () => {}
     this.afterEachCb = () => {}
     this.tests = []
     this.suites = []
-    this.skipped = skipped
-    this.parent = parent
-    this.root = parent == null // True if root suite
-  }
-
-  isSkipped () {
-    if (this.parent) {
-      return this.skipped || this.parent.isSkipped()
-    }
-
-    return this.skipped
-  }
-
-  /**
-   * Bubbles the event to the parent suite.
-   * @param {string} event The event name
-   * @param {any} arg The argument
-   * @param {Error?} err The error object
-   */
-  bubbleEvent (event, arg, err) {
-    if (this.parent) {
-      this.parent.bubbleEvent(event, arg, err)
-    } else if (err) {
-      this.emit(event, arg, err)
-    } else if (arg) {
-      this.emit(event, arg)
-    } else {
-      this.emit(event)
-    }
   }
 
   setBeforeCb (cb) {
@@ -100,25 +70,6 @@ class Suite extends EventEmitter {
    */
   addTest (test) {
     this.tests.push(test)
-  }
-
-  setTimeout (timeout) {
-    this.timeoutDuration = timeout
-  }
-
-  getTimeout () {
-    return typeof this.timeoutDuration === 'number' ? this.timeoutDuration : this.parent.getTimeout()
-  }
-
-  /**
-   * Returns the full title including the parent's title.
-   */
-  fullTitle () {
-    if (this.parent.root) {
-      return this.title
-    }
-
-    return `${this.parent.fullTitle()} ${this.title}`
   }
 
   runBeforeEachCb () {
@@ -213,7 +164,7 @@ class Runner extends Suite {
   }
 }
 
-class Test {
+class Test extends TestNode {
   /**
    * @param {string} title The title of the test case
    * @param {Function} test The function which implements the test case
@@ -221,16 +172,18 @@ class Test {
    * @param {Suite} parent The parent suite
    */
   constructor (title, test, skipped, parent) {
-    this.title = title
+    super(title, skipped, parent)
     this.test = test
-    this.skipped = skipped
-    this.parent = parent
     this.state = null
     this.pending = true
   }
 
-  isSkipped () {
-    return this.skipped || this.parent.isSkipped()
+  /**
+   * Returns the timeout duration of the test.
+   * @return {number}
+   */
+  timeout () {
+    return this.getTimeout()
   }
 
   fail (e) {
@@ -252,30 +205,6 @@ class Test {
     this.state = 'pending'
     this.parent.bubbleEvent('pending', this)
     this.parent.bubbleEvent('test end', this)
-  }
-
-  /**
-   * Returns the timeout duration.
-   *
-   * I/F for Reporter
-   * @return {number}
-   */
-  timeout () {
-    return this.parent.getTimeout()
-  }
-
-  /**
-   * Gets the full title of the context.
-   *
-   * I/F for Reporter
-   * @return {string}
-   */
-  fullTitle () {
-    if (this.parent.root) {
-      return this.title
-    }
-
-    return `${this.parent.fullTitle()} ${this.title}`
   }
 
   /**
