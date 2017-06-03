@@ -10,9 +10,8 @@ class TestCase extends TestNode {
    */
   constructor (title, test, skipped, parent) {
     super(title, skipped, parent)
+
     this.test = test
-    this.state = null
-    this.pending = true
   }
 
   /**
@@ -25,23 +24,20 @@ class TestCase extends TestNode {
 
   fail (e) {
     this.pending = false
-    this.state = 'failed'
-    this.parent.bubbleEvent('fail', this, e)
-    this.parent.bubbleEvent('test end', this)
+    this.bubbleEvent('fail', this, e)
+    this.bubbleEvent('test end', this)
   }
 
   pass () {
     this.pending = false
-    this.state = 'passed'
-    this.parent.bubbleEvent('pass', this)
-    this.parent.bubbleEvent('test end', this)
+    this.bubbleEvent('pass', this)
+    this.bubbleEvent('test end', this)
   }
 
   skip () {
     this.pending = true
-    this.state = 'pending'
-    this.parent.bubbleEvent('pending', this)
-    this.parent.bubbleEvent('test end', this)
+    this.bubbleEvent('pending', this)
+    this.bubbleEvent('test end', this)
   }
 
   /**
