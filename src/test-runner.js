@@ -9,37 +9,20 @@ class TestRunner extends TestSuite {
     this.currentSuite = this
   }
 
-  describe (title, cb, skipped) {
-    const parent = this.currentSuite
-    const child = new TestSuite(title, skipped, parent)
-    parent.addSuite(child)
-    this.currentSuite = child
-    cb()
-    this.currentSuite = parent
+  /**
+   * Returns the current suite.
+   * @return {TestSuite}
+   */
+  getCurrentSuite () {
+    return this.currentSuite
   }
 
-  it (description, cb, skipped) {
-    this.currentSuite.addTest(new TestCase(description, cb, skipped, this.currentSuite))
-  }
-
-  before (cb) {
-    this.currentSuite.setBeforeCb(cb)
-  }
-
-  beforeEach (cb) {
-    this.currentSuite.setBeforeEachCb(cb)
-  }
-
-  after (cb) {
-    this.currentSuite.setAfterCb(cb)
-  }
-
-  afterEach (cb) {
-    this.currentSuite.setAfterEachCb(cb)
-  }
-
-  timeout (timeout) {
-    this.currentSuite.setTimeout(timeout)
+  /**
+   * Sets the current suite of the runner.
+   * @param {TestSuite}
+   */
+  setCurrentSuite (suite) {
+    this.currentSuite = suite
   }
 
   /**

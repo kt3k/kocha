@@ -2,46 +2,63 @@ const TestNode = require('./test-node')
 const TestSuite = require('./test-suite')
 const TestCase = require('./test-case')
 const TestRunner = require('./test-runner')
-const { runCb } = TestNode
 
 const runner = new TestRunner()
 
 exports.runner = runner
 
+const addSuite = (title, cb, skipped) => {
+  const parent = runner.getCurrentSuite()
+  const child = new TestSuite(title, skipped, parent)
+
+  parent.addSuite(child)
+
+  runner.setCurrentSuite(child)
+
+  cb()
+
+  runner.setCurrentSuite(parent)
+}
+
+const addTest = (title, cb, skipped) => {
+  const currentSuite = runner.getCurrentSuite()
+  currentSuite.addTest(new TestCase(title, cb, skipped, currentSuite))
+}
+
 exports.describe = (title, cb) => {
-  runner.describe(title, cb, false)
+  addSuite(title, cb, false)
 }
 
 exports.describe.skip = (title, cb) => {
-  runner.describe(title, cb, true)
+  addSuite(title, cb, true)
 }
 
-exports.it = (description, cb) => {
-  runner.it(description, cb, false)
+exports.it = (title, cb) => {
+  addTest(title, cb, false)
 }
 
-exports.it.skip = (description, cb) => {
-  runner.it(description, cb, true)
+exports.it.skip = (title, cb) => {
+  addTest(title, cb, true)
 }
 
 exports.before = cb => {
-  runner.before(cb)
+  runner.getCurrentSuite().setBeforeCb(cb)
 }
 
 exports.beforeEach = cb => {
-  runner.beforeEach(cb)
+  runner.getCurrentSuite().setBeforeEachCb(cb)
 }
 
 exports.after = cb => {
-  runner.after(cb)
+  runner.getCurrentSuite().setAfterCb(cb)
 }
 
 exports.afterEach = cb => {
-  runner.afterEach(cb)
+  runner.getCurrentSuite().setAfterEachCb(cb)
 }
 
 exports.timeout = timeout => {
-  runner.timeout(timeout)
+  runner.getCurrentSuite().setTimeout(timeout)
 }
 
 exports.TestSuite = TestSuite
