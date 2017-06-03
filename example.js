@@ -1,7 +1,9 @@
 const assert = require('power-assert')
 const Reporter = require('./src/reporters/spec')
 
-const { describe, it, runner } = require('./src')
+const { describe, it, getRunner } = require('./src')
+
+const runner = getRunner()
 
 const reporter = new Reporter(runner, { files: [__filename] })
 
