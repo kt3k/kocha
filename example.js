@@ -1,9 +1,9 @@
 const assert = require('power-assert')
 const Reporter = require('./src/reporters/spec')
 
-const { describe, it, macha } = require('./')
+const { describe, it, runner } = require('./src')
 
-const reporter = new Reporter(macha, { files: [__filename] })
+const reporter = new Reporter(runner, { files: [__filename] })
 
 if (reporter) {}
 
@@ -23,4 +23,4 @@ describe('add', () => {
   })
 })
 
-setTimeout(() => { macha.run().catch(console.log) })
+setTimeout(() => { runner.run().catch(console.log) })
