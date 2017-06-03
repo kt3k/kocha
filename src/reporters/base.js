@@ -1,18 +1,8 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
 var tty = require('tty')
 var diff = require('diff')
-var ms = require('../ms')
+var ms = require('ms')
 var utils = require('../utils')
 var supportsColor = process.browser ? null : require('supports-color')
-
-/**
- * Expose `Base`.
- */
 
 exports = module.exports = Base
 
