@@ -178,19 +178,19 @@ class Runner extends Suite {
   }
 
   before (cb) {
-    this.currentSuite.addBeforeCb(cb)
+    this.currentSuite.setBeforeCb(cb)
   }
 
   beforeEach (cb) {
-    this.currentSuite.addBeforeEachCb(cb)
+    this.currentSuite.setBeforeEachCb(cb)
   }
 
   after (cb) {
-    this.currentSuite.addAfterCb(cb)
+    this.currentSuite.setAfterCb(cb)
   }
 
   afterEach (cb) {
-    this.currentSuite.addAfterEachCb(cb)
+    this.currentSuite.setAfterEachCb(cb)
   }
 
   timeout (timeout) {
@@ -315,7 +315,7 @@ exports.it.skip = (description, cb) => { runner.it(description, cb, true) }
 exports.before = cb => { runner.before(cb) }
 exports.beforeEach = cb => { runner.beforeEach(cb) }
 exports.after = cb => { runner.after(cb) }
-exports.afterEach = cb => { runner.after(cb) }
+exports.afterEach = cb => { runner.afterEach(cb) }
 exports.timeout = timeout => { runner.timeout(timeout) }
 exports.Suite = Suite
 exports.Test = Test

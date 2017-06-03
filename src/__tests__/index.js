@@ -278,4 +278,81 @@ describe('kocha', t => {
       })
     })
   })
+
+  describe('before', () => {
+    it('registers before callback to each test suite', () => {
+      const cb0 = () => {}
+      const cb1 = () => {}
+
+      kocha.before(cb0)
+
+      kocha.describe('foo', () => {
+        kocha.before(cb1)
+      })
+
+      assert(runner.beforeCb === cb0)
+      assert(runner.suites[0].beforeCb === cb1)
+    })
+  })
+
+  describe('beforeEach', () => {
+    it('registers beforeEach callback to each test suite', () => {
+      const cb0 = () => {}
+      const cb1 = () => {}
+
+      kocha.beforeEach(cb0)
+
+      kocha.describe('foo', () => {
+        kocha.beforeEach(cb1)
+      })
+
+      assert(runner.beforeEachCb === cb0)
+      assert(runner.suites[0].beforeEachCb === cb1)
+    })
+  })
+
+  describe('after', () => {
+    it('registers after callback to each test suite', () => {
+      const cb0 = () => {}
+      const cb1 = () => {}
+
+      kocha.after(cb0)
+
+      kocha.describe('foo', () => {
+        kocha.after(cb1)
+      })
+
+      assert(runner.afterCb === cb0)
+      assert(runner.suites[0].afterCb === cb1)
+    })
+  })
+
+  describe('afterEach', () => {
+    it('registers afterEach callback to each test suite', () => {
+      const cb0 = () => {}
+      const cb1 = () => {}
+
+      kocha.afterEach(cb0)
+
+      kocha.describe('foo', () => {
+        kocha.afterEach(cb1)
+      })
+
+      assert(runner.afterEachCb === cb0)
+      assert(runner.suites[0].afterEachCb === cb1)
+    })
+  })
+
+  describe('timeout', () => {
+    it('sets the timeout to each test suite', () => {
+      kocha.timeout(1234)
+
+      kocha.describe('foo', () => {
+        kocha.timeout(2345)
+      })
+
+      assert(runner.getTimeout() === 1234)
+      assert(runner.suites[0].getTimeout() === 2345)
+    })
+  })
 })
