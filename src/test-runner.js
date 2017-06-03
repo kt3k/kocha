@@ -1,5 +1,4 @@
 const TestSuite = require('./test-suite')
-const TestCase = require('./test-case')
 
 class TestRunner extends TestSuite {
   constructor () {

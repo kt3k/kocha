@@ -1,4 +1,3 @@
-const TestNode = require('./test-node')
 const TestSuite = require('./test-suite')
 const TestCase = require('./test-case')
 const TestRunner = require('./test-runner')

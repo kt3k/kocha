@@ -8,6 +8,7 @@ const reporter = new Reporter(runner, { files: [__filename] })
 if (reporter) {}
 
 const add = (a, b) => a + b
+const mul = (a, b) => a * b
 
 describe('add', () => {
   it('12 + 13 = 25', () => {
