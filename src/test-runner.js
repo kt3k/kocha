@@ -34,11 +34,6 @@ class TestRunner extends TestSuite {
     return super.run()
       .then(() => this.bubbleEvent('end'))
   }
-
-  clear () {
-    this.tests.splice(0)
-    this.suites.splice(0)
-  }
 }
 
 module.exports = TestRunner

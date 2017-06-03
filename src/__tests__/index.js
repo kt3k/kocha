@@ -1,12 +1,16 @@
 const td = require('testdouble')
 const assert = require('power-assert')
 const kocha = require('../')
-const runner = kocha.runner
+
+let runner
 
 describe('kocha', t => {
+  beforeEach(() => {
+    runner = kocha.getRunner()
+  })
   afterEach(() => {
     td.reset()
-    runner.clear()
+    kocha.resetRunner()
   })
 
   describe('runner.run', () => {
