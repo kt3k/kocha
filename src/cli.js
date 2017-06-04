@@ -29,8 +29,9 @@ class Cli extends EventEmitter {
 Usage: ${pkg.name} [options] <files, ...>
 
 Options:
-  -h, --help          Shows the help message
-  -v, --version       Shows the version number
+  -h, --help                Shows the help message
+  -v, --version             Shows the version number
+  -r, --require <name>      Requires the given module e.g. --require babel-register
 `)
   }
 
@@ -45,6 +46,10 @@ Options:
       console.log(color('error message', 'Error:') + ' No input file')
       process.exit(1)
     }
+
+    const modules = [].concat(this.argv.r, this.argv.require).filter(Boolean)
+
+    modules.forEach(moduleName => require(moduleName))
 
     requireGlob(this.argv._, { cwd: process.cwd() })
 

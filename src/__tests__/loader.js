@@ -1,3 +1,3 @@
 require('espower-loader')({
-  pattern: 'src{/,**/}__tests__/**/*.js'
+  pattern: '{src,examples}/**/*.js'
 })

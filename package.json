@@ -9,7 +9,7 @@
     "fix": "standard --fix",
     "test": "mocha --require ./src/__tests__/loader.js \"{src,examples}{/,**/}__tests__/**/*.js\"",
     "example:pass": "./bin/kocha.js examples/simple-pass.js",
-    "example:fail": "./bin/kocha.js examples/simple-fail.js",
+    "example:fail": "./bin/kocha.js ./src/__tests__/loader.js examples/simple-fail.js",
     "example:timeout": "./bin/kocha.js examples/timeout-fail.js",
     "example:nested": "./bin/kocha.js examples/nested-pass.js",
     "example:slow": "./bin/kocha.js examples/slow-pass.js",
