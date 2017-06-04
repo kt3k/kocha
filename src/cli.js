@@ -5,7 +5,6 @@ const { getRunner } = require('./')
 const requireGlob = require('require-glob')
 const { EventEmitter } = require('events')
 
-
 class Cli extends EventEmitter {
   main (argv) {
     this.argv = argv

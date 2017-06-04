@@ -1,8 +1,8 @@
 const JSON = require('json3')
 const glob = require('glob')
 const path = require('path')
-const { join, basename }  = path
-const { readdirSync, existsSync, statsSync, lstatSync } = require('fs')
+const { join, basename } = path
+const { readdirSync, existsSync, statSync, lstatSync } = require('fs')
 const toISOString = require('@segment/to-iso-string')
 
 const exists = existsSync
