@@ -63,14 +63,40 @@ const {
 ```
 
 ## describe(title, callback)
+
+Adds the test suite by the `title` and `callback`. In `callback` function you can add child test suites and/or test cases.
+
 ## describe.skip(title, callback)
+
+Adds the skipped test suite by the `title` and `callback`. The test suites and cases under this suite are all skipped as well.
+
 ## it(spec, callback)
+
+Adds the skipped test case by the `title` and `callback`. `callback` implements your test case.
+
 ## it.skip(spec, callback)
+
+Adds the skipped test case by the `title` and `callback`.
+
 ## before(callback)
+
+Adds the before hook to the current suite.
+
 ## beforeEach(callback)
+
+Adds the beforeEach hook to the current suite.
+
 ## after(callback)
+
+Adds the after hook to the current suite.
+
 ## afterEach(callback)
+
+Adds the afterEach hook to the current suite.
+
 ## timeout(timeout)
+
+Sets the timeout duration to the current suite.
 
 # Name
 
