@@ -22,25 +22,21 @@ var clearInterval = global.clearInterval
 /**
  * Check if both stdio streams are associated with a tty.
  */
-
 var isatty = tty.isatty(1) && tty.isatty(2)
 
 /**
  * Enable coloring by default, except in the browser interface.
  */
-
 exports.useColors = !process.browser && (supportsColor || (process.env.MOCHA_COLORS !== undefined))
 
 /**
  * Inline diffs instead of +/-
  */
-
 exports.inlineDiffs = false
 
 /**
  * Default color map.
  */
-
 exports.colors = {
   pass: 90,
   fail: 31,
@@ -66,7 +62,6 @@ exports.colors = {
 /**
  * Default symbol map.
  */
-
 exports.symbols = {
   ok: '✓',
   err: '✖',
@@ -103,7 +98,6 @@ var color = exports.color = function (type, str) {
 /**
  * Expose term window size, with some defaults for when stderr is not a tty.
  */
-
 exports.window = {
   width: 75
 }
@@ -117,7 +111,6 @@ if (isatty) {
 /**
  * Expose some basic cursor interactions that are common among reporters.
  */
-
 exports.cursor = {
   hide: function () {
     isatty && process.stdout.write('\u001b[?25l')
@@ -151,7 +144,6 @@ exports.cursor = {
  * @param {Array} failures
  * @api public
  */
-
 exports.list = function (failures) {
   console.log()
   failures.forEach(function (test, i) {
@@ -227,7 +219,6 @@ exports.list = function (failures) {
  * @param {Runner} runner
  * @api public
  */
-
 function Base (runner) {
   var stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }
   var failures = this.failures = []

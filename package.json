@@ -8,7 +8,8 @@
     "lint": "standard",
     "fix": "standard --fix",
     "test": "mocha --require ./src/__tests__/loader.js \"src{/,**/}__tests__/**/*.js\"",
-    "run-example": "./bin/kocha.js examples/example.js",
+    "run-example-pass": "./bin/kocha.js examples/simple-pass.js",
+    "run-example-fail": "./bin/kocha.js examples/simple-fail.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },

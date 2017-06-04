@@ -3,9 +3,10 @@ const { select } = require('action-selector')
 const pkg = require('../package')
 const { getRunner } = require('./')
 const requireGlob = require('require-glob')
+const { EventEmitter } = require('events')
 
 
-class Cli {
+class Cli extends EventEmitter {
   main (argv) {
     this.argv = argv
 
@@ -54,7 +55,12 @@ Options:
     const reporter = new Reporter(runner)
     if (reporter) {}
 
-    setTimeout(() => { runner.run().catch(console.log) })
+    let failed = false
+
+    runner
+      .on('fail', () => { failed = true })
+      .on('end', () => setTimeout(() => process.exit(failed ? 1 : 0)))
+      .run().catch(console.log)
   }
 }
 
