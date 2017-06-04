@@ -1,12 +1,6 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
 var Base = require('./base')
-var inherits = require('../utils').inherits
 var color = Base.color
+const { inherits } = require('util')
 
 /**
  * Expose `Dot`.
@@ -62,7 +56,4 @@ function Dot (runner) {
   })
 }
 
-/**
- * Inherit from `Base.prototype`.
- */
 inherits(Dot, Base)

@@ -1,7 +1,7 @@
 const tty = require('tty')
 const diff = require('diff')
 const ms = require('ms')
-const utils = require('../utils')
+const stringify = require('stringifier').stringify
 const supportsColor = process.browser ? null : require('supports-color')
 
 /**
@@ -173,8 +173,8 @@ const list = function (failures) {
     // explicitly show diff
     if (err.showDiff !== false && sameType(actual, expected) && expected !== undefined) {
       if (!(typeof actual === 'string' && typeof expected === 'string')) {
-        err.actual = actual = utils.stringify(actual)
-        err.expected = expected = utils.stringify(expected)
+        err.actual = actual = stringify(actual)
+        err.expected = expected = stringify(expected)
       }
 
       fmt = color('error title', '  %s) %s:\n%s') + color('error stack', '\n%s\n')

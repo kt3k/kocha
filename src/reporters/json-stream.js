@@ -1,9 +1,3 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
 var Base = require('./base')
 var JSON = require('json3')
 

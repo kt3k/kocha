@@ -1,12 +1,6 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
 var Base = require('./base')
 var utils = require('../utils')
-var inherits = utils.inherits
+const { inherits } = require('util')
 var fs = require('fs')
 var escape = utils.escape
 var mkdirp = require('mkdirp')

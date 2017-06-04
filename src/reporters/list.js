@@ -1,11 +1,5 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
 var Base = require('./base')
-var inherits = require('../utils').inherits
+const { inherits } = require('util')
 var color = Base.color
 var cursor = Base.cursor
 
