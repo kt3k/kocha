@@ -1,15 +1,11 @@
-var JSON = require('json3')
-var basename = require('path').basename
-var debug = require('debug')('mocha:watch')
-var exists = require('fs').existsSync || require('path').existsSync
-var glob = require('glob')
-var path = require('path')
-var join = path.join
-var readdirSync = require('fs').readdirSync
-var statSync = require('fs').statSync
-var watchFile = require('fs').watchFile
-var lstatSync = require('fs').lstatSync
-var toISOString = require('to-iso-string')
+const JSON = require('json3')
+const glob = require('glob')
+const path = require('path')
+const { join, basename }  = path
+const { readdirSync, existsSync, statsSync, lstatSync } = require('fs')
+const toISOString = require('to-iso-string')
+
+const exists = existsSync
 
 /**
  * Ignored directories.
@@ -17,50 +13,6 @@ var toISOString = require('to-iso-string')
 var ignore = ['node_modules', '.git']
 
 exports.inherits = require('util').inherits
-
-/**
- * Watch the given `files` for changes
- * and invoke `fn(file)` on modification.
- *
- * @api private
- * @param {Array} files
- * @param {Function} fn
- */
-exports.watch = function (files, fn) {
-  var options = { interval: 100 }
-  files.forEach(function (file) {
-    debug('file %s', file)
-    watchFile(file, options, function (curr, prev) {
-      if (prev.mtime < curr.mtime) {
-        fn(file)
-      }
-    })
-  })
-}
-
-/**
- * Array.isArray (<=IE8)
- *
- * @api private
- * @param {Object} obj
- * @return {Boolean}
- */
-var isArray = typeof Array.isArray === 'function' ? Array.isArray : function (obj) {
-  return Object.prototype.toString.call(obj) === '[object Array]'
-}
-
-exports.isArray = isArray
-
-/**
- * Buffer.prototype.toJSON polyfill.
- *
- * @type {Function}
- */
-if (typeof Buffer !== 'undefined' && Buffer.prototype) {
-  Buffer.prototype.toJSON = Buffer.prototype.toJSON || function () {
-    return Array.prototype.slice.call(this, 0)
-  }
-}
 
 /**
  * Ignored files.
@@ -306,8 +258,8 @@ function jsonStringify (object, spaces, depth) {
 
   depth = depth || 1
   var space = spaces * depth
-  var str = isArray(object) ? '[' : '{'
-  var end = isArray(object) ? ']' : '}'
+  var str = Array.isArray(object) ? '[' : '{'
+  var end = Array.isArray(object) ? ']' : '}'
   var length = typeof object.length === 'number' ? object.length : exports.keys(object).length
   // `.repeat()` polyfill
   function repeat (s, n) {
@@ -361,7 +313,7 @@ function jsonStringify (object, spaces, depth) {
     }
     --length
     str += '\n ' + repeat(' ', space) +
-      (isArray(object) ? '' : '"' + i + '": ') + // key
+      (Array.isArray(object) ? '' : '"' + i + '": ') + // key
       _stringify(object[i]) +                    // value
       (length ? ',' : '')                       // comma
   }
