@@ -1,18 +1,5 @@
-'use strict'
-
-/**
- * Module dependencies.
- */
-
-var Base = require('./base')
-var inherits = require('../utils').inherits
-var color = Base.color
-
-/**
- * Expose `Spec`.
- */
-
-exports = module.exports = Spec
+const Base = require('./base')
+const { color } = Base
 
 /**
  * Initialize a new `Spec` test reporter.
@@ -20,62 +7,58 @@ exports = module.exports = Spec
  * @api public
  * @param {Runner} runner
  */
-function Spec (runner) {
-  Base.call(this, runner)
+class Spec extends Base {
+  constructor (runner) {
+    super(runner)
 
-  var self = this
-  var indents = 0
-  var n = 0
+    let indents = 0
+    let n = 0
 
-  function indent () {
-    return Array(indents).join('  ')
-  }
+    const indent = () => Array(indents).join('  ')
 
-  runner.on('start', function () {
-    console.log()
-  })
-
-  runner.on('suite', function (suite) {
-    ++indents
-    console.log(color('suite', '%s%s'), indent(), suite.title)
-  })
-
-  runner.on('suite end', function () {
-    --indents
-    if (indents === 1) {
+    runner.on('start', () => {
       console.log()
-    }
-  })
+    })
 
-  runner.on('pending', function (test) {
-    var fmt = indent() + color('pending', '  - %s')
-    console.log(fmt, test.title)
-  })
+    runner.on('suite', suite => {
+      ++indents
+      console.log(color('suite', '%s%s'), indent(), suite.title)
+    })
 
-  runner.on('pass', function (test) {
-    var fmt
-    if (test.speed === 'fast') {
-      fmt = indent() +
-        color('checkmark', '  ' + Base.symbols.ok) +
-        color('pass', ' %s')
+    runner.on('suite end', () => {
+      --indents
+      if (indents === 1) {
+        console.log()
+      }
+    })
+
+    runner.on('pending', test => {
+      const fmt = indent() + color('pending', '  - %s')
       console.log(fmt, test.title)
-    } else {
-      fmt = indent() +
-        color('checkmark', '  ' + Base.symbols.ok) +
-        color('pass', ' %s') +
-        color(test.speed, ' (%dms)')
-      console.log(fmt, test.title, test.duration)
-    }
-  })
+    })
 
-  runner.on('fail', function (test) {
-    console.log(indent() + color('fail', '  %d) %s'), ++n, test.title)
-  })
+    runner.on('pass', test => {
+      let fmt
+      if (test.speed === 'fast') {
+        fmt = indent() +
+          color('checkmark', '  ' + Base.symbols.ok) +
+          color('pass', ' %s')
+        console.log(fmt, test.title)
+      } else {
+        fmt = indent() +
+          color('checkmark', '  ' + Base.symbols.ok) +
+          color('pass', ' %s') +
+          color(test.speed, ' (%dms)')
+        console.log(fmt, test.title, test.duration)
+      }
+    })
 
-  runner.on('end', self.epilogue.bind(self))
+    runner.on('fail', test => {
+      console.log(indent() + color('fail', '  %d) %s'), ++n, test.title)
+    })
+
+    runner.on('end', () => this.epilogue())
+  }
 }
 
-/**
- * Inherit from `Base.prototype`.
- */
-inherits(Spec, Base)
+module.exports = Spec

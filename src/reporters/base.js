@@ -4,8 +4,6 @@ const ms = require('ms')
 const utils = require('../utils')
 const supportsColor = process.browser ? null : require('supports-color')
 
-exports = module.exports = Base
-
 /**
  * Save timer references to avoid Sinon interfering.
  * See: https://github.com/mochajs/mocha/issues/237
@@ -26,12 +24,12 @@ const isatty = tty.isatty(1) && tty.isatty(2)
 /**
  * Enable coloring by default, except in the browser interface.
  */
-exports.useColors = !process.browser && (supportsColor || (process.env.MOCHA_COLORS !== undefined))
+const useColors = !process.browser && (supportsColor || (process.env.MOCHA_COLORS !== undefined))
 
 /**
  * Default color map.
  */
-exports.colors = {
+const colors = {
   pass: 90,
   fail: 31,
   'bright pass': 92,
@@ -56,7 +54,7 @@ exports.colors = {
 /**
  * Default symbol map.
  */
-exports.symbols = {
+const symbols = {
   ok: '✓',
   err: '✖',
   dot: '․',
@@ -66,9 +64,9 @@ exports.symbols = {
 
 // With node.js on Windows: use symbols available in terminal default fonts
 if (process.platform === 'win32') {
-  exports.symbols.ok = '\u221A'
-  exports.symbols.err = '\u00D7'
-  exports.symbols.dot = '.'
+  symbols.ok = '\u221A'
+  symbols.err = '\u00D7'
+  symbols.dot = '.'
 }
 
 /**
@@ -82,7 +80,7 @@ if (process.platform === 'win32') {
  * @return {string}
  * @api private
  */
-const color = exports.color = function (type, str) {
+const color = function (type, str) {
   if (!exports.useColors) {
     return String(str)
   }
@@ -92,20 +90,20 @@ const color = exports.color = function (type, str) {
 /**
  * Expose term window size, with some defaults for when stderr is not a tty.
  */
-exports.window = {
+const window = {
   width: 75
 }
 
 if (isatty) {
-  exports.window.width = process.stdout.getWindowSize
-      ? process.stdout.getWindowSize(1)[0]
-      : tty.getWindowSize()[1]
+  window.width = process.stdout.getWindowSize
+    ? process.stdout.getWindowSize(1)[0]
+    : tty.getWindowSize()[1]
 }
 
 /**
  * Expose some basic cursor interactions that are common among reporters.
  */
-exports.cursor = {
+const cursor = {
   hide: function () {
     isatty && process.stdout.write('\u001b[?25l')
   },
@@ -137,17 +135,15 @@ exports.cursor = {
  * @api public
  * @param {Array} failures
  */
-exports.list = function (failures) {
+const list = function (failures) {
   console.log()
   failures.forEach(function (test, i) {
-    // format
     var fmt = color('error title', '  %s) %s:\n') +
       color('error message', '     %s') +
       color('error stack', '\n%s\n')
 
-    // msg
-    var msg
-    var err = test.err
+    let msg
+    let err = test.err
     let message
     if (err.message && typeof err.message.toString === 'function') {
       message = err.message + ''
@@ -208,99 +204,93 @@ exports.list = function (failures) {
  * @param {Runner} runner
  * @api public
  */
-function Base (runner) {
-  const stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }
-  const failures = this.failures = []
+class Base {
+  constructor (runner) {
+    const stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }
+    const failures = this.failures = []
 
-  if (!runner) {
-    return
+    this.runner = runner
+
+    runner.stats = stats
+
+    runner.on('start', function () {
+      stats.start = new Date()
+    })
+
+    runner.on('suite', function (suite) {
+      stats.suites = stats.suites || 0
+      suite.root || stats.suites++
+    })
+
+    runner.on('test end', function () {
+      stats.tests = stats.tests || 0
+      stats.tests++
+    })
+
+    runner.on('pass', function (test) {
+      stats.passes = stats.passes || 0
+
+      if (test.duration > test.slow()) {
+        test.speed = 'slow'
+      } else if (test.duration > test.slow() / 2) {
+        test.speed = 'medium'
+      } else {
+        test.speed = 'fast'
+      }
+
+      stats.passes++
+    })
+
+    runner.on('fail', function (test, err) {
+      stats.failures = stats.failures || 0
+      stats.failures++
+      test.err = err
+      failures.push(test)
+    })
+
+    runner.on('end', function () {
+      stats.end = new Date()
+      stats.duration = new Date() - stats.start
+    })
+
+    runner.on('pending', function () {
+      stats.pending++
+    })
   }
-  this.runner = runner
 
-  runner.stats = stats
+  /**
+   * Output common epilogue used by many of
+   * the bundled reporters.
+   *
+   * @api public
+   */
+  epilogue () {
+    const stats = this.stats
+    let fmt
 
-  runner.on('start', function () {
-    stats.start = new Date()
-  })
+    console.log()
 
-  runner.on('suite', function (suite) {
-    stats.suites = stats.suites || 0
-    suite.root || stats.suites++
-  })
+    fmt = color('bright pass', ' ') + color('green', ' %d passing') + color('light', ' (%s)')
 
-  runner.on('test end', function () {
-    stats.tests = stats.tests || 0
-    stats.tests++
-  })
+    console.log(fmt, stats.passes || 0, ms(stats.duration))
 
-  runner.on('pass', function (test) {
-    stats.passes = stats.passes || 0
+    if (stats.pending > 0) {
+      fmt = color('pending', ' ') + color('pending', ' %d pending')
 
-    if (test.duration > test.slow()) {
-      test.speed = 'slow'
-    } else if (test.duration > test.slow() / 2) {
-      test.speed = 'medium'
-    } else {
-      test.speed = 'fast'
+      console.log(fmt, stats.pending)
     }
 
-    stats.passes++
-  })
+    if (stats.failures > 0) {
+      fmt = color('fail', '  %d failing')
 
-  runner.on('fail', function (test, err) {
-    stats.failures = stats.failures || 0
-    stats.failures++
-    test.err = err
-    failures.push(test)
-  })
+      console.log(fmt, stats.failures)
 
-  runner.on('end', function () {
-    stats.end = new Date()
-    stats.duration = new Date() - stats.start
-  })
+      Base.list(this.failures)
+      console.log()
+    }
 
-  runner.on('pending', function () {
-    stats.pending++
-  })
-}
-
-/**
- * Output common epilogue used by many of
- * the bundled reporters.
- *
- * @api public
- */
-Base.prototype.epilogue = function () {
-  const stats = this.stats
-  let fmt
-
-  console.log()
-
-  fmt = color('bright pass', ' ') +
-    color('green', ' %d passing') +
-    color('light', ' (%s)')
-
-  console.log(fmt,
-    stats.passes || 0,
-    ms(stats.duration))
-
-  if (stats.pending > 0) {
-    fmt = color('pending', ' ') +
-      color('pending', ' %d pending')
-
-    console.log(fmt, stats.pending)
-  }
-
-  if (stats.failures > 0) {
-    fmt = color('fail', '  %d failing')
-
-    console.log(fmt, stats.failures)
-
-    Base.list(this.failures)
     console.log()
   }
-
-  console.log()
 }
 
 /**
@@ -378,3 +368,12 @@ const objToString = Object.prototype.toString
  * @return {boolean}
  */
 const sameType = (a, b) => objToString.call(a) === objToString.call(b)
+
+exports = module.exports = Base
+exports.useColors = useColors
+exports.color = color
+exports.colors = colors
+exports.window = window
+exports.cursor = cursor
+exports.list = list
+exports.symbols = symbols
