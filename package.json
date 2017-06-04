@@ -1,6 +1,6 @@
 {
   "name": "kocha",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Modern, simpler Mocha clone, no globals, lint friendly",
   "main": "src/index.js",
   "bin": "bin/kocha.js",
@@ -39,7 +39,6 @@
     "json3": "^3.3.2",
     "minimisted": "^1.1.1",
     "ms": "^2.0.0",
-    "require-glob": "^3.2.0",
     "supports-color": "^3.2.3"
   },
   "devDependencies": {

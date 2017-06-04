@@ -2,7 +2,7 @@ const chalk = require('chalk')
 const { select } = require('action-selector')
 const pkg = require('../package')
 const { getRunner } = require('./')
-const requireGlob = require('require-glob')
+const requireGlob = require('./utils/require-glob')
 const { EventEmitter } = require('events')
 
 class Cli extends EventEmitter {
@@ -46,7 +46,7 @@ Options:
       process.exit(1)
     }
 
-    requireGlob.sync(this.argv._, { cwd: process.cwd() })
+    requireGlob(this.argv._, { cwd: process.cwd() })
 
     const runner = getRunner()
 
