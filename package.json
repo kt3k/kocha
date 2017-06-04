@@ -11,6 +11,8 @@
     "example:pass": "./bin/kocha.js examples/simple-pass.js",
     "example:fail": "./bin/kocha.js examples/simple-fail.js",
     "example:timeout": "./bin/kocha.js examples/timeout-fail.js",
+    "example:nested": "./bin/kocha.js examples/nested-pass.js",
+    "example:slow": "./bin/kocha.js examples/slow-pass.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },
