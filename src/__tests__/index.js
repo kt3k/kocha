@@ -243,7 +243,7 @@ describe('kocha', t => {
           })
 
           return runner.run().then(() => {
-            assert(testCase.slow() === 1000)
+            assert(testCase.slow() === 100)
           })
         })
       })

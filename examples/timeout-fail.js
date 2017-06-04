@@ -1,9 +1,11 @@
 const assert = require('power-assert')
 
-const { describe, it } = require('../src')
+const { describe, it, timeout } = require('../src')
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b
+
+timeout(100)
 
 describe('add', () => {
   it('12 + 13 = 25 (async, not resolved)', done => {
