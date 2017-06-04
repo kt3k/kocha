@@ -33,14 +33,13 @@
   },
   "homepage": "https://github.com/kt3k/macha#readme",
   "dependencies": {
-    "@segment/to-iso-string": "^1.0.1",
     "action-selector": "^1.0.0",
     "chalk": "^1.1.3",
     "diff": "^3.2.0",
     "glob": "^7.1.2",
-    "json3": "^3.3.2",
     "minimisted": "^1.1.1",
     "ms": "^2.0.0",
+    "stringifier": "^1.3.0",
     "supports-color": "^3.2.3"
   },
   "devDependencies": {
@@ -55,6 +54,11 @@
   "standard": {
     "env": [
       "mocha"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "examples"
     ]
   }
 }
