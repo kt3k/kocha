@@ -1,8 +1,8 @@
-var tty = require('tty')
-var diff = require('diff')
-var ms = require('ms')
-var utils = require('../utils')
-var supportsColor = process.browser ? null : require('supports-color')
+const tty = require('tty')
+const diff = require('diff')
+const ms = require('ms')
+const utils = require('../utils')
+const supportsColor = process.browser ? null : require('supports-color')
 
 exports = module.exports = Base
 
@@ -10,29 +10,23 @@ exports = module.exports = Base
  * Save timer references to avoid Sinon interfering.
  * See: https://github.com/mochajs/mocha/issues/237
  */
-
 /* eslint-disable no-unused-vars, no-native-reassign */
-var Date = global.Date
-var setTimeout = global.setTimeout
-var setInterval = global.setInterval
-var clearTimeout = global.clearTimeout
-var clearInterval = global.clearInterval
+const Date = global.Date
+const setTimeout = global.setTimeout
+const setInterval = global.setInterval
+const clearTimeout = global.clearTimeout
+const clearInterval = global.clearInterval
 /* eslint-enable no-unused-vars, no-native-reassign */
 
 /**
  * Check if both stdio streams are associated with a tty.
  */
-var isatty = tty.isatty(1) && tty.isatty(2)
+const isatty = tty.isatty(1) && tty.isatty(2)
 
 /**
  * Enable coloring by default, except in the browser interface.
  */
 exports.useColors = !process.browser && (supportsColor || (process.env.MOCHA_COLORS !== undefined))
-
-/**
- * Inline diffs instead of +/-
- */
-exports.inlineDiffs = false
 
 /**
  * Default color map.
@@ -88,7 +82,7 @@ if (process.platform === 'win32') {
  * @return {string}
  * @api private
  */
-var color = exports.color = function (type, str) {
+const color = exports.color = function (type, str) {
   if (!exports.useColors) {
     return String(str)
   }
@@ -140,9 +134,8 @@ exports.cursor = {
 
 /**
  * Outut the given `failures` as a list.
- *
- * @param {Array} failures
  * @api public
+ * @param {Array} failures
  */
 exports.list = function (failures) {
   console.log()
@@ -155,7 +148,7 @@ exports.list = function (failures) {
     // msg
     var msg
     var err = test.err
-    var message
+    let message
     if (err.message && typeof err.message.toString === 'function') {
       message = err.message + ''
     } else if (typeof err.inspect === 'function') {
@@ -163,11 +156,11 @@ exports.list = function (failures) {
     } else {
       message = ''
     }
-    var stack = err.stack || message
-    var index = message ? stack.indexOf(message) : -1
-    var actual = err.actual
-    var expected = err.expected
-    var escape = true
+    let stack = err.stack || message
+    let index = message ? stack.indexOf(message) : -1
+    let actual = err.actual
+    let expected = err.expected
+    let escape = true
 
     if (index === -1) {
       msg = message
@@ -191,14 +184,10 @@ exports.list = function (failures) {
       }
 
       fmt = color('error title', '  %s) %s:\n%s') + color('error stack', '\n%s\n')
-      var match = message.match(/^([^:]+): expected/)
+      const match = message.match(/^([^:]+): expected/)
       msg = '\n      ' + color('error message', match ? match[1] : msg)
 
-      if (exports.inlineDiffs) {
-        msg += inlineDiff(err, escape)
-      } else {
-        msg += unifiedDiff(err, escape)
-      }
+      msg += unifiedDiff(err, escape)
     }
 
     // indent stack trace
@@ -220,8 +209,8 @@ exports.list = function (failures) {
  * @api public
  */
 function Base (runner) {
-  var stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }
-  var failures = this.failures = []
+  const stats = this.stats = { suites: 0, tests: 0, passes: 0, pending: 0, failures: 0 }
+  const failures = this.failures = []
 
   if (!runner) {
     return
@@ -282,12 +271,11 @@ function Base (runner) {
  * @api public
  */
 Base.prototype.epilogue = function () {
-  var stats = this.stats
-  var fmt
+  const stats = this.stats
+  let fmt
 
   console.log()
 
-  // passes
   fmt = color('bright pass', ' ') +
     color('green', ' %d passing') +
     color('light', ' (%s)')
@@ -296,16 +284,14 @@ Base.prototype.epilogue = function () {
     stats.passes || 0,
     ms(stats.duration))
 
-  // pending
-  if (stats.pending) {
+  if (stats.pending > 0) {
     fmt = color('pending', ' ') +
       color('pending', ' %d pending')
 
     console.log(fmt, stats.pending)
   }
 
-  // failures
-  if (stats.failures) {
+  if (stats.failures > 0) {
     fmt = color('fail', '  %d failing')
 
     console.log(fmt, stats.failures)
@@ -318,53 +304,6 @@ Base.prototype.epilogue = function () {
 }
 
 /**
- * Pad the given `str` to `len`.
- *
- * @api private
- * @param {string} str
- * @param {string} len
- * @return {string}
- */
-function pad (str, len) {
-  str = String(str)
-  return Array(len - str.length + 1).join(' ') + str
-}
-
-/**
- * Returns an inline diff between 2 strings with coloured ANSI output
- *
- * @api private
- * @param {Error} err with actual/expected
- * @param {boolean} escape
- * @return {string} Diff
- */
-function inlineDiff (err, escape) {
-  var msg = errorDiff(err, 'WordsWithSpace', escape)
-
-  // linenos
-  var lines = msg.split('\n')
-  if (lines.length > 4) {
-    var width = String(lines.length).length
-    msg = lines.map(function (str, i) {
-      return pad(++i, width) + ' |' + ' ' + str
-    }).join('\n')
-  }
-
-  // legend
-  msg = '\n' +
-    color('diff removed', 'actual') +
-    ' ' +
-    color('diff added', 'expected') +
-    '\n\n' +
-    msg +
-    '\n'
-
-  // indent
-  msg = msg.replace(/^/gm, '      ')
-  return msg
-}
-
-/**
  * Returns a unified diff between two strings.
  *
  * @api private
@@ -373,7 +312,7 @@ function inlineDiff (err, escape) {
  * @return {string} The diff.
  */
 function unifiedDiff (err, escape) {
-  var indent = '      '
+  const indent = '      '
   function cleanUp (line) {
     if (escape) {
       line = escapeInvisibles(line)
@@ -395,36 +334,13 @@ function unifiedDiff (err, escape) {
   function notBlank (line) {
     return typeof line !== 'undefined' && line !== null
   }
-  var msg = diff.createPatch('string', err.actual, err.expected)
-  var lines = msg.split('\n').splice(4)
+  const msg = diff.createPatch('string', err.actual, err.expected)
+  const lines = msg.split('\n').splice(4)
   return '\n      ' +
     colorLines('diff added', '+ expected') + ' ' +
     colorLines('diff removed', '- actual') +
     '\n\n' +
     lines.map(cleanUp).filter(notBlank).join('\n')
-}
-
-/**
- * Return a character diff for `err`.
- *
- * @api private
- * @param {Error} err
- * @param {string} type
- * @param {boolean} escape
- * @return {string}
- */
-function errorDiff (err, type, escape) {
-  var actual = escape ? escapeInvisibles(err.actual) : err.actual
-  var expected = escape ? escapeInvisibles(err.expected) : err.expected
-  return diff['diff' + type](actual, expected).map(function (str) {
-    if (str.added) {
-      return colorLines('diff added', str.value)
-    }
-    if (str.removed) {
-      return colorLines('diff removed', str.value)
-    }
-    return str.value
-  }).join('')
 }
 
 /**
@@ -434,30 +350,24 @@ function errorDiff (err, type, escape) {
  * @param {string} line
  * @return {string}
  */
-function escapeInvisibles (line) {
-  return line.replace(/\t/g, '<tab>')
-    .replace(/\r/g, '<CR>')
-    .replace(/\n/g, '<LF>\n')
-}
+const escapeInvisibles = line => line
+  .replace(/\t/g, '<tab>')
+  .replace(/\r/g, '<CR>')
+  .replace(/\n/g, '<LF>\n')
 
 /**
  * Color lines for `str`, using the color `name`.
- *
  * @api private
  * @param {string} name
  * @param {string} str
  * @return {string}
  */
-function colorLines (name, str) {
-  return str.split('\n').map(function (str) {
-    return color(name, str)
-  }).join('\n')
-}
+const colorLines = (name, str) => str.split('\n').map(str => color(name, str)).join('\n')
 
 /**
  * Object#toString reference.
  */
-var objToString = Object.prototype.toString
+const objToString = Object.prototype.toString
 
 /**
  * Check that a / b have the same type.
@@ -467,6 +377,4 @@ var objToString = Object.prototype.toString
  * @param {Object} b
  * @return {boolean}
  */
-function sameType (a, b) {
-  return objToString.call(a) === objToString.call(b)
-}
+const sameType = (a, b) => objToString.call(a) === objToString.call(b)
