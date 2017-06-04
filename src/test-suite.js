@@ -67,13 +67,19 @@ class TestSuite extends TestNode {
   }
 
   run () {
-    this.bubbleEvent('suite', this)
+    if (!this.root) {
+      this.bubbleEvent('suite', this)
+    }
 
     return runCb(this.beforeCb)
       .then(() => this.runTests())
       .then(() => this.runSuites())
       .then(() => runCb(this.afterCb))
-      .then(() => this.bubbleEvent('suite end', this))
+      .then(() => {
+        if (!this.root) {
+          this.bubbleEvent('suite end', this)
+        }
+      })
   }
 
   runTests () {

@@ -21,6 +21,8 @@ Require `describe`, `it` etc from kocha, and write tests as in `mocha`:
 const { describe, it } = require('kocha')
 const assert = require('assert')
 
+const add = (a, b) => a + b
+
 describe('add', () => {
   it('adds the given numbers', () => {
     const sum = add(12, 13)

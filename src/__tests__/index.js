@@ -14,13 +14,11 @@ describe('kocha', t => {
   })
 
   describe('runner.run', () => {
-    it('runs the tests and emits start, end, suite and `suite end` events', () => {
+    it('runs the tests and emits start and end events', () => {
       td.replace(runner, 'emit')
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -36,10 +34,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('suite', suite))
         td.verify(runner.emit('suite end', suite))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -99,10 +95,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('pass', test))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -116,10 +110,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -133,10 +125,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('pass', test))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -152,10 +142,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('fail', test, error))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -169,10 +157,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
@@ -274,10 +260,8 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('suite', runner))
         td.verify(runner.emit('pending', test))
         td.verify(runner.emit('test end', test))
-        td.verify(runner.emit('suite end', runner))
         td.verify(runner.emit('end'))
       })
     })
