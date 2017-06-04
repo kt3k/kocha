@@ -55,20 +55,6 @@ exports.files = function (dir, ext, ret) {
 }
 
 /**
- * Compute a slug from the given `str`.
- *
- * @api private
- * @param {string} str
- * @return {string}
- */
-exports.slug = function (str) {
-  return str
-    .toLowerCase()
-    .replace(/ +/g, '-')
-    .replace(/[^-\w]/g, '')
-}
-
-/**
  * Strip the function definition from `str`, and re-indent for pre whitespace.
  *
  * @param {string} str
@@ -86,50 +72,7 @@ exports.clean = function (str) {
 
   str = str.replace(re, '')
 
-  return exports.trim(str)
-}
-
-/**
- * Trim the given `str`.
- *
- * @api private
- * @param {string} str
- * @return {string}
- */
-exports.trim = function (str) {
-  return str.replace(/^\s+|\s+$/g, '')
-}
-
-/**
- * Highlight the given string of `js`.
- *
- * @api private
- * @param {string} js
- * @return {string}
- */
-function highlight (js) {
-  return js
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\/\/(.*)/gm, '<span class="comment">//$1</span>')
-    .replace(/('.*?')/gm, '<span class="string">$1</span>')
-    .replace(/(\d+\.\d+)/gm, '<span class="number">$1</span>')
-    .replace(/(\d+)/gm, '<span class="number">$1</span>')
-    .replace(/\bnew[ \t]+(\w+)/gm, '<span class="keyword">new</span> <span class="init">$1</span>')
-    .replace(/\b(function|new|throw|return|var|if|else)\b/gm, '<span class="keyword">$1</span>')
-}
-
-/**
- * Highlight the contents of tag `name`.
- *
- * @api private
- * @param {string} name
- */
-exports.highlightTags = function (name) {
-  var code = document.getElementById('mocha').getElementsByTagName(name)
-  for (var i = 0, len = code.length; i < len; ++i) {
-    code[i].innerHTML = highlight(code[i].innerHTML)
-  }
+  return str.trim()
 }
 
 /**
@@ -324,17 +267,6 @@ function jsonStringify (object, spaces, depth) {
 }
 
 /**
- * Test if a value is a buffer.
- *
- * @api private
- * @param {*} value The value to test.
- * @return {boolean} True if `value` is a buffer, otherwise false
- */
-exports.isBuffer = function (value) {
-  return typeof Buffer !== 'undefined' && Buffer.isBuffer(value)
-}
-
-/**
  * Return a new Thing that has the keys in sorted order. Recursive.
  *
  * If the Thing...
@@ -474,27 +406,6 @@ exports.lookupFiles = function lookupFiles (path, extensions, recursive) {
   })
 
   return files
-}
-
-/**
- * Generate an undefined error with a message warning the user.
- *
- * @return {Error}
- */
-
-exports.undefinedError = function () {
-  return new Error('Caught undefined error, did you throw without specifying what?')
-}
-
-/**
- * Generate an undefined error if `err` is not defined.
- *
- * @param {Error} err
- * @return {Error}
- */
-
-exports.getError = function (err) {
-  return err || exports.undefinedError()
 }
 
 /**
