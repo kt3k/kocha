@@ -156,7 +156,6 @@ const list = function (failures) {
     let index = message ? stack.indexOf(message) : -1
     let actual = err.actual
     let expected = err.expected
-    let escape = true
 
     if (index === -1) {
       msg = message
@@ -173,7 +172,6 @@ const list = function (failures) {
     }
     // explicitly show diff
     if (err.showDiff !== false && sameType(actual, expected) && expected !== undefined) {
-      escape = false
       if (!(typeof actual === 'string' && typeof expected === 'string')) {
         err.actual = actual = utils.stringify(actual)
         err.expected = expected = utils.stringify(expected)
@@ -183,7 +181,7 @@ const list = function (failures) {
       const match = message.match(/^([^:]+): expected/)
       msg = '\n      ' + color('error message', match ? match[1] : msg)
 
-      msg += unifiedDiff(err, escape)
+      msg += unifiedDiff(err)
     }
 
     // indent stack trace
@@ -298,15 +296,11 @@ class Base {
  *
  * @api private
  * @param {Error} err with actual/expected
- * @param {boolean} escape
  * @return {string} The diff.
  */
-function unifiedDiff (err, escape) {
+function unifiedDiff (err) {
   const indent = '      '
   function cleanUp (line) {
-    if (escape) {
-      line = escapeInvisibles(line)
-    }
     if (line[0] === '+') {
       return indent + colorLines('diff added', line)
     }
@@ -332,18 +326,6 @@ function unifiedDiff (err, escape) {
     '\n\n' +
     lines.map(cleanUp).filter(notBlank).join('\n')
 }
-
-/**
- * Returns a string with all invisible characters in plain text
- *
- * @api private
- * @param {string} line
- * @return {string}
- */
-const escapeInvisibles = line => line
-  .replace(/\t/g, '<tab>')
-  .replace(/\r/g, '<CR>')
-  .replace(/\n/g, '<LF>\n')
 
 /**
  * Color lines for `str`, using the color `name`.
