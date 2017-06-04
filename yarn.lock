@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@segment/to-iso-string@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@segment/to-iso-string/-/to-iso-string-1.0.1.tgz#12cf910be22c09df842658a423e4f083f1dd5778"
+
 acorn-es7-plugin@^1.0.10, acorn-es7-plugin@^1.0.12:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/acorn-es7-plugin/-/acorn-es7-plugin-1.1.7.tgz#f2ee1f3228a90eead1245f9ab1922eb2e71d336b"
