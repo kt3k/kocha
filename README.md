@@ -40,12 +40,11 @@ This outputs the report like the below:
 
 ```
 $ ./node_modules/.bin/kocha test.js
-root
-  add
-    ✓ adds the given numbers
 
+add
+  ✓ adds the given numbers
 
-  1 passing (5ms)
+  1 passing (4ms)
 ```
 
 # Use in karma
