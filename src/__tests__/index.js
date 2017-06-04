@@ -342,5 +342,24 @@ describe('kocha', t => {
       assert(runner.getTimeout() === 1234)
       assert(runner.suites[0].getTimeout() === 2345)
     })
+
+    describe('when done() is not called during timeout', () => {
+      it('fails', () => {
+        td.replace(runner, 'emit')
+
+        kocha.timeout(100)
+
+        kocha.it('foo', done => {})
+
+        const test = runner.tests[0]
+
+        return runner.run().then(() => {
+          td.verify(runner.emit('start'))
+          td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
+          td.verify(runner.emit('test end', test))
+          td.verify(runner.emit('end'))
+        })
+      })
+    })
   })
 })

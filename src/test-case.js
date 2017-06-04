@@ -1,5 +1,5 @@
 const TestNode = require('./test-node')
-const { runCb } = TestNode
+const { runCbWithTimeout } = TestNode
 
 class TestCase extends TestNode {
   /**
@@ -50,6 +50,10 @@ class TestCase extends TestNode {
     return 1000
   }
 
+  runCb (cb) {
+    return runCbWithTimeout(cb, this.getTimeout())
+  }
+
   /**
    * Runs the test case.
    * @return {Promise}
@@ -62,7 +66,7 @@ class TestCase extends TestNode {
     }
 
     return this.parent.runBeforeEachCb()
-      .then(() => runCb(this.test))
+      .then(() => this.runCb(this.test))
       .then(() => { this.pass() }, e => { this.fail(e) })
       .then(() => this.parent.runAfterEachCb())
   }

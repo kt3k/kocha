@@ -1,5 +1,5 @@
 const TestNode = require('./test-node')
-const { runCb } = TestNode
+const { runCbWithTimeout } = TestNode
 
 class TestSuite extends TestNode {
   /**
@@ -50,20 +50,24 @@ class TestSuite extends TestNode {
     this.tests.push(test)
   }
 
+  runCb (cb) {
+    return runCbWithTimeout(cb, this.getTimeout())
+  }
+
   runBeforeEachCb () {
     if (this.parent) {
-      return this.parent.runBeforeEachCb().then(() => runCb(this.beforeEachCb))
+      return this.parent.runBeforeEachCb().then(() => this.runCb(this.beforeEachCb))
     }
 
-    return runCb(this.beforeEachCb)
+    return this.runCb(this.beforeEachCb)
   }
 
   runAfterEachCb () {
     if (this.parent) {
-      return runCb(this.afterEachCb).then(() => this.parent.runAfterEachCb())
+      return this.runCb(this.afterEachCb).then(() => this.parent.runAfterEachCb())
     }
 
-    return runCb(this.afterEachCb)
+    return this.runCb(this.afterEachCb)
   }
 
   run () {
@@ -71,10 +75,10 @@ class TestSuite extends TestNode {
       this.bubbleEvent('suite', this)
     }
 
-    return runCb(this.beforeCb)
+    return this.runCb(this.beforeCb)
       .then(() => this.runTests())
       .then(() => this.runSuites())
-      .then(() => runCb(this.afterCb))
+      .then(() => this.runCb(this.afterCb))
       .then(() => {
         if (!this.root) {
           this.bubbleEvent('suite end', this)

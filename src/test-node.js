@@ -1,5 +1,7 @@
 const { EventEmitter } = require('events')
 
+const wait = dur => new Promise(resolve => setTimeout(resolve, dur))
+
 /**
  * @param {Function} cb The callback function
  * @return {boolean}
@@ -22,6 +24,12 @@ const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
  * @return {Promise}
  */
 const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve(cb())
+
+const throwAfterTimeout = timeout => wait(timeout).then(() => {
+  throw new Error(`Timeout of ${timeout}ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.`)
+})
+
+const runCbWithTimeout = (cb, timeout) => Promise.race([runCb(cb), throwAfterTimeout(timeout)])
 
 class TestNode extends EventEmitter {
   /**
@@ -91,3 +99,4 @@ class TestNode extends EventEmitter {
 
 module.exports = TestNode
 module.exports.runCb = runCb
+module.exports.runCbWithTimeout = runCbWithTimeout
