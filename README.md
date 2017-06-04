@@ -5,6 +5,8 @@
 
 > Modern, simpler Mocha clone, no globals, lint friendly
 
+Supports node.js >= active LTS.
+
 # :cd: Install
 
     npm install kocha --save-dev
@@ -100,7 +102,7 @@ Sets the timeout duration to the current suite.
 
 # Name
 
-Kocha (紅茶, pronounced like ko-cha, not ko-ka) means black tea in Japanese.
+Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japanese.
 
 # License
 
