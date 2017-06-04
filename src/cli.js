@@ -1,9 +1,9 @@
-const chalk = require('chalk')
 const { select } = require('action-selector')
 const pkg = require('../package')
 const { getRunner } = require('./')
 const requireGlob = require('./utils/require-glob')
 const { EventEmitter } = require('events')
+const color = require('./utils/color')
 
 class Cli extends EventEmitter {
   main (argv) {
@@ -42,7 +42,7 @@ Options:
     this['action:version']()
 
     if (this.argv._.length === 0) {
-      console.log(chalk.red('Error:') + ' No input file')
+      console.log(color('error message', 'Error:') + ' No input file')
       process.exit(1)
     }
 
