@@ -1,7 +1,7 @@
-var Base = require('./base')
+const Base = require('./base')
 const { inherits } = require('util')
-var color = Base.color
-var cursor = Base.cursor
+const color = require('../utils/color')
+const cursor = require('../utils/cursor')
 
 /**
  * Expose `List`.

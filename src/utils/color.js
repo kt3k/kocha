@@ -40,10 +40,10 @@ const colors = {
  * @api private
  */
 const color = function (type, str) {
-  if (!exports.useColors) {
+  if (!useColors) {
     return String(str)
   }
-  return '\u001b[' + exports.colors[type] + 'm' + str + '\u001b[0m'
+  return '\u001b[' + colors[type] + 'm' + str + '\u001b[0m'
 }
 
 /**

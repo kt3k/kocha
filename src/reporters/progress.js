@@ -1,7 +1,9 @@
-var Base = require('./base')
+const Base = require('./base')
 const { inherits } = require('util')
-var color = Base.color
-var cursor = Base.cursor
+const color = require('../utils/color')
+const { colors } = color
+const cursor = require('../utils/cursor')
+const { window } = cursor
 
 /**
  * Expose `Progress`.
@@ -13,7 +15,7 @@ exports = module.exports = Progress
  * General progress bar color.
  */
 
-Base.colors.progress = 90
+colors.progress = 90
 
 /**
  * Initialize a new `Progress` bar test reporter.
@@ -26,7 +28,7 @@ function Progress (runner, options) {
   Base.call(this, runner)
 
   var self = this
-  var width = Base.window.width * 0.50 | 0
+  var width = window.width * 0.50 | 0
   var total = runner.total
   var complete = 0
   var lastN = -1

@@ -1,5 +1,8 @@
-var Base = require('./base')
+const Base = require('./base')
 const { inherits } = require('util')
+const cursor = require('../utils/cursor')
+const { window } = cursor
+const color = require('../utils/color')
 
 /**
  * Expose `Dot`.
@@ -18,7 +21,7 @@ function NyanCat (runner) {
   Base.call(this, runner)
 
   var self = this
-  var width = Base.window.width * 0.75 | 0
+  var width = window.width * 0.75 | 0
   var nyanCatWidth = this.nyanCatWidth = 11
 
   this.colorIndex = 0
@@ -30,7 +33,7 @@ function NyanCat (runner) {
   this.trajectoryWidthMax = (width - nyanCatWidth)
 
   runner.on('start', function () {
-    Base.cursor.hide()
+    cursor.hide()
     self.draw()
   })
 
@@ -47,7 +50,7 @@ function NyanCat (runner) {
   })
 
   runner.on('end', function () {
-    Base.cursor.show()
+    cursor.show()
     for (var i = 0; i < self.numberOfLines; i++) {
       write('\n')
     }
@@ -86,7 +89,7 @@ NyanCat.prototype.drawScoreboard = function () {
 
   function draw (type, n) {
     write(' ')
-    write(Base.color(type, n))
+    write(color(type, n))
     write('\n')
   }
 

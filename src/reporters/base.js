@@ -1,4 +1,3 @@
-const tty = require('tty')
 const diff = require('diff')
 const ms = require('ms')
 const stringify = require('stringifier').stringify
@@ -18,11 +17,6 @@ const clearInterval = global.clearInterval
 /* eslint-enable no-unused-vars, no-native-reassign */
 
 /**
- * Check if both stdio streams are associated with a tty.
- */
-const isatty = tty.isatty(1) && tty.isatty(2)
-
-/**
  * Default symbol map.
  */
 const symbols = {
@@ -38,49 +32,6 @@ if (process.platform === 'win32') {
   symbols.ok = '\u221A'
   symbols.err = '\u00D7'
   symbols.dot = '.'
-}
-
-/**
- * Expose term window size, with some defaults for when stderr is not a tty.
- */
-const window = {
-  width: 75
-}
-
-if (isatty) {
-  window.width = process.stdout.getWindowSize
-    ? process.stdout.getWindowSize(1)[0]
-    : tty.getWindowSize()[1]
-}
-
-/**
- * Expose some basic cursor interactions that are common among reporters.
- */
-const cursor = {
-  hide: function () {
-    isatty && process.stdout.write('\u001b[?25l')
-  },
-
-  show: function () {
-    isatty && process.stdout.write('\u001b[?25h')
-  },
-
-  deleteLine: function () {
-    isatty && process.stdout.write('\u001b[2K')
-  },
-
-  beginningOfLine: function () {
-    isatty && process.stdout.write('\u001b[0G')
-  },
-
-  CR: function () {
-    if (isatty) {
-      exports.cursor.deleteLine()
-      exports.cursor.beginningOfLine()
-    } else {
-      process.stdout.write('\r')
-    }
-  }
 }
 
 /**
@@ -296,10 +247,5 @@ const objToString = Object.prototype.toString
 const sameType = (a, b) => objToString.call(a) === objToString.call(b)
 
 exports = module.exports = Base
-exports.useColors = useColors
-exports.color = color
-exports.colors = colors
-exports.window = window
-exports.cursor = cursor
 exports.list = list
 exports.symbols = symbols

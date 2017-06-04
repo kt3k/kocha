@@ -1,5 +1,5 @@
 const Base = require('./base')
-const { color } = Base
+const color = require('../utils/color')
 
 /**
  * Initialize a new `Spec` test reporter.

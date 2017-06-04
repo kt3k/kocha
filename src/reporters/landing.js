@@ -1,7 +1,9 @@
-var Base = require('./base')
+const Base = require('./base')
 const { inherits } = require('util')
-var cursor = Base.cursor
-var color = Base.color
+const cursor = require('../utils/cursor')
+const color = require('../utils/color')
+const { colors } = color
+const { window } = cursor
 
 /**
  * Expose `Landing`.
@@ -12,20 +14,17 @@ exports = module.exports = Landing
 /**
  * Airplane color.
  */
-
-Base.colors.plane = 0
+colors.plane = 0
 
 /**
  * Airplane crash color.
  */
-
-Base.colors['plane crash'] = 31
+colors['plane crash'] = 31
 
 /**
  * Runway color.
  */
-
-Base.colors.runway = 90
+colors.runway = 90
 
 /**
  * Initialize a new `Landing` reporter.
@@ -37,7 +36,7 @@ function Landing (runner) {
   Base.call(this, runner)
 
   var self = this
-  var width = Base.window.width * 0.75 | 0
+  var width = window.width * 0.75 | 0
   var total = runner.total
   var stream = process.stdout
   var plane = color('plane', '✈')

@@ -1,10 +1,8 @@
-var Base = require('./base')
-var color = Base.color
+const Base = require('./base')
+const color = require('../utils/color')
 const { inherits } = require('util')
-
-/**
- * Expose `Dot`.
- */
+const cursor = require('../utils/cursor')
+const { window } = cursor
 
 exports = module.exports = Dot
 
@@ -18,7 +16,7 @@ function Dot (runner) {
   Base.call(this, runner)
 
   var self = this
-  var width = Base.window.width * 0.75 | 0
+  var width = window.width * 0.75 | 0
   var n = -1
 
   runner.on('start', function () {
