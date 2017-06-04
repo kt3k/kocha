@@ -1,13 +1,6 @@
 const assert = require('power-assert')
-const Reporter = require('../src/reporters/spec')
 
-const { describe, it, getRunner } = require('../src')
-
-const runner = getRunner()
-
-const reporter = new Reporter(runner, { files: [__filename] })
-
-if (reporter) {}
+const { describe, it } = require('../src')
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b
@@ -32,5 +25,3 @@ describe.skip('mul', () => {
     assert(product === 156)
   })
 })
-
-setTimeout(() => { runner.run().catch(console.log) })

@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "description": "Simpler Mocha clone, no globals, lint friendly",
   "main": "src/index.js",
+  "bin": "bin/kocha.js",
   "scripts": {
     "lint": "standard",
     "fix": "standard --fix",
     "test": "mocha --require ./src/__tests__/loader.js \"src{/,**/}__tests__/**/*.js\"",
+    "run-example": "./bin/kocha.js examples/example.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },
@@ -27,11 +29,12 @@
   },
   "homepage": "https://github.com/kt3k/macha#readme",
   "dependencies": {
-    "debug": "^2.6.8",
+    "action-selector": "^1.0.0",
     "diff": "^3.2.0",
-    "glob": "^7.1.2",
     "json3": "^3.3.2",
+    "minimisted": "^1.1.1",
     "ms": "^2.0.0",
+    "require-glob": "^3.2.0",
     "supports-color": "^3.2.3",
     "to-iso-string": "^0.0.2"
   },
