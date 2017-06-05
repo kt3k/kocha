@@ -23,7 +23,7 @@ const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
  * @param {Function} cb The callback function
  * @return {Promise}
  */
-const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve(cb())
+const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve().then(() => cb())
 
 const throwAfterTimeout = timeout => wait(timeout).then(() => {
   throw new Error(`Timeout of ${timeout}ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.`)
@@ -45,6 +45,7 @@ class TestNode extends EventEmitter {
     this.parent = parent
     this.root = parent == null // True if root suite
     this.timeoutDuration = null
+    this.retryCount = 0
   }
 
   isSkipped () {
@@ -53,6 +54,26 @@ class TestNode extends EventEmitter {
     }
 
     return this.skipped
+  }
+
+  /**
+   * Gets the retry count.
+   * @return {number}
+   */
+  getRetryCount () {
+    if (this.parent) {
+      return this.retryCount || this.parent.getRetryCount()
+    }
+
+    return this.retryCount
+  }
+
+  /**
+   * Sets the retry count.
+   * @param {number} n The retry count
+   */
+  setRetryCount (n) {
+    this.retryCount = n
   }
 
   /**

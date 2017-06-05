@@ -90,6 +90,10 @@ exports.timeout = timeout => {
   getRunner().getCurrentSuite().setTimeout(timeout)
 }
 
+exports.retries = n => {
+  getRunner().getCurrentSuite().setRetryCount(n)
+}
+
 exports.TestSuite = TestSuite
 exports.TestCase = TestCase
 exports.TestRunner = TestRunner

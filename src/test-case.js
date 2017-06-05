@@ -71,7 +71,9 @@ class TestCase extends TestNode {
   }
 
   runCb (cb) {
-    return runCbWithTimeout(cb, this.getTimeout())
+    const promise = runCbWithTimeout(cb, this.getTimeout())
+
+    return Array(this.getRetryCount()).fill(0).reduce(promise => promise.catch(() => runCbWithTimeout(cb, this.getTimeout())), promise)
   }
 
   /**

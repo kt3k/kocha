@@ -362,4 +362,23 @@ describe('kocha', t => {
       })
     })
   })
+
+  describe('retries', () => {
+    it('sets the retry count', () => {
+      const spy = td.function()
+
+      kocha.retries(4)
+
+      kocha.it('foo', () => {
+        spy()
+        throw new Error('bar')
+      })
+
+      assert.strictEqual(runner.tests[0].getRetryCount(), 4)
+
+      return runner.run().then(() => {
+        td.verify(spy(), { times: 5 }) // spy runs 5 times
+      })
+    })
+  })
 })
