@@ -23,7 +23,17 @@ const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
  * @param {Function} cb The callback function
  * @return {Promise}
  */
-const runCb = cb => isAsyncCb(cb) ? runAsyncCb(cb) : Promise.resolve().then(() => cb())
+const runCb = cb => {
+  if (isAsyncCb(cb)) {
+    return runAsyncCb(cb)
+  }
+
+  try {
+    return Promise.resolve(cb())
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
 const throwAfterTimeout = timeout => wait(timeout).then(() => {
   throw new Error(`Timeout of ${timeout}ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.`)
@@ -48,12 +58,20 @@ class TestNode extends EventEmitter {
     this.retryCount = 0
   }
 
+  /**
+   * Returns true if skipped node.
+   * @return {boolean}
+   */
   isSkipped () {
     if (this.parent) {
       return this.skipped || this.parent.isSkipped()
     }
 
     return this.skipped
+  }
+
+  getRunner () {
+    return this.parent ? this.parent.getRunner() : this
   }
 
   /**
@@ -121,3 +139,4 @@ class TestNode extends EventEmitter {
 module.exports = TestNode
 module.exports.runCb = runCb
 module.exports.runCbWithTimeout = runCbWithTimeout
+module.exports.throwAfterTimeout = throwAfterTimeout

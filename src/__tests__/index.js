@@ -349,7 +349,7 @@ describe('kocha', t => {
 
         kocha.timeout(100)
 
-        kocha.it('foo', done => {})
+        kocha.it('foo', done => { setTimeout(done, 200) })
 
         const test = runner.tests[0]
 
