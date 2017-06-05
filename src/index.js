@@ -87,11 +87,11 @@ exports.afterEach = cb => {
 }
 
 exports.timeout = timeout => {
-  getRunner().getCurrentSuite().setTimeout(timeout)
+  getRunner().getCurrentNode().setTimeout(timeout)
 }
 
 exports.retries = n => {
-  getRunner().getCurrentSuite().setRetryCount(n)
+  getRunner().getCurrentNode().setRetryCount(n)
 }
 
 exports.TestSuite = TestSuite

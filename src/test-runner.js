@@ -6,6 +6,7 @@ class TestRunner extends TestSuite {
 
     this.timeoutDuration = 2000
     this.currentSuite = this
+    this.currentTest = null
   }
 
   /**
@@ -22,6 +23,26 @@ class TestRunner extends TestSuite {
    */
   setCurrentSuite (suite) {
     this.currentSuite = suite
+  }
+
+  getCurrentNode () {
+    return this.getCurrentTest() || this.getCurrentSuite()
+  }
+
+  /**
+   * Sets the currently test case.
+   * @param {TestCase} test The test case
+   */
+  setCurrentTest (test) {
+    this.currentTest = test
+  }
+
+  /**
+   * Gets the currently running test case.
+   * @return {TestCase}
+   */
+  getCurrentTest () {
+    return this.currentTest
   }
 
   /**
