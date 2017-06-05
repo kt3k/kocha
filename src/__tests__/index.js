@@ -333,14 +333,57 @@ describe('kocha', t => {
 
   describe('timeout', () => {
     it('sets the timeout to each test suite', () => {
-      kocha.timeout(1234)
+      td.replace(runner, 'emit')
+
+      kocha.timeout(123)
 
       kocha.describe('foo', () => {
-        kocha.timeout(2345)
+        kocha.timeout(234)
+
+        kocha.it('bar', done => { setTimeout(done, 300) })
       })
 
-      assert(runner.getTimeout() === 1234)
-      assert(runner.suites[0].getTimeout() === 2345)
+      assert(runner.getTimeout() === 123)
+      assert(runner.suites[0].getTimeout() === 234)
+
+      const test = runner.suites[0].tests[0]
+
+      assert(test.getTimeout() === 234)
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('end'))
+      })
+    })
+
+    it('sets the timeout to each test suite', () => {
+      td.replace(runner, 'emit')
+
+      kocha.it('bar', done => {
+        kocha.timeout(200)
+        setTimeout(done, 300)
+      })
+
+      kocha.it('baz', done => {
+        setTimeout(done, 300)
+      })
+
+      const bar = runner.tests[0]
+      const baz = runner.tests[1]
+
+      return runner.run().then(() => {
+        assert(bar.getTimeout() === 200)
+        assert(baz.getTimeout() === 2000)
+
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('fail', bar, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', bar))
+        td.verify(runner.emit('pass', baz))
+        td.verify(runner.emit('test end', baz))
+        td.verify(runner.emit('end'))
+      })
     })
 
     describe('when done() is not called during timeout', () => {
@@ -364,7 +407,7 @@ describe('kocha', t => {
   })
 
   describe('retries', () => {
-    it('sets the retry count', () => {
+    it('sets the retry count at suite level', () => {
       const spy = td.function()
 
       kocha.retries(4)
@@ -377,7 +420,33 @@ describe('kocha', t => {
       assert.strictEqual(runner.tests[0].getRetryCount(), 4)
 
       return runner.run().then(() => {
-        td.verify(spy(), { times: 5 }) // spy runs 5 times
+        td.verify(spy(), { times: 5 })
+      })
+    })
+
+    it('sets the retry count at suite level', () => {
+      const spy0 = td.function()
+      const spy1 = td.function()
+
+      kocha.it('foo', () => {
+        kocha.retries(7)
+        spy0()
+        throw new Error('bar')
+      })
+
+      kocha.it('bar', () => {
+        spy1()
+        throw new Error('bar')
+      })
+
+      assert.strictEqual(runner.tests[0].getRetryCount(), 0)
+      assert.strictEqual(runner.tests[1].getRetryCount(), 0)
+
+      return runner.run().then(() => {
+        assert.strictEqual(runner.tests[0].getRetryCount(), 7)
+        assert.strictEqual(runner.tests[1].getRetryCount(), 0)
+        td.verify(spy0(), { times: 8 })
+        td.verify(spy1(), { times: 1 })
       })
     })
   })
