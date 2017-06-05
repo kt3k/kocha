@@ -2,7 +2,7 @@ const diff = require('diff')
 const ms = require('ms')
 const stringify = require('stringifier').stringify
 const color = require('../utils/color')
-const { useColors, colors, colorLines } = color
+const { colorLines } = color
 
 /**
  * Save timer references to avoid Sinon interfering.
