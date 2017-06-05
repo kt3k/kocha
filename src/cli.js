@@ -5,7 +5,14 @@ const requireGlob = require('./utils/require-glob')
 const { EventEmitter } = require('events')
 const color = require('./utils/color')
 
+/**
+ * The command line interface.
+ */
 class Cli extends EventEmitter {
+  /**
+   * The entry point of cli.
+   * @param {object} argv The command line options parsed by minimist
+   */
   main (argv) {
     this.argv = argv
 
@@ -22,6 +29,9 @@ class Cli extends EventEmitter {
     .on('action', action => action.call(this))
   }
 
+  /**
+   * Shows the help message.
+   */
   'action:help' () {
     this['action:version']()
 
@@ -35,10 +45,16 @@ Options:
 `)
   }
 
+  /**
+   * Shows the version number.
+   */
   'action:version' () {
     console.log(`${pkg.name}@${pkg.version}`)
   }
 
+  /**
+   * Runs the tests.
+   */
   'action:run' () {
     this['action:version']()
 
