@@ -61,7 +61,8 @@ const {
   beforeEach,
   after,
   afterEach,
-  timeout
+  timeout,
+  retries
 } = require('kocha')
 ```
 
@@ -100,6 +101,10 @@ Adds the afterEach hook to the current suite.
 ## timeout(timeout)
 
 Sets the timeout duration to the current suite.
+
+## retris(n)
+
+Sets the retry count of the test cases.
 
 # Goals
 
