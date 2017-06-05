@@ -100,11 +100,11 @@ Adds the afterEach hook to the current suite.
 
 ## timeout(timeout)
 
-Sets the timeout duration to the current suite.
+Sets the timeout duration to the test cases or the test suites.
 
-## retris(n)
+## retries(n)
 
-Sets the retry count of the test cases.
+Sets the retry count of the test cases or the test suites.
 
 # Goals
 
@@ -121,7 +121,7 @@ Sets the retry count of the test cases.
 # Differences from mocha
 
 - Kocha doesn't have `this.timeout(ms)` API. Use `kocha.timeout(ms)` API instead.
-- Kocha doesn't have `this.retries(n)` API. Use `kocha.retries(n)` API instead. (kocha.retries not yet implemented, please hold on)
+- Kocha doesn't have `this.retries(n)` API. Use `kocha.retries(n)` API instead.
 - Kocha doesn't have `xdescribe` and `xit`. Instead use `describe.skip` and `it.skip` resp.
 - Kocha doesn't have `context` and `specify` keyword. Use `describe` and `it` resp.
 
