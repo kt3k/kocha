@@ -16,6 +16,7 @@ class TestCase extends TestNode {
     this.startedAt = 0
     this.endedAt = 0
     this.duration = 0
+    this.state = null
   }
 
   /**
@@ -29,6 +30,7 @@ class TestCase extends TestNode {
   fail (e) {
     this.calcDuration()
     this.pending = false
+    this.state = 'failed'
     this.bubbleEvent('fail', this, e)
     this.end()
   }
@@ -36,6 +38,7 @@ class TestCase extends TestNode {
   pass () {
     this.calcDuration()
     this.pending = false
+    this.state = 'passed'
     this.bubbleEvent('pass', this)
     this.end()
   }
