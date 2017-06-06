@@ -97,3 +97,9 @@ exports.retries = n => {
 exports.TestSuite = TestSuite
 exports.TestCase = TestCase
 exports.TestRunner = TestRunner
+
+// Expose window.__kocha__ if the environment is browser
+// This is for karma environment
+if (typeof window === 'object') {
+  window.__kocha__ = exports
+}
