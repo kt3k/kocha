@@ -54,6 +54,8 @@ class TestCase extends TestNode {
 
   start () {
     this.startedAt = +new Date()
+    this.getRunner().setCurrentTest(this)
+    this.bubbleEvent('test', this)
   }
 
   end () {
@@ -85,8 +87,6 @@ class TestCase extends TestNode {
    * @return {Promise}
    */
   run () {
-    this.getRunner().setCurrentTest(this)
-
     this.start()
     if (this.isSkipped()) {
       this.skip()

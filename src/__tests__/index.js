@@ -95,8 +95,9 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('pass', test))
+        td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
       })
     })
@@ -110,8 +111,9 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
       })
     })
@@ -125,8 +127,9 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('pass', test))
+        td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
       })
     })
@@ -142,8 +145,9 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('fail', test, error))
+        td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
       })
     })
@@ -157,8 +161,9 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
       })
     })
@@ -260,6 +265,7 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('pending', test))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
@@ -352,6 +358,7 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
+        td.verify(runner.emit('test', test))
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
@@ -378,8 +385,10 @@ describe('kocha', t => {
         assert(baz.getTimeout() === 2000)
 
         td.verify(runner.emit('start'))
+        td.verify(runner.emit('test', bar))
         td.verify(runner.emit('fail', bar, td.matchers.isA(Error)))
         td.verify(runner.emit('test end', bar))
+        td.verify(runner.emit('test', baz))
         td.verify(runner.emit('pass', baz))
         td.verify(runner.emit('test end', baz))
         td.verify(runner.emit('end'))
@@ -398,6 +407,7 @@ describe('kocha', t => {
 
         return runner.run().then(() => {
           td.verify(runner.emit('start'))
+          td.verify(runner.emit('test', test))
           td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
           td.verify(runner.emit('test end', test))
           td.verify(runner.emit('end'))
