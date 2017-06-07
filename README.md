@@ -1,4 +1,4 @@
-# Kocha v1.1.0
+# Kocha
 
 [![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
@@ -7,11 +7,12 @@
 
 Supports node.js >= active LTS.
 
-# :cd: Install
+# Use in node.js
+
+## :cd: Install
 
     npm install kocha --save-dev
 
-# Use in node.js
 
 Require `describe`, `it` etc from kocha, and write tests as in `mocha`:
 
@@ -49,7 +50,67 @@ add
 
 # Use in karma
 
-TBD
+## :cd: Install
+
+    npm install kocha karma-kocha --save-dev
+
+Init karma.conf.js by invoking `karma init` command and following the instructions.
+
+The add `kocha` configs like the below:
+
+```
+module.exports = config => config.set({
+  frameworks: ['kocha', 'browserify'],
+  files: [
+    'test/**/*.js'
+  ],
+  preprocessors: {
+    'test/**/*.js': 'browserify'
+  }
+  browserify: {
+    debug: true,
+    ...
+  },
+  ...
+})
+```
+
+And write the tests like the below:
+
+`test/add.js`:
+
+```js
+const { describe, it } = require('kocha')
+const assert = require('assert')
+
+const add = (a, b) => a + b
+
+describe('add', () => {
+  it('adds the given numbers', () => {
+    const sum = add(12, 13)
+
+    assert(sum === 25)
+  })
+})
+```
+
+Then hit the command `karma start`:
+
+    karma start
+
+It outputs like the below:
+
+```
+$ karma start
+07 06 2017 13:41:07.792:INFO [framework.browserify]: bundle built
+07 06 2017 13:41:07.809:INFO [karma]: Karma v1.7.0 server started at http://0.0.0.0:9876/
+07 06 2017 13:41:07.809:INFO [launcher]: Launching browser Chrome with unlimited concurrency
+07 06 2017 13:41:07.819:INFO [launcher]: Starting browser Chrome
+07 06 2017 13:41:09.349:INFO [Chrome 58.0.3029 (Mac OS X 10.12.5)]: Connected on socket Qs7TxwAJjfsy7LElAAAA with id 79520559
+Chrome 58.0.3029 (Mac OS X 10.12.5): Executed 1 of 1 SUCCESS (0.007 secs / 0.001 secs)
+```
+
+That's it.
 
 # APIs
 
@@ -129,6 +190,7 @@ Sets the retry count of the test cases or the test suites.
 
 ## For node.js
 
+1. Install `kocha`
 1. Use `kocha` command instead of `mocha` or `_mocha` command.
 1. Add `const { describe, it, ... } = require('kocha')` statement on the top of each mocha test script.
 1. Rewrite `xdescribe` and `xit` to `describe.skip` and `it.skip` resp. if you have any.
@@ -141,7 +203,17 @@ If the above doesn't work, please file an issue.
 
 ## For karma
 
-TBD
+1. Install `karma-kocha` and `kocha`
+1. Set `framework: ['kocha', ...]` instead of `framework: ['mocha', ...]`.
+1. Introduce a bundler (`browserify` or `webpack`) if don't have any.
+1. Add `const { describe, it, ... } = require('kocha')` statement on the top of each mocha test script.
+1. Rewrite `xdescribe` and `xit` to `describe.skip` and `it.skip` resp. if you have any.
+1. Rewrite `this.timeout(N)` to `kocha.timeout(N)` if you have any.
+1. Rewrite `this.retries(N)` to `kocha.retries(N)` if you have any.
+1. Rewrite `context` and `specify` to `describe` to `it` resp. if you have any.
+1. Then your tests should work with kocha.
+
+If the above doesn't work, please file an issue.
 
 # Name
 
