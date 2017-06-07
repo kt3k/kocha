@@ -1,5 +1,5 @@
 const TestNode = require('./test-node')
-const { isAsyncCb, runAsyncCb, runCb, runCbWithTimeout, throwAfterTimeout } = TestNode
+const { runCb, runCbWithTimeout, throwAfterTimeout } = TestNode
 
 class TestCase extends TestNode {
   /**
@@ -82,7 +82,7 @@ class TestCase extends TestNode {
 
     const promiseWithTimeout = Promise.race([promise, throwAfterTimeout(timeout)])
 
-    return Array(this.getRetryCount()).fill(0).reduce(promise => promise.catch(() => runCbWithTimeout(cb, timeout)), promiseWithTimeout)
+    return Array(retryCount).fill(0).reduce(promise => promise.catch(() => runCbWithTimeout(cb, timeout)), promiseWithTimeout)
   }
 
   /**
