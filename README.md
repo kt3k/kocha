@@ -56,9 +56,9 @@ add
 
 Init karma.conf.js by invoking `karma init` command and following the instructions.
 
-The add `kocha` configs like the below:
+Then add `kocha` configs to `karma.conf.js` like the below:
 
-```
+```js
 module.exports = config => config.set({
   frameworks: ['kocha', 'browserify'],
   files: [
@@ -98,7 +98,7 @@ Then hit the command `karma start`:
 
     karma start
 
-It outputs like the below:
+It outputs the test result like the below:
 
 ```
 $ karma start
@@ -111,6 +111,8 @@ Chrome 58.0.3029 (Mac OS X 10.12.5): Executed 1 of 1 SUCCESS (0.007 secs / 0.001
 ```
 
 That's it.
+
+**Note**: You need a CommonJS bundler (typically `browserify` or `webpack`) to use kocha in karma.
 
 # APIs
 
