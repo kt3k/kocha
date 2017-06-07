@@ -39,7 +39,7 @@ const addTest = (title, cb, skipped) => {
  * @param {string} title The title of the suite.
  * @param {Function} cb The factory of subnodes
  */
-exports.describe = (title, cb) => {
+exports.describe = exports.context = (title, cb) => {
   addSuite(title, cb, false)
 }
 
@@ -48,7 +48,7 @@ exports.describe = (title, cb) => {
  * @param {string} title The title of the suite.
  * @param {Function} cb The factory of subnodes
  */
-exports.describe.skip = (title, cb) => {
+exports.describe.skip = exports.xdescribe = (title, cb) => {
   addSuite(title, cb, true)
 }
 
@@ -57,7 +57,7 @@ exports.describe.skip = (title, cb) => {
  * @param {string} title The title of the test case
  * @param {Function} cb The test case function
  */
-exports.it = (title, cb) => {
+exports.it = exports.specify = (title, cb) => {
   addTest(title, cb, false)
 }
 
@@ -66,7 +66,7 @@ exports.it = (title, cb) => {
  * @param {string} title The title of the test case
  * @param {Function} cb The test case function
  */
-exports.it.skip = (title, cb) => {
+exports.it.skip = exports.xit = (title, cb) => {
   addTest(title, cb, true)
 }
 
