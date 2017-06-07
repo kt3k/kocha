@@ -66,6 +66,7 @@ class TestRunner extends TestSuite {
    * @return {Promise}
    */
   run () {
+    this.total = this.getTotal()
     this.bubbleEvent('start')
     return super.run()
       .then(() => this.bubbleEvent('end'))

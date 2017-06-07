@@ -18,6 +18,14 @@ class TestSuite extends TestNode {
     this.suites = []
   }
 
+  /**
+   * Gets the total count of the tests.
+   * @return {number}
+   */
+  getTotal () {
+    return this.tests.length + this.suites.reduce((sum, suite) => sum + suite.getTotal(), 0)
+  }
+
   setBeforeCb (cb) {
     this.beforeCb = cb
   }
