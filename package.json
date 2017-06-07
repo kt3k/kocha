@@ -40,12 +40,13 @@
     "karma": "^1.7.0",
     "karma-browserify": "^5.1.1",
     "karma-chrome-launcher": "^2.1.1",
-    "lerna": "^2.0.0-rc.5",
+    "lerna": "2.0.0-beta.38",
     "mocha": "^3.4.2",
     "nyc": "^11.0.1",
     "power-assert": "^1.4.2",
     "standard": "^10.0.2",
-    "testdouble": "^2.1.2"
+    "testdouble": "^2.1.2",
+    "watchify": "^3.9.0"
   },
   "standard": {
     "env": [
