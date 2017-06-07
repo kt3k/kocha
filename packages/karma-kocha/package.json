@@ -1,6 +1,6 @@
 {
   "name": "karma-kocha",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "A Karma plugin. Adaptor for Kocha testing framework.",
   "main": "index.js",
   "scripts": {
