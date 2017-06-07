@@ -142,17 +142,25 @@ const {
 
 Adds the test suite by the `title` and `callback`. In `callback` function you can add child test suites and/or test cases.
 
+**Note**: The alias `context(title, callback)` is also available
+
 ## describe.skip(title, callback)
 
 Adds the skipped test suite by the `title` and `callback`. The test suites and cases under this suite are all skipped as well.
 
-## it(spec, callback)
+**Note**: The alias `xdescribe(title, callback)` is also available
+
+## it(title, callback)
 
 Adds the skipped test case by the `title` and `callback`. `callback` implements your test case.
 
-## it.skip(spec, callback)
+**Note**: The alias `specify(title, callback)` is also available
+
+## it.skip(title, callback)
 
 Adds the skipped test case by the `title` and `callback`.
+
+**Note**: The alias `xit(title, callback)` is also available
 
 ## before(callback)
 
