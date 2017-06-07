@@ -1,4 +1,4 @@
-const { describe, it } = require('../../..')
+const { describe, it } = require('../../../packages/kocha')
 const assert = require('power-assert')
 
 const add = (a, b) => a + b
