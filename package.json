@@ -7,7 +7,9 @@
   "scripts": {
     "lint": "standard",
     "fix": "standard --fix",
-    "test": "mocha --require ./src/__tests__/loader.js \"{src,examples}{/,**/}__tests__/**/*.js\"",
+    "test": "npm run test:karma-kocha && npm run test:kocha",
+    "test:karma-kocha": "karma start",
+    "test:kocha": "mocha --require ./src/__tests__/loader.js \"{src,examples}{/,**/}__tests__/**/*.js\"",
     "example:pass": "./bin/kocha.js examples/simple-pass.js",
     "example:fail": "./bin/kocha.js ./src/__tests__/loader.js examples/simple-fail.js",
     "example:timeout": "./bin/kocha.js examples/timeout-fail.js",
@@ -44,8 +46,12 @@
     "supports-color": "^3.2.3"
   },
   "devDependencies": {
+    "browserify": "^14.4.0",
     "codecov": "^2.2.0",
     "espower-loader": "^1.2.2",
+    "karma": "^1.7.0",
+    "karma-browserify": "^5.1.1",
+    "karma-chrome-launcher": "^2.1.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.1",
     "power-assert": "^1.4.2",
