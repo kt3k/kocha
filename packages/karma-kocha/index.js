@@ -9,6 +9,4 @@ var initKocha = function (files) {
 
 initKocha.$inject = ['config.files']
 
-module.exports = {
-  'framework:kocha': ['factory', initKocha]
-}
+module.exports = { 'framework:kocha': ['factory', initKocha] }

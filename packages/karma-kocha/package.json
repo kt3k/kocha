@@ -1,0 +1,25 @@
+{
+  "name": "karma-kocha",
+  "version": "1.1.0",
+  "description": "A Karma plugin. Adaptor for Kocha testing framework.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo pass"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kt3k/kocha.git"
+  },
+  "keywords": [
+    "karma-plugin",
+    "karma-adaptor",
+    "kocha",
+    "mocha"
+  ],
+  "author": "Yoshiya Hinosawa",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kt3k/kocha/issues"
+  },
+  "homepage": "https://github.com/kt3k/kocha#readme"
+}
