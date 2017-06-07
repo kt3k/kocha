@@ -194,8 +194,6 @@ Sets the retry count of the test cases or the test suites.
 
 - Kocha doesn't have `this.timeout(ms)` API. Use `kocha.timeout(ms)` API instead.
 - Kocha doesn't have `this.retries(n)` API. Use `kocha.retries(n)` API instead.
-- Kocha doesn't have `xdescribe` and `xit`. Instead use `describe.skip` and `it.skip` resp.
-- Kocha doesn't have `context` and `specify` keyword. Use `describe` and `it` resp.
 
 # Migration from mocha
 
@@ -204,10 +202,8 @@ Sets the retry count of the test cases or the test suites.
 1. Install `kocha`
 1. Use `kocha` command instead of `mocha` or `_mocha` command.
 1. Add `const { describe, it, ... } = require('kocha')` statement on the top of each mocha test script.
-1. Rewrite `xdescribe` and `xit` to `describe.skip` and `it.skip` resp. if you have any.
 1. Rewrite `this.timeout(N)` to `kocha.timeout(N)` if you have any.
 1. Rewrite `this.retries(N)` to `kocha.retries(N)` if you have any.
-1. Rewrite `context` and `specify` to `describe` to `it` resp. if you have any.
 1. Then your tests should work with kocha.
 
 If the above doesn't work, please file an issue.
@@ -218,10 +214,8 @@ If the above doesn't work, please file an issue.
 1. Set `framework: ['kocha', ...]` instead of `framework: ['mocha', ...]`.
 1. Introduce a bundler (`browserify` or `webpack`) if don't have any.
 1. Add `const { describe, it, ... } = require('kocha')` statement on the top of each mocha test script.
-1. Rewrite `xdescribe` and `xit` to `describe.skip` and `it.skip` resp. if you have any.
 1. Rewrite `this.timeout(N)` to `kocha.timeout(N)` if you have any.
 1. Rewrite `this.retries(N)` to `kocha.retries(N)` if you have any.
-1. Rewrite `context` and `specify` to `describe` to `it` resp. if you have any.
 1. Then your tests should work with kocha.
 
 If the above doesn't work, please file an issue.

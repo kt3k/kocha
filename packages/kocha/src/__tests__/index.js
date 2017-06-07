@@ -462,4 +462,28 @@ describe('kocha', t => {
       })
     })
   })
+
+  describe('xdescribe', () => {
+    it('is an alias of describe.skip', () => {
+      assert.strictEqual(kocha.xdescribe, kocha.describe.skip)
+    })
+  })
+
+  describe('xit', () => {
+    it('is an alias of it.skip', () => {
+      assert.strictEqual(kocha.xit, kocha.it.skip)
+    })
+  })
+
+  describe('context', () => {
+    it('is an alias of describe', () => {
+      assert.strictEqual(kocha.context, kocha.describe)
+    })
+  })
+
+  describe('specify', () => {
+    it('is an alias of it', () => {
+      assert.strictEqual(kocha.specify, kocha.it)
+    })
+  })
 })
