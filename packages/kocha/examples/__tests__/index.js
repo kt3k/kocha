@@ -30,3 +30,9 @@ describe('slow-pass example', () => {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/slow-pass.js')
   })
 })
+describe('babel-pass example', function () {
+  this.timeout(3000)
+  it('passes', () => {
+    execSync('./packages/kocha/bin/kocha.js --require babel-register ./packages/kocha/examples/slow-pass.js')
+  })
+})

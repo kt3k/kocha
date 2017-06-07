@@ -14,6 +14,7 @@
     "example:slow": "./packages/kocha/bin/kocha.js packages/kocha/examples/slow-pass.js",
     "example:self-exec-pass": "node packages/kocha/examples/self-exec-pass.js",
     "example:self-exec-fail": "node --require ./src/__tests__/loader.js packages/kocha/examples/self-exec-fail.js",
+    "example:babel": "./packages/kocha/bin/kocha.js --require babel-register packages/kocha/examples/babel-pass.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },
@@ -34,6 +35,8 @@
   },
   "homepage": "https://github.com/kt3k/kocha#readme",
   "devDependencies": {
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
+    "babel-register": "^6.24.1",
     "browserify": "^14.4.0",
     "codecov": "^2.2.0",
     "espower-loader": "^1.2.2",

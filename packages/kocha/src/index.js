@@ -98,6 +98,9 @@ exports.TestSuite = TestSuite
 exports.TestCase = TestCase
 exports.TestRunner = TestRunner
 
+// Pretends to be ESM for transform-es2015-modules-commonjs
+exports.__esModule = true
+
 // Expose window.__kocha__ if the environment is browser
 // This is for karma environment
 if (typeof window === 'object') {
