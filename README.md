@@ -2,6 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
+[![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
 
 > Modern, simpler Mocha clone, no globals, lint friendly
 
@@ -114,6 +115,14 @@ That's it.
 
 **Note**: You need a CommonJS bundler (typically `browserify` or `webpack`) to use kocha in karma.
 
+**Note**: If you use [babel][babel] together with the bundler, then import `describe`, `it` etc like the below:
+
+```js
+import { describe, it } from 'kocha'
+
+describe('foo', () => { ... })
+```
+
 # APIs
 
 ```js
@@ -221,8 +230,13 @@ If the above doesn't work, please file an issue.
 
 Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japanese.
 
+# History
+
+- 2017-06-07   v1.3.0   Add babel's import support.
+
 # License
 
 MIT
 
 [mocha]: https://github.com/mochajs/mocha
+[babel]: https://babeljs.com/
