@@ -36,3 +36,8 @@ describe('babel-pass example', function () {
     execSync('./packages/kocha/bin/kocha.js --require babel-register ./packages/kocha/examples/slow-pass.js')
   })
 })
+describe('hook-pass example', function () {
+  it('passes', () => {
+    execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/hook-pass.js')
+  })
+})
