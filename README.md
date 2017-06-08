@@ -228,6 +228,8 @@ If the above doesn't work, please file an issue.
 
 If the above doesn't work, please file an issue.
 
+Examples of migration: [1](https://github.com/kt3k/moneybit-app/pull/3/files)
+
 # Name
 
 Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japanese.
