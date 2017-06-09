@@ -56,10 +56,10 @@ class TestCase extends TestRunnableNode {
       return
     }
 
-    return this.parent.runBeforeEachCb()
+    return this.parent.runBeforeEachHooks()
       .then(() => super.run())
       .then(() => this.pass(), e => this.fail(e))
-      .then(() => this.parent.runAfterEachCb())
+      .then(() => this.parent.runAfterEachHooks())
   }
 }
 

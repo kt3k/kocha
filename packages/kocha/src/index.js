@@ -1,5 +1,6 @@
 const TestSuite = require('./test-suite')
 const TestCase = require('./test-case')
+const TestHook = require('./test-hook')
 const TestRunner = require('./test-runner')
 
 let runner
@@ -17,7 +18,7 @@ exports.resetRunner = () => { runner = new TestRunner() }
 exports.resetRunner()
 
 const addSuite = (title, cb, skipped) => {
-  const parent = getRunner().getCurrentSuite()
+  const parent = currentSuite()
   const child = new TestSuite(title, skipped, parent)
 
   parent.addSuite(child)
@@ -30,9 +31,12 @@ const addSuite = (title, cb, skipped) => {
 }
 
 const addTest = (title, cb, skipped) => {
-  const currentSuite = getRunner().getCurrentSuite()
-  currentSuite.addTest(new TestCase(title, cb, skipped, currentSuite))
+  currentSuite().addTest(new TestCase(title, cb, skipped, currentSuite()))
 }
+
+const currentSuite = () => getRunner().getCurrentSuite()
+
+const currentNode = () => getRunner().getCurrentNode()
 
 /**
  * Adds the test suite by the name and factory method.
@@ -71,31 +75,32 @@ exports.it.skip = exports.xit = (title, cb) => {
 }
 
 exports.before = cb => {
-  getRunner().getCurrentSuite().setBeforeCb(cb)
+  currentSuite().setBeforeHook(new TestHook(cb, currentSuite()))
 }
 
 exports.beforeEach = cb => {
-  getRunner().getCurrentSuite().setBeforeEachCb(cb)
+  currentSuite().setBeforeEachHook(new TestHook(cb, currentSuite()))
 }
 
 exports.after = cb => {
-  getRunner().getCurrentSuite().setAfterCb(cb)
+  currentSuite().setAfterHook(new TestHook(cb, currentSuite()))
 }
 
 exports.afterEach = cb => {
-  getRunner().getCurrentSuite().setAfterEachCb(cb)
+  currentSuite().setAfterEachHook(new TestHook(cb, currentSuite()))
 }
 
 exports.timeout = timeout => {
-  getRunner().getCurrentNode().setTimeout(timeout)
+  currentNode().setTimeout(timeout)
 }
 
 exports.retries = n => {
-  getRunner().getCurrentNode().setRetryCount(n)
+  currentNode().setRetryCount(n)
 }
 
 exports.TestSuite = TestSuite
 exports.TestCase = TestCase
+exports.TestHook = TestHook
 exports.TestRunner = TestRunner
 
 // Pretends to be ESM for transform-es2015-modules-commonjs

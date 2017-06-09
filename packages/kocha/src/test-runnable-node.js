@@ -1,5 +1,5 @@
 const TestNode = require('./test-node')
-const { runCb, runCbWithTimeout, throwAfterTimeout } = TestNode
+const { runCb, throwAfterTimeout } = TestNode
 
 /**
  * The runnable node of the test tree.
