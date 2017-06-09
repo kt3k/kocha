@@ -4,6 +4,7 @@
   "description": "Modern, simpler Mocha clone, no globals, lint friendly",
   "main": "src/index.js",
   "bin": "bin/kocha.js",
+  "browser": "lib/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kt3k/kocha.git"
