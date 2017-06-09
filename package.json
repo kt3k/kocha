@@ -16,6 +16,7 @@
     "example:self-exec-fail": "node --require ./src/__tests__/loader.js packages/kocha/examples/self-exec-fail.js",
     "example:babel": "./packages/kocha/bin/kocha.js --require babel-register packages/kocha/examples/babel-pass.js",
     "example:hooks": "./packages/kocha/bin/kocha.js packages/kocha/examples/hooks-pass.js",
+    "example:retries": "./packages/kocha/bin/kocha.js packages/kocha/examples/retries-fail.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },
