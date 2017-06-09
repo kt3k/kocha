@@ -1,7 +1,8 @@
 const { execSync } = require('child_process')
 const assert = require('power-assert')
 
-describe('simple-pass example', () => {
+describe('simple-pass example', function () {
+  this.timeout(3000)
   it('passes', () => {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/simple-pass.js')
   })
