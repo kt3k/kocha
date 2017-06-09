@@ -1,5 +1,11 @@
 const TestRunnableNode = require('./test-runnable-node')
 
+const EVENT_START = 'test'
+const EVENT_END = 'test end'
+const EVENT_PASS = 'pass'
+const EVENT_FAIL = 'fail'
+const EVENT_PENDING = 'pending'
+
 class TestCase extends TestRunnableNode {
   /**
    * @param {string} title The title of the test case
@@ -8,30 +14,33 @@ class TestCase extends TestRunnableNode {
    * @param {TestSuite} parent The parent suite
    */
   constructor (title, test, skipped, parent) {
-    super(title, test, 'test', skipped, parent)
+    super(title, test, skipped, parent)
 
     this.pending = true
     this.state = null
   }
 
   fail (e) {
-    this.calcDuration()
+    this.end()
     this.pending = false
     this.state = 'failed'
-    this.bubbleEvent('fail', this, e)
+    this.bubbleEvent(EVENT_FAIL, this, e)
+    this.bubbleEvent(EVENT_END, this)
   }
 
   pass () {
-    this.calcDuration()
+    this.end()
     this.pending = false
     this.state = 'passed'
-    this.bubbleEvent('pass', this)
+    this.bubbleEvent(EVENT_PASS, this)
+    this.bubbleEvent(EVENT_END, this)
   }
 
   skip () {
-    this.calcDuration()
+    this.end()
     this.pending = true
-    this.bubbleEvent('pending', this)
+    this.bubbleEvent(EVENT_PENDING, this)
+    this.bubbleEvent(EVENT_END, this)
   }
 
   /**
@@ -39,19 +48,17 @@ class TestCase extends TestRunnableNode {
    * @return {Promise|undefined}
    */
   run () {
+    this.bubbleEvent(EVENT_START, this)
     this.start()
 
     if (this.isSkipped()) {
       this.skip()
-      this.end()
-
       return
     }
 
     return this.parent.runBeforeEachCb()
       .then(() => super.run())
-      .then(() => { this.pass() }, e => { this.fail(e) })
-      .then(() => { this.end() })
+      .then(() => this.pass(), e => this.fail(e))
       .then(() => this.parent.runAfterEachCb())
   }
 }
