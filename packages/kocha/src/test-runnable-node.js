@@ -10,14 +10,12 @@ class TestRunnableNode extends TestNode {
   /**
    * @param {string} title The title of the runnable node
    * @param {Function} runnable The function which represents the contents of the runnable
-   * @param {string} type The type of the runnable node
    * @param {boolean} skipped True iff the runnable node is skipped
    * @param {TestSuite} parent The parent suite
    */
-  constructor (title, runnable, type, skipped, parent) {
+  constructor (title, runnable, skipped, parent) {
     super(title, skipped, parent)
 
-    this.type = type
     this.runnable = runnable
     this.startedAt = 0
     this.endedAt = 0
@@ -36,17 +34,12 @@ class TestRunnableNode extends TestNode {
   start () {
     this.startedAt = +new Date()
     this.getRunner().setRunningNode(this)
-    this.bubbleEvent(this.type, this)
-  }
-
-  calcDuration () {
-    this.endedAt = +new Date()
-    this.duration = this.endedAt - this.startedAt
   }
 
   end () {
+    this.endedAt = +new Date()
+    this.duration = this.endedAt - this.startedAt
     this.getRunner().setRunningNode(null)
-    this.bubbleEvent(`${this.type} end`, this)
   }
 
   /**
