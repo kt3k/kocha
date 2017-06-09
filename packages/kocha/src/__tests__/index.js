@@ -250,7 +250,7 @@ describe('kocha', t => {
           })
 
           return runner.run().then(() => {
-            assert(testCase.slow() === 100)
+            assert(testCase.slow() === 75)
           })
         })
       })

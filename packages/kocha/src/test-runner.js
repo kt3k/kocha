@@ -22,7 +22,7 @@ class TestRunner extends TestSuite {
 
     this.timeoutDuration = 2000
     this.currentSuite = this
-    this.currentTest = null
+    this.runningNode = null
   }
 
   /**
@@ -42,23 +42,23 @@ class TestRunner extends TestSuite {
   }
 
   getCurrentNode () {
-    return this.getCurrentTest() || this.getCurrentSuite()
+    return this.getRunningNode() || this.getCurrentSuite()
   }
 
   /**
-   * Sets the currently test case.
-   * @param {TestCase} test The test case
+   * Sets the currently running node.
+   * @param {TestRunnableNode} test The runnable node
    */
-  setCurrentTest (test) {
-    this.currentTest = test
+  setRunningNode (runnable) {
+    this.runningNode = runnable
   }
 
   /**
    * Gets the currently running test case.
-   * @return {TestCase}
+   * @return {TestRunnableNode}
    */
-  getCurrentTest () {
-    return this.currentTest
+  getRunningNode () {
+    return this.runningNode
   }
 
   /**
