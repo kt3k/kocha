@@ -49,7 +49,7 @@ add
   1 passing (4ms)
 ```
 
-# Use in karma
+# Use in [karma][karma]
 
 ## :cd: Install
 
@@ -216,7 +216,7 @@ Sets the retry count of the test cases or the test suites.
 
 If the above doesn't work, please file an issue.
 
-## For karma
+## For [karma][karma]
 
 1. Install `karma-kocha` and `kocha`
 1. Set `framework: ['kocha', ...]` instead of `framework: ['mocha', ...]`.
@@ -244,3 +244,4 @@ MIT
 
 [mocha]: https://github.com/mochajs/mocha
 [babel]: https://babeljs.com/
+[karma]: https://github.com/karma-runner/karma
