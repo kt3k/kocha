@@ -277,6 +277,8 @@ describe('kocha', t => {
 
   describe('before', () => {
     it('registers before callback to each test suite', () => {
+      td.replace(runner, 'emit')
+
       const cb0 = () => {}
       const cb1 = () => {}
 
@@ -286,13 +288,24 @@ describe('kocha', t => {
         kocha.before(cb1)
       })
 
-      assert(runner.beforeCb === cb0)
-      assert(runner.suites[0].beforeCb === cb1)
+      assert(runner.beforeHook instanceof kocha.TestHook)
+      assert(runner.suites[0].beforeHook instanceof kocha.TestHook)
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('hook', runner.beforeHook))
+        td.verify(runner.emit('hook end', runner.beforeHook))
+        td.verify(runner.emit('hook', runner.suites[0].beforeHook))
+        td.verify(runner.emit('hook end', runner.suites[0].beforeHook))
+        td.verify(runner.emit('end'))
+      })
     })
   })
 
   describe('beforeEach', () => {
     it('registers beforeEach callback to each test suite', () => {
+      td.replace(runner, 'emit')
+
       const cb0 = () => {}
       const cb1 = () => {}
 
@@ -300,15 +313,28 @@ describe('kocha', t => {
 
       kocha.describe('foo', () => {
         kocha.beforeEach(cb1)
+
+        kocha.it('bar', () => {})
       })
 
-      assert(runner.beforeEachCb === cb0)
-      assert(runner.suites[0].beforeEachCb === cb1)
+      assert(runner.beforeEachHook instanceof kocha.TestHook)
+      assert(runner.suites[0].beforeEachHook instanceof kocha.TestHook)
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('hook', runner.beforeEachHook))
+        td.verify(runner.emit('hook end', runner.beforeEachHook))
+        td.verify(runner.emit('hook', runner.suites[0].beforeEachHook))
+        td.verify(runner.emit('hook end', runner.suites[0].beforeEachHook))
+        td.verify(runner.emit('end'))
+      })
     })
   })
 
   describe('after', () => {
     it('registers after callback to each test suite', () => {
+      td.replace(runner, 'emit')
+
       const cb0 = () => {}
       const cb1 = () => {}
 
@@ -318,13 +344,24 @@ describe('kocha', t => {
         kocha.after(cb1)
       })
 
-      assert(runner.afterCb === cb0)
-      assert(runner.suites[0].afterCb === cb1)
+      assert(runner.afterHook instanceof kocha.TestHook)
+      assert(runner.suites[0].afterHook instanceof kocha.TestHook)
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('hook', runner.afterHook))
+        td.verify(runner.emit('hook end', runner.afterHook))
+        td.verify(runner.emit('hook', runner.suites[0].afterHook))
+        td.verify(runner.emit('hook end', runner.suites[0].afterHook))
+        td.verify(runner.emit('end'))
+      })
     })
   })
 
   describe('afterEach', () => {
     it('registers afterEach callback to each test suite', () => {
+      td.replace(runner, 'emit')
+
       const cb0 = () => {}
       const cb1 = () => {}
 
@@ -332,10 +369,21 @@ describe('kocha', t => {
 
       kocha.describe('foo', () => {
         kocha.afterEach(cb1)
+
+        kocha.it('bar', () => {})
       })
 
-      assert(runner.afterEachCb === cb0)
-      assert(runner.suites[0].afterEachCb === cb1)
+      assert(runner.afterEachHook instanceof kocha.TestHook)
+      assert(runner.suites[0].afterEachHook instanceof kocha.TestHook)
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('hook', runner.afterEachHook))
+        td.verify(runner.emit('hook end', runner.afterEachHook))
+        td.verify(runner.emit('hook', runner.suites[0].afterEachHook))
+        td.verify(runner.emit('hook end', runner.suites[0].afterEachHook))
+        td.verify(runner.emit('end'))
+      })
     })
   })
 

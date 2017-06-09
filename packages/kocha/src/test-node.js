@@ -39,8 +39,6 @@ const throwAfterTimeout = timeout => wait(timeout).then(() => {
   throw new Error(`Timeout of ${timeout}ms exceeded. For async tests and hooks, ensure "done()" is called; if returning a Promise, ensure it resolves.`)
 })
 
-const runCbWithTimeout = (cb, timeout) => Promise.race([runCb(cb), throwAfterTimeout(timeout)])
-
 class TestNode extends EventEmitter {
   /**
    * @param {string} title The title of the test suite
@@ -138,5 +136,4 @@ class TestNode extends EventEmitter {
 
 module.exports = TestNode
 module.exports.runCb = runCb
-module.exports.runCbWithTimeout = runCbWithTimeout
 module.exports.throwAfterTimeout = throwAfterTimeout

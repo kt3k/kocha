@@ -1,5 +1,4 @@
 const TestNode = require('./test-node')
-const { runCbWithTimeout } = TestNode
 
 class TestSuite extends TestNode {
   /**
@@ -10,10 +9,10 @@ class TestSuite extends TestNode {
   constructor (title, skipped, parent) {
     super(title, skipped, parent)
 
-    this.beforeCb = () => {}
-    this.beforeEachCb = () => {}
-    this.afterCb = () => {}
-    this.afterEachCb = () => {}
+    this.beforeHook = null
+    this.beforeEachHook = null
+    this.afterHook = null
+    this.afterEachHook = null
     this.tests = []
     this.suites = []
   }
@@ -26,20 +25,32 @@ class TestSuite extends TestNode {
     return this.tests.length + this.suites.reduce((sum, suite) => sum + suite.getTotal(), 0)
   }
 
-  setBeforeCb (cb) {
-    this.beforeCb = cb
+  /**
+   * @param {TestHook} hook
+   */
+  setBeforeHook (hook) {
+    this.beforeHook = hook
   }
 
-  setBeforeEachCb (cb) {
-    this.beforeEachCb = cb
+  /**
+   * @param {TestHook} hook
+   */
+  setBeforeEachHook (hook) {
+    this.beforeEachHook = hook
   }
 
-  setAfterEachCb (cb) {
-    this.afterEachCb = cb
+  /**
+   * @param {TestHook} hook
+   */
+  setAfterEachHook (hook) {
+    this.afterEachHook = hook
   }
 
-  setAfterCb (cb) {
-    this.afterCb = cb
+  /**
+   * @param {TestHook} hook
+   */
+  setAfterHook (hook) {
+    this.afterHook = hook
   }
 
   /**
@@ -58,24 +69,32 @@ class TestSuite extends TestNode {
     this.tests.push(test)
   }
 
-  runCb (cb) {
-    return runCbWithTimeout(cb, this.getTimeout())
+  runBeforeHook () {
+    return this.beforeHook ? this.beforeHook.run() : Promise.resolve()
   }
 
-  runBeforeEachCb () {
+  runBeforeEachHooks () {
+    let promise = Promise.resolve()
+
     if (this.parent) {
-      return this.parent.runBeforeEachCb().then(() => this.runCb(this.beforeEachCb))
+      promise = this.parent.runBeforeEachHooks()
     }
 
-    return this.runCb(this.beforeEachCb)
+    return promise.then(() => this.beforeEachHook && this.beforeEachHook.run())
   }
 
-  runAfterEachCb () {
+  runAfterHook () {
+    return this.afterHook ? this.afterHook.run() : Promise.resolve()
+  }
+
+  runAfterEachHooks () {
+    let promise = this.afterEachHook ? this.afterEachHook.run() : Promise.resolve()
+
     if (this.parent) {
-      return this.runCb(this.afterEachCb).then(() => this.parent.runAfterEachCb())
+      promise = promise.then(() => this.parent.runAfterEachHooks())
     }
 
-    return this.runCb(this.afterEachCb)
+    return promise
   }
 
   run () {
@@ -83,10 +102,10 @@ class TestSuite extends TestNode {
       this.bubbleEvent('suite', this)
     }
 
-    return this.runCb(this.beforeCb)
+    return this.runBeforeHook()
       .then(() => this.runTests())
       .then(() => this.runSuites())
-      .then(() => this.runCb(this.afterCb))
+      .then(() => this.runAfterHook())
       .then(() => {
         if (!this.root) {
           this.bubbleEvent('suite end', this)
