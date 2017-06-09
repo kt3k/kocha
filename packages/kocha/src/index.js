@@ -52,7 +52,7 @@ exports.describe = exports.context = (title, cb) => {
  * @param {string} title The title of the suite.
  * @param {Function} cb The factory of subnodes
  */
-exports.describe.skip = exports.xdescribe = (title, cb) => {
+exports.describe.skip = exports.xdescribe = exports.xcontext = (title, cb) => {
   addSuite(title, cb, true)
 }
 
@@ -70,7 +70,7 @@ exports.it = exports.specify = (title, cb) => {
  * @param {string} title The title of the test case
  * @param {Function} cb The test case function
  */
-exports.it.skip = exports.xit = (title, cb) => {
+exports.it.skip = exports.xit = exports.xspecify = (title, cb) => {
   addTest(title, cb, true)
 }
 
