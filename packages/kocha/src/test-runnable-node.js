@@ -22,6 +22,7 @@ class TestRunnableNode extends TestNode {
     this.startedAt = 0
     this.endedAt = 0
     this.duration = 0
+    this.failCount = 0
   }
 
   /**
@@ -60,6 +61,8 @@ class TestRunnableNode extends TestNode {
 
   /**
    * Runs the runnable.
+   *
+   * Gets the timeout and retry count after starting running the runnable. The user can set them inside test cases or hooks.
    */
   run () {
     if (!this.runnable) {
@@ -68,11 +71,18 @@ class TestRunnableNode extends TestNode {
 
     const promise = runCb(this.runnable)
     const timeout = this.getTimeout()
-    const retryCount = this.getRetryCount()
 
     const promiseWithTimeout = Promise.race([promise, throwAfterTimeout(timeout)])
 
-    return Array(retryCount).fill(0).reduce(promise => promise.catch(() => runCbWithTimeout(this.runnable, timeout)), promiseWithTimeout)
+    return promiseWithTimeout.catch(e => {
+      this.failCount += 1
+
+      if (this.failCount <= this.getRetryCount()) {
+        return this.run()
+      }
+
+      throw e
+    })
   }
 }
 
