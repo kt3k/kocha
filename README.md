@@ -4,9 +4,12 @@
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
 [![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
 
+
 > Modern, simpler Mocha clone, no globals, lint friendly
 
 Supports node.js >= active LTS.
+
+[![Build Status](https://saucelabs.com/browser-matrix/kt3k.svg)](https://saucelabs.com/beta/builds/0cb9b561e92a46e5955e47ef9e7c490a)
 
 # Use in node.js
 
