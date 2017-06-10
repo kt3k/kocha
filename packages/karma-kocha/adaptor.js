@@ -1,19 +1,32 @@
-window.__karma__.start = function (config) {
-  var kocha = window.__kocha__
+(function (factory) {
+  if (typeof exports === 'object' && typeof module !== undefined) {
+    module.exports === factory()
+  } else {
+    factory()(window.__karma__, function () { return window.__kocha__ })
+  }
+})(function () {
+  /**
+   * Initialize karma's start method
+   * @param {ContextKarma} karma
+   * @param {Function} kochaGetter The function which returns kocha's module.exports object
+   */
+  var exports = function (karma, kochaGetter) {
+    karma.start = function () {
+      var kocha = kochaGetter()
 
-  if (!kocha) {
-    throw new Error('No kocha test cases are found! require(\'kocha\') and write some tests!')
+      if (!kocha) {
+        throw new Error('No kocha test cases are found! require(\'kocha\') and write some tests!\nSee https://npm.im/kocha for more details.')
+      }
+
+      var runner = kocha.getRunner()
+
+      exports.bindKochaRunnerEventsToContextKarma(runner, karma)
+
+      runner.run()
+    }
   }
 
-  var runner = window.__kocha__.getRunner()
-
-  bindKochaRunnerEventsToContextKarma(runner, window.__karma__)
-
-  runner.run()
-}
-
-var bindKochaRunnerEventsToContextKarma = (function () {
-  var formatError = function (error) {
+  exports.formatError = function (error) {
     var stack = error.stack
     var message = error.message
 
@@ -26,10 +39,8 @@ var bindKochaRunnerEventsToContextKarma = (function () {
     return message
   }
 
-  var processAssertionError = function (error_) {
-    var error
-
-    error = {
+  exports.processAssertionError = function (error_) {
+    var error = {
       name: error_.name,
       message: error_.message,
       showDiff: error_.showDiff
@@ -52,7 +63,7 @@ var bindKochaRunnerEventsToContextKarma = (function () {
    * @param {TestRunner} runner The test runner of kocha
    * @param {ContextKarma} karma The context karma object
    */
-  var bindKochaRunnerEventsToContextKarma = function (runner, karma) {
+  exports.bindKochaRunnerEventsToContextKarma = function (runner, karma) {
     var isDebugPage = /debug.html$/.test(window.location.pathname)
 
     runner.on('start', function () {
@@ -74,8 +85,8 @@ var bindKochaRunnerEventsToContextKarma = (function () {
     })
 
     runner.on('fail', function (test, error) {
-      var simpleError = formatError(error)
-      var assertionError = processAssertionError(error)
+      var simpleError = exports.formatError(error)
+      var assertionError = exports.processAssertionError(error)
 
       if (test.type === 'hook') {
         test.$errors = isDebugPage ? [error] : [simpleError]
@@ -114,5 +125,5 @@ var bindKochaRunnerEventsToContextKarma = (function () {
     })
   }
 
-  return bindKochaRunnerEventsToContextKarma
-}())
+  return exports
+})
