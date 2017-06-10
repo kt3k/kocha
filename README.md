@@ -218,13 +218,20 @@ Examples:
 
 - Kocha isn't a drop-in replacement of [mocha][mocha].
 - Kocha doesn't support interfaces other than `BDD`, like `TDD`, `QUnit`, `Exports` etc
-- Kocha doesn't support standalone mode in browser.
+- Kocha doesn't support standalone mode in browser. Use bundlers and [karma][karma] for browser unit testing.
 - Kocha's BDD interface is not identical to Mocha's BDD interface. See the below for details.
 
 # Differences from mocha
 
+## BDD interface
+
 - Kocha doesn't have `this.timeout(ms)` API. Use `kocha.timeout(ms)` API instead.
 - Kocha doesn't have `this.retries(n)` API. Use `kocha.retries(n)` API instead.
+
+## CLI
+
+- Kocha doesn't support `--opts` option and `mocha.opts` (or `kocha.opts`). Write options directly instead.
+- Kocha doesn't suuport `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
 
 # Migration from mocha
 
