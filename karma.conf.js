@@ -17,7 +17,7 @@ const options = {
   ]
 }
 
-if (false && process.env.CI) {
+if (process.env.CI) {
   // Sauce Labs settings
   const customLaunchers = require('./karma.custom-launchers.js')
   options.plugins.push('karma-sauce-launcher')
