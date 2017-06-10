@@ -1,10 +1,10 @@
 const options = {
   frameworks: ['kocha', 'browserify'],
   files: [
-    'packages/karma-kocha/__tests__/*.js'
+    'packages/karma-kocha/examples/*.js'
   ],
   preprocessors: {
-    'packages/karma-kocha/__tests__/*.js': ['browserify']
+    'packages/karma-kocha/examples/*.js': ['browserify']
   },
   browserify: { debug: true },
   reporters: ['progress'],
