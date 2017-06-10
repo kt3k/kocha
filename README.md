@@ -213,6 +213,7 @@ Examples:
 
 - Support BDD mode, Spec reporter of [mocha][mocha] in CommonJS environment.
   - This includes Karma environment with CommonJS bundler (browserify, webpack).
+- Keeping the basic usability of Mocha, modernize the rusty old aspects of Mocha.
 
 ## Non-goals
 
