@@ -42,3 +42,8 @@ describe('hook-pass example', function () {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/hook-pass.js')
   })
 })
+describe('coffee-pass example', function () {
+  it('passes', () => {
+    execSync('./packages/kocha/bin/kocha.js --require coffee-script/register ./packages/kocha/examples/coffee-pass.coffee')
+  })
+})
