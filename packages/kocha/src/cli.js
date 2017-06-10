@@ -42,6 +42,15 @@ Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+
+Examples:
+  kocha "test/**/*.js"      Runs all the tests under test/
+
+  kocha "src{/,**/}__tests__/**/*.js"
+                            Runs all the tests under src/**/__tests__/
+
+  kocha --require babel-register "test/**/*.js"
+                            Use babel in tests
 `)
   }
 
@@ -60,6 +69,7 @@ Options:
 
     if (this.argv._.length === 0) {
       console.log(color('error message', 'Error:') + ' No input file')
+      console.log('See ' + color('error message', 'kocha -h') + ' for the usage')
       process.exit(1)
     }
 

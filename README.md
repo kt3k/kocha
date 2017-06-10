@@ -189,6 +189,26 @@ Sets the timeout duration to the test cases or the test suites.
 
 Sets the retry count of the test cases or the test suites.
 
+# Kocha CLI
+
+```
+Usage: kocha [options] <files, ...>
+
+Options:
+  -h, --help                Shows the help message
+  -v, --version             Shows the version number
+  -r, --require <name>      Requires the given module e.g. --require babel-register
+
+Examples:
+  kocha "test/**/*.js"      Runs all the tests under test/
+
+  kocha "src{/,**/}__tests__/**/*.js"
+                            Runs all the tests under src/**/__tests__/
+
+  kocha --require babel-register "test/**/*.js"
+                            Use babel in tests
+```
+
 # Goals
 
 - Support BDD mode, Spec reporter of [mocha][mocha] in CommonJS environment.
