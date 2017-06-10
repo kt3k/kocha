@@ -1,4 +1,4 @@
-const kocha = require('../../../packages/kocha')
+const kocha = require('kocha')
 const describe = kocha.describe
 const it = kocha.it
 const assert = require('power-assert')
