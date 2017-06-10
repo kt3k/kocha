@@ -66,6 +66,7 @@
     "exclude": [
       "**/__tests__/**",
       "**/examples/**",
+      "**/kocha/lib/**",
       "karma.*.js"
     ]
   }
