@@ -16,13 +16,15 @@ class TestCase extends TestRunnableNode {
   constructor (title, test, skipped, parent) {
     super(title, test, skipped, parent)
 
-    this.pending = true
+    this.passed = false
+    this.failed = false
+    this.pending = false
     this.state = null
   }
 
   fail (e) {
     this.end()
-    this.pending = false
+    this.failed = true
     this.state = 'failed'
     this.bubbleEvent(EVENT_FAIL, this, e)
     this.bubbleEvent(EVENT_END, this)
@@ -30,7 +32,7 @@ class TestCase extends TestRunnableNode {
 
   pass () {
     this.end()
-    this.pending = false
+    this.passed = true
     this.state = 'passed'
     this.bubbleEvent(EVENT_PASS, this)
     this.bubbleEvent(EVENT_END, this)
