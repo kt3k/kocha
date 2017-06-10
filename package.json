@@ -19,6 +19,7 @@
     "example:babel": "./packages/kocha/bin/kocha.js --require babel-register packages/kocha/examples/babel-pass.js",
     "example:hooks": "./packages/kocha/bin/kocha.js packages/kocha/examples/hooks-pass.js",
     "example:retries": "./packages/kocha/bin/kocha.js packages/kocha/examples/retries-fail.js",
+    "example:coffee": "./packages/kocha/bin/kocha.js --require coffee-script/register packages/kocha/examples/coffee-pass.coffee",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },
@@ -45,6 +46,7 @@
     "babel-register": "^6.24.1",
     "browserify": "^14.4.0",
     "codecov": "^2.2.0",
+    "coffee-script": "^1.12.6",
     "espower-loader": "^1.2.2",
     "karma": "^1.7.0",
     "karma-browserify": "^5.1.1",
