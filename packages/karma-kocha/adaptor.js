@@ -1,18 +1,20 @@
-(function (factory) {
+(function (global, factory) {
   if (typeof exports === 'object' && typeof module !== undefined) {
-    module.exports === factory()
+    module.exports = factory(global)
   } else {
-    factory()(window.__karma__, function () { return window.__kocha__ })
+    factory(global).setUp(global.__karma__, function () { return global.__kocha__ })
   }
-})(function () {
+})(this, function (global) {
+  var exports = {}
+
   /**
    * Initialize karma's start method
    * @param {ContextKarma} karma
-   * @param {Function} kochaGetter The function which returns kocha's module.exports object
+   * @param {Function} kochaFactory The function which returns kocha's module.exports object
    */
-  var exports = function (karma, kochaGetter) {
+  exports.setUp = function (karma, kochaFactory) {
     karma.start = function () {
-      var kocha = kochaGetter()
+      var kocha = kochaFactory()
 
       if (!kocha) {
         throw new Error('No kocha test cases are found! require(\'kocha\') and write some tests!\nSee https://npm.im/kocha for more details.')
@@ -20,7 +22,7 @@
 
       var runner = kocha.getRunner()
 
-      exports.bindKochaRunnerEventsToContextKarma(runner, karma)
+      exports.bindContextKarmaToKochaRunner(karma, runner)
 
       runner.run()
     }
@@ -30,13 +32,15 @@
     var stack = error.stack
     var message = error.message
 
-    if (stack) {
-      if (message && stack.indexOf(message) === -1) {
-        stack = message + '\n' + stack
-      }
+    if (!stack) {
+      return message
     }
 
-    return message
+    if (message && stack.indexOf(message) === -1) {
+      return message + '\n' + stack
+    }
+
+    return stack
   }
 
   exports.processAssertionError = function (error_) {
@@ -63,15 +67,13 @@
    * @param {TestRunner} runner The test runner of kocha
    * @param {ContextKarma} karma The context karma object
    */
-  exports.bindKochaRunnerEventsToContextKarma = function (runner, karma) {
-    var isDebugPage = /debug.html$/.test(window.location.pathname)
-
+  exports.bindContextKarmaToKochaRunner = function (karma, runner) {
     runner.on('start', function () {
       karma.info({ total: runner.total })
     })
 
     runner.on('end', function () {
-      karma.complete({ coverage: window.__coverage__ })
+      karma.complete({ coverage: global.__coverage__ })
     })
 
     runner.on('test', function (test) {
@@ -80,21 +82,18 @@
       test.$assertionErrors = []
     })
 
-    runner.on('pending', function (test) {
-      test.pending = true
-    })
-
     runner.on('fail', function (test, error) {
       var simpleError = exports.formatError(error)
       var assertionError = exports.processAssertionError(error)
 
+      test.$errors = test.$errors || []
+      test.$assertionErrors = test.$assertionErrors || []
+
+      test.$errors.push(simpleError)
+      test.$assertionErrors.push(assertionError)
+
       if (test.type === 'hook') {
-        test.$errors = isDebugPage ? [error] : [simpleError]
-        test.$assertionErrors = assertionError ? [assertionError] : []
         runner.emit('test end', test)
-      } else {
-        test.$errors.push(isDebugPage ? error : simpleError)
-        if (assertionError) test.$assertionErrors.push(assertionError)
       }
     })
 
