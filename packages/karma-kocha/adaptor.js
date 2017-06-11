@@ -22,12 +22,17 @@
 
       var runner = kocha.getRunner()
 
-      exports.bindContextKarmaToKochaRunner(karma, runner)
+      exports.bindContextKarmaToKochaRunner(karma, runner, kocha)
 
       runner.run()
     }
   }
 
+  /**
+   * Retruns the string from the given error.
+   * @param {Error} error
+   * @return {string}
+   */
   exports.formatError = function (error) {
     var stack = error.stack
     var message = error.message
@@ -43,7 +48,13 @@
     return stack
   }
 
-  exports.processAssertionError = function (error_) {
+  /**
+   * Processes the assertion error for better display.
+   * @param {Error} error_ The error object
+   * @param {Function} stringify The stringify function
+   * @return {Object}
+   */
+  exports.processAssertionError = function (error_, stringify) {
     var error = {
       name: error_.name,
       message: error_.message,
@@ -51,8 +62,8 @@
     }
 
     if (error.showDiff) {
-      error.actual = JSON.stringify(error_.actual)
-      error.expected = JSON.stringify(error_.expected)
+      error.actual = stringify(error_.actual)
+      error.expected = stringify(error_.expected)
     }
 
     return error
@@ -66,8 +77,9 @@
    *
    * @param {TestRunner} runner The test runner of kocha
    * @param {ContextKarma} karma The context karma object
+   * @param {Object} kocha kocha's exports object
    */
-  exports.bindContextKarmaToKochaRunner = function (karma, runner) {
+  exports.bindContextKarmaToKochaRunner = function (karma, runner, kocha) {
     runner.on('start', function () {
       karma.info({ total: runner.total })
     })
@@ -83,8 +95,8 @@
     })
 
     runner.on('fail', function (test, error) {
-      var simpleError = exports.formatError(error)
-      var assertionError = exports.processAssertionError(error)
+      var simpleError = exports.formatError(error, kocha)
+      var assertionError = exports.processAssertionError(error, kocha.stringify)
 
       test.$errors = test.$errors || []
       test.$assertionErrors = test.$assertionErrors || []

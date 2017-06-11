@@ -2,6 +2,7 @@ const { EventEmitter } = require('events')
 const assert = require('power-assert')
 const td = require('testdouble')
 const adaptor = require('../adaptor')
+const kocha = require('kocha')
 const { setUp, formatError, processAssertionError, bindContextKarmaToKochaRunner } = adaptor
 
 describe('adaptor', () => {
@@ -36,13 +37,14 @@ describe('adaptor', () => {
         const runner = { run: td.function() }
 
         const karma = {}
-        const kochaFactory = () => ({ getRunner: () => runner })
+        const kocha = { getRunner: () => runner }
+        const kochaFactory = () => kocha
 
         setUp(karma, kochaFactory)
 
         karma.start()
 
-        td.verify(adaptor.bindContextKarmaToKochaRunner(karma, runner))
+        td.verify(adaptor.bindContextKarmaToKochaRunner(karma, runner, kocha))
         td.verify(runner.run())
       })
     })
@@ -79,13 +81,13 @@ describe('adaptor', () => {
         expected: { foo: 1 },
         actual: { bar: 2 },
         showDiff: true
-      })
+      }, kocha.stringify)
 
       assert.deepStrictEqual(processedError, {
         name: 'foo',
         message: 'An error',
-        expected: '{"foo":1}',
-        actual: '{"bar":2}',
+        expected: 'Object{foo:1}',
+        actual: 'Object{bar:2}',
         showDiff: true
       })
     })
@@ -96,7 +98,7 @@ describe('adaptor', () => {
       const runner = { on: td.function() }
       const karma = {}
 
-      bindContextKarmaToKochaRunner(karma, runner)
+      bindContextKarmaToKochaRunner(karma, runner, kocha)
 
       td.verify(runner.on('start', td.matchers.isA(Function)))
       td.verify(runner.on('end', td.matchers.isA(Function)))
@@ -112,7 +114,7 @@ describe('adaptor', () => {
 
         runner.total = 3
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.emit('start', runner)
 
@@ -125,7 +127,7 @@ describe('adaptor', () => {
         const runner = new EventEmitter()
         const karma = { complete: td.function() }
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.emit('end', runner)
 
@@ -139,7 +141,7 @@ describe('adaptor', () => {
         const karma = {}
         const test = {}
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.emit('test', test)
 
@@ -155,7 +157,7 @@ describe('adaptor', () => {
         const karma = {}
         const test = {}
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.emit('fail', test, new Error('foo'))
 
@@ -168,7 +170,7 @@ describe('adaptor', () => {
         const karma = { result () {} }
         const test = { type: 'hook', parent: { root: true } }
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.on('test end', () => done())
 
@@ -182,7 +184,7 @@ describe('adaptor', () => {
         const karma = { result: td.function() }
         const test = { type: 'hook', parent: { parent: { root: true } }, pending: true }
 
-        bindContextKarmaToKochaRunner(karma, runner)
+        bindContextKarmaToKochaRunner(karma, runner, kocha)
 
         runner.emit('test end', test)
 
