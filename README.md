@@ -267,6 +267,7 @@ Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japane
 
 # History
 
+- 2017-06-11   v1.5.3   Improve error formatting of karma-kocha.
 - 2017-06-10   v1.5.1   Support IE11.
 - 2017-06-09   v1.4.0   Support hook events.
 - 2017-06-07   v1.3.0   Add babel's import support.
