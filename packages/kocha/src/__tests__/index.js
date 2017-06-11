@@ -300,6 +300,47 @@ describe('kocha', t => {
         td.verify(runner.emit('end'))
       })
     })
+
+    describe('when hook failed', () => {
+      it('skips the test case', () => {
+        td.replace(runner, 'emit')
+
+        const cb0 = () => { throw new Error() }
+
+        kocha.before(cb0)
+
+        kocha.it('foo', () => {})
+
+        return runner.run().then(() => {
+          td.verify(runner.emit('hook', runner.beforeHook))
+          td.verify(runner.emit('hook end', runner.beforeHook))
+          td.verify(runner.emit('fail', runner.beforeHook, td.matchers.isA(Error)))
+          td.verify(runner.emit('test', td.matchers.anything()), { times: 0 })
+          td.verify(runner.emit('test end', td.matchers.anything), { times: 0 })
+        })
+      })
+
+      it('does not skip the after hook', () => {
+        td.replace(runner, 'emit')
+
+        const cb0 = () => { throw new Error() }
+        const cb1 = () => { throw new Error() }
+
+        kocha.before(cb0)
+        kocha.after(cb1)
+
+        kocha.it('foo', () => {})
+
+        return runner.run().then(() => {
+          td.verify(runner.emit('hook', runner.beforeHook))
+          td.verify(runner.emit('hook end', runner.beforeHook))
+          td.verify(runner.emit('fail', runner.beforeHook, td.matchers.isA(Error)))
+          td.verify(runner.emit('fail', runner.afterHook, td.matchers.isA(Error)))
+          td.verify(runner.emit('test', td.matchers.anything()), { times: 0 })
+          td.verify(runner.emit('test end', td.matchers.anything), { times: 0 })
+        })
+      })
+    })
   })
 
   describe('beforeEach', () => {
@@ -310,6 +351,8 @@ describe('kocha', t => {
       const cb1 = () => {}
 
       kocha.beforeEach(cb0)
+
+      kocha.it('baz', () => {})
 
       kocha.describe('foo', () => {
         kocha.beforeEach(cb1)
@@ -322,10 +365,10 @@ describe('kocha', t => {
 
       return runner.run().then(() => {
         td.verify(runner.emit('start'))
-        td.verify(runner.emit('hook', runner.beforeEachHook))
-        td.verify(runner.emit('hook end', runner.beforeEachHook))
-        td.verify(runner.emit('hook', runner.suites[0].beforeEachHook))
-        td.verify(runner.emit('hook end', runner.suites[0].beforeEachHook))
+        td.verify(runner.emit('hook', runner.beforeEachHook), { times: 2 })
+        td.verify(runner.emit('hook end', runner.beforeEachHook), { times: 2 })
+        td.verify(runner.emit('hook', runner.suites[0].beforeEachHook), { times: 1 })
+        td.verify(runner.emit('hook end', runner.suites[0].beforeEachHook), { times: 1 })
         td.verify(runner.emit('end'))
       })
     })

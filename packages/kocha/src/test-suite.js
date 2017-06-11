@@ -70,7 +70,7 @@ class TestSuite extends TestNode {
   }
 
   runBeforeHook () {
-    return this.beforeHook ? this.beforeHook.run() : Promise.resolve()
+    return this.beforeHook ? this.beforeHook.run() : Promise.resolve(true)
   }
 
   runBeforeEachHooks () {
@@ -80,15 +80,15 @@ class TestSuite extends TestNode {
       promise = this.parent.runBeforeEachHooks()
     }
 
-    return promise.then(() => this.beforeEachHook && this.beforeEachHook.run())
+    return promise.then(() => this.beforeEachHook ? this.beforeEachHook.run() : Promise.resolve(true))
   }
 
   runAfterHook () {
-    return this.afterHook ? this.afterHook.run() : Promise.resolve()
+    return this.afterHook ? this.afterHook.run() : Promise.resolve(true)
   }
 
   runAfterEachHooks () {
-    let promise = this.afterEachHook ? this.afterEachHook.run() : Promise.resolve()
+    let promise = this.afterEachHook ? this.afterEachHook.run() : Promise.resolve(true)
 
     if (this.parent) {
       promise = promise.then(() => this.parent.runAfterEachHooks())
@@ -97,20 +97,30 @@ class TestSuite extends TestNode {
     return promise
   }
 
-  run () {
+  start () {
     if (!this.root) {
       this.bubbleEvent('suite', this)
     }
+  }
+
+  end () {
+    if (!this.root) {
+      this.bubbleEvent('suite end', this)
+    }
+  }
+
+  run () {
+    this.start()
 
     return this.runBeforeHook()
-      .then(() => this.runTests())
-      .then(() => this.runSuites())
-      .then(() => this.runAfterHook())
-      .then(() => {
-        if (!this.root) {
-          this.bubbleEvent('suite end', this)
+      .then(passed => {
+        if (!passed) {
+          return
         }
+        return this.runTests().then(() => this.runSuites())
       })
+      .then(() => this.runAfterHook())
+      .then(() => this.end(), () => this.end())
   }
 
   runTests () {

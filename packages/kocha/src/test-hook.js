@@ -8,20 +8,29 @@ const EVENT_END = 'hook end'
  */
 class TestHook extends TestRunnableNode {
   /**
+   * @param {string} title The title
    * @param {Function} hook The hook impl
    * @param {TestSuite} parent The suite it belongs
    */
-  constructor (hook, parent) {
-    super('', hook, false, parent)
+  constructor (title, hook, parent) {
+    super(title, hook, false, parent)
+
+    this.type = 'hook'
+    this.failed = false
   }
 
   run () {
     this.bubbleEvent(EVENT_START, this)
     this.start()
 
-    return super.run().then(() => {
+    return super.run().catch(e => {
+      this.failed = true
+      this.bubbleEvent('fail', this, e)
+    }).then(() => {
       this.end()
       this.bubbleEvent(EVENT_END, this)
+
+      return !this.failed
     })
   }
 }

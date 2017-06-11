@@ -11,7 +11,7 @@ class Spec extends Base {
   constructor (runner) {
     super(runner)
 
-    let indents = 0
+    let indents = 1
     let n = 0
 
     const indent = () => Array(indents).join('  ')

@@ -76,19 +76,19 @@ exports.it.skip = exports.xit = exports.xspecify = (title, cb) => {
 }
 
 exports.before = cb => {
-  currentSuite().setBeforeHook(new TestHook(cb, currentSuite()))
+  currentSuite().setBeforeHook(new TestHook('"before all" hook', cb, currentSuite()))
 }
 
 exports.beforeEach = cb => {
-  currentSuite().setBeforeEachHook(new TestHook(cb, currentSuite()))
+  currentSuite().setBeforeEachHook(new TestHook('"before each" hook', cb, currentSuite()))
 }
 
 exports.after = cb => {
-  currentSuite().setAfterHook(new TestHook(cb, currentSuite()))
+  currentSuite().setAfterHook(new TestHook('"after all" hook', cb, currentSuite()))
 }
 
 exports.afterEach = cb => {
-  currentSuite().setAfterEachHook(new TestHook(cb, currentSuite()))
+  currentSuite().setAfterEachHook(new TestHook('"after each" hook', cb, currentSuite()))
 }
 
 exports.timeout = timeout => {

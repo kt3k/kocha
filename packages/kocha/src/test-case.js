@@ -16,6 +16,7 @@ class TestCase extends TestRunnableNode {
   constructor (title, test, skipped, parent) {
     super(title, test, skipped, parent)
 
+    this.type = 'test'
     this.passed = false
     this.failed = false
     this.pending = false
@@ -55,12 +56,17 @@ class TestCase extends TestRunnableNode {
 
     if (this.isSkipped()) {
       this.skip()
-      return
+      return Promise.resolve()
     }
 
     return this.parent.runBeforeEachHooks()
-      .then(() => super.run())
-      .then(() => this.pass(), e => this.fail(e))
+      .then(passed => {
+        if (!passed) {
+          return
+        }
+
+        return super.run().then(() => this.pass(), e => this.fail(e))
+      })
       .then(() => this.parent.runAfterEachHooks())
   }
 }
