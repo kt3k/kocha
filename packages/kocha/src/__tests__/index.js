@@ -511,27 +511,22 @@ describe('kocha', t => {
     })
   })
 
-  describe('xdescribe', () => {
-    it('is an alias of describe.skip', () => {
+  describe('aliases', () => {
+    it('are set correctly', () => {
       assert.strictEqual(kocha.xdescribe, kocha.describe.skip)
-    })
-  })
-
-  describe('xit', () => {
-    it('is an alias of it.skip', () => {
+      assert.strictEqual(kocha.xcontext, kocha.describe.skip)
       assert.strictEqual(kocha.xit, kocha.it.skip)
-    })
-  })
-
-  describe('context', () => {
-    it('is an alias of describe', () => {
+      assert.strictEqual(kocha.xspecify, kocha.it.skip)
       assert.strictEqual(kocha.context, kocha.describe)
+      assert.strictEqual(kocha.specify, kocha.it)
     })
   })
 
-  describe('specify', () => {
-    it('is an alias of it', () => {
-      assert.strictEqual(kocha.specify, kocha.it)
+  describe('stringify', () => {
+    it('stringifies the given object. See https://github.com/twada/stringifier for details', () => {
+      const str = kocha.stringify({ foo: 1, bar: new Date(0) })
+
+      assert.strictEqual(str, "Object{foo:1,bar:new Date(\"1970-01-01T00:00:00.000Z\")}")
     })
   })
 })

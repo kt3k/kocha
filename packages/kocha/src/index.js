@@ -2,6 +2,7 @@ const TestSuite = require('./test-suite')
 const TestCase = require('./test-case')
 const TestHook = require('./test-hook')
 const TestRunner = require('./test-runner')
+const stringify = require('stringifier').stringify
 
 let runner
 
@@ -102,6 +103,7 @@ exports.TestSuite = TestSuite
 exports.TestCase = TestCase
 exports.TestHook = TestHook
 exports.TestRunner = TestRunner
+exports.stringify = stringify
 
 // Pretends to be ESM for transform-es2015-modules-commonjs
 exports.__esModule = true
