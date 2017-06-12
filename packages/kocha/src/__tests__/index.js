@@ -118,7 +118,7 @@ describe('kocha', t => {
       })
     })
 
-    it('registers the async test case and emit pass event when the done is called', () => {
+    it('registers the async test case and it emits pass event when the done is called', () => {
       td.replace(runner, 'emit')
 
       kocha.it('foo', done => { setTimeout(() => done(), 100) })
@@ -135,7 +135,7 @@ describe('kocha', t => {
       })
     })
 
-    it('registers the async test case and emit fail event when the done is called with error object', () => {
+    it('registers the async test case and it emits fail event when the done is called with error object', () => {
       td.replace(runner, 'emit')
 
       const error = new Error('abc')
@@ -154,7 +154,7 @@ describe('kocha', t => {
       })
     })
 
-    it('registers the async test case and emit fail event when the done is called with non-error non-null object', () => {
+    it('registers the async test case and it emits fail event when the done is called with non-error non-null object', () => {
       td.replace(runner, 'emit')
 
       kocha.it('foo', done => { setTimeout(() => done({}), 100) })
@@ -167,6 +167,39 @@ describe('kocha', t => {
         td.verify(runner.emit('fail', test, td.matchers.isA(Error)))
         td.verify(runner.emit('test end', test))
         td.verify(runner.emit('end'))
+      })
+    })
+
+    it('registers the async test case and it emits fail event when an uncaught error emitted before done is called', () => {
+      const originalListeners = process.listeners('uncaughtException')
+      // To test the uncaught error features of kocha, removes mocha's uncaught handler.
+      process.removeAllListeners('uncaughtException')
+
+      td.replace(runner, 'emit')
+
+      kocha.it('foo', done => { setTimeout(() => {
+        throw new Error('uncaught error')
+      }, 100) })
+
+      kocha.it('bar', done => { setTimeout(() => {
+        throw new Error('uncaught error')
+      }, 100) })
+
+      const foo = runner.tests[0]
+      const bar = runner.tests[0]
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('test', foo))
+        td.verify(runner.emit('fail', foo, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', foo))
+        td.verify(runner.emit('test', bar))
+        td.verify(runner.emit('fail', bar, td.matchers.isA(Error)))
+        td.verify(runner.emit('test end', bar))
+        td.verify(runner.emit('end'))
+
+        // Restore the original listeners
+        originalListeners.forEach(listener => { process.on('uncaughtException', listener) })
       })
     })
 

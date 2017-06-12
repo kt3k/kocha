@@ -1,5 +1,7 @@
 const TestSuite = require('./test-suite')
 
+const EVENT_UNCAUGHT_EXCEPTION = 'uncaughtException'
+
 /**
  * The test runner class.
  *
@@ -61,11 +63,28 @@ class TestRunner extends TestSuite {
     return this.runningNode
   }
 
+  getUncaughtPromise () {
+    return this.uncaughtPromise
+  }
+
+  bindToUncaughtException () {
+    this.uncaughtPromise = new Promise((resolve, reject) => {
+      const uncaughtListener = e => {
+        process.removeListener(EVENT_UNCAUGHT_EXCEPTION, uncaughtListener)
+        this.bindToUncaughtException()
+        e.uncaught = true
+        reject(e)
+      }
+      process.on(EVENT_UNCAUGHT_EXCEPTION, uncaughtListener)
+    })
+  }
+
   /**
    * Runs the tests. Private API.
    * @return {Promise}
    */
   run () {
+    this.bindToUncaughtException()
     this.total = this.getTotal()
     this.bubbleEvent('start')
     return super.run()

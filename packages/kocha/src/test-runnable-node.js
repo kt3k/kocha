@@ -65,7 +65,7 @@ class TestRunnableNode extends TestNode {
     const promise = runCb(this.runnable)
     const timeout = this.getTimeout()
 
-    const promiseWithTimeout = Promise.race([promise, throwAfterTimeout(timeout)])
+    const promiseWithTimeout = Promise.race([promise, throwAfterTimeout(timeout), this.getRunner().getUncaughtPromise()])
 
     return promiseWithTimeout.catch(e => {
       this.failCount += 1
