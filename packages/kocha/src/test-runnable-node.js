@@ -1,4 +1,5 @@
 const TestNode = require('./test-node')
+const { EVENT } = require('./const')
 const { runCb, throwAfterTimeout } = TestNode
 
 /**
@@ -21,6 +22,8 @@ class TestRunnableNode extends TestNode {
     this.endedAt = 0
     this.duration = 0
     this.failCount = 0
+    this.failed = false
+    this.state = null
   }
 
   /**
@@ -29,6 +32,16 @@ class TestRunnableNode extends TestNode {
    */
   timeout () {
     return this.getTimeout()
+  }
+
+  /**
+   * Fails the node with the given error.
+   * @param {Error} e The error
+   */
+  fail (e) {
+    this.failed = true
+    this.state = 'failed'
+    this.bubbleEvent(EVENT.FAIL, this, e)
   }
 
   start () {
@@ -62,7 +75,10 @@ class TestRunnableNode extends TestNode {
       return
     }
 
-    const promise = runCb(this.runnable)
+    const promise = runCb(this.runnable, () => {
+      this.fail(new Error('done() called multiple times'))
+    })
+
     const timeout = this.getTimeout()
 
     const promiseWithTimeout = Promise.race([promise, throwAfterTimeout(timeout), this.getRunner().getUncaughtPromise()])

@@ -10,22 +10,32 @@ const isAsyncCb = cb => cb.length > 0
 
 /**
  * @param {Function} func The callback function
+ * @param {Function} onDoubleCall The callback for double call
  * @return {Promise}
  */
-const runAsyncCb = func => new Promise((resolve, reject) => func(result => {
-  if (result instanceof Error) { return reject(result) }
-  if (result) { return reject(new Error(`done() invoked with non-Error: ${result}`)) }
+const runAsyncCb = (func, onDoubleCall) => new Promise((resolve, reject) => {
+  let doneCalledCount = 0
+  const done = result => {
+    doneCalledCount += 1
+    if (doneCalledCount === 2) { return onDoubleCall() }
+    if (doneCalledCount > 2) { return } // Ignores excessive calls of done
+    if (result instanceof Error) { return reject(result) }
+    if (result) { return reject(new Error(`done() invoked with non-Error: ${result}`)) }
 
-  resolve()
-}))
+    resolve()
+  }
+
+  func(done)
+})
 
 /**
  * @param {Function} cb The callback function
+ * @param {Function} onDoubleCall The callback for double call
  * @return {Promise}
  */
-const runCb = cb => {
+const runCb = (cb, onDoubleCall) => {
   if (isAsyncCb(cb)) {
-    return runAsyncCb(cb)
+    return runAsyncCb(cb, onDoubleCall)
   }
 
   try {

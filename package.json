@@ -20,6 +20,7 @@
     "example:retries": "./packages/kocha/bin/kocha.js packages/kocha/examples/retries-fail.js",
     "example:coffee": "./packages/kocha/bin/kocha.js --require coffee-script/register packages/kocha/examples/coffee-pass.coffee",
     "example:uncaught": "./packages/kocha/bin/kocha.js packages/kocha/examples/uncaught-fail.js",
+    "example:multiple-done-fail": "./packages/kocha/bin/kocha.js packages/kocha/examples/multiple-done-fail.js",
     "cov": "nyc --reporter=lcov npm test",
     "codecov": "npm run cov && codecov"
   },

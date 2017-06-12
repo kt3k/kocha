@@ -16,7 +16,6 @@ class TestHook extends TestRunnableNode {
     super(title, hook, false, parent)
 
     this.type = 'hook'
-    this.failed = false
   }
 
   run () {
@@ -24,8 +23,7 @@ class TestHook extends TestRunnableNode {
     this.start()
 
     return super.run().catch(e => {
-      this.failed = true
-      this.bubbleEvent('fail', this, e)
+      this.fail(e)
     }).then(() => {
       this.end()
       this.bubbleEvent(EVENT_END, this)

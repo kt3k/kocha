@@ -18,32 +18,24 @@ class TestCase extends TestRunnableNode {
 
     this.type = 'test'
     this.passed = false
-    this.failed = false
     this.pending = false
-    this.state = null
-  }
-
-  fail (e) {
-    this.end()
-    this.failed = true
-    this.state = 'failed'
-    this.bubbleEvent(EVENT_FAIL, this, e)
-    this.bubbleEvent(EVENT_END, this)
   }
 
   pass () {
-    this.end()
+    if (this.failed) {
+      // If it's already failed then, do not pass it
+      return
+    }
+
     this.passed = true
     this.state = 'passed'
     this.bubbleEvent(EVENT_PASS, this)
-    this.bubbleEvent(EVENT_END, this)
   }
 
   skip () {
-    this.end()
     this.pending = true
+    this.state = 'pending'
     this.bubbleEvent(EVENT_PENDING, this)
-    this.bubbleEvent(EVENT_END, this)
   }
 
   /**
@@ -55,7 +47,9 @@ class TestCase extends TestRunnableNode {
     this.start()
 
     if (this.isSkipped()) {
+      this.end()
       this.skip()
+      this.bubbleEvent(EVENT_END, this)
       return Promise.resolve()
     }
 
@@ -65,8 +59,15 @@ class TestCase extends TestRunnableNode {
           return
         }
 
-        return super.run().then(() => this.pass(), e => this.fail(e))
+        return super.run().then(() => {
+          this.end()
+          this.pass()
+        }, e => {
+          this.end()
+          this.fail(e)
+        })
       })
+      .then(() => this.bubbleEvent(EVENT_END, this))
       .then(() => this.parent.runAfterEachHooks())
   }
 }

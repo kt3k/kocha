@@ -154,6 +154,28 @@ describe('kocha', t => {
       })
     })
 
+    it('registers the async test case and it emits fail event when the done is called more than twice', () => {
+      td.replace(runner, 'emit')
+
+      kocha.it('foo', done => { setTimeout(() => {
+        done()
+        done()
+        done()
+        done()
+      }, 100) })
+
+      const test = runner.tests[0]
+
+      return runner.run().then(() => {
+        td.verify(runner.emit('start'))
+        td.verify(runner.emit('test', test))
+        td.verify(runner.emit('fail', test, td.matchers.isA(Error)), { times: 1 })
+        assert.equal(test.state, 'failed')
+        td.verify(runner.emit('test end', test))
+        td.verify(runner.emit('end'))
+      })
+    })
+
     it('registers the async test case and it emits fail event when the done is called with non-error non-null object', () => {
       td.replace(runner, 'emit')
 
