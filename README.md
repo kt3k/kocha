@@ -1,5 +1,7 @@
 # Kocha
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/kt3k/kocha.svg)](https://greenkeeper.io/)
+
 [![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
 [![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
