@@ -1,4 +1,4 @@
-# Kocha
+# <img src="https://kt3k.github.io/kocha/media/logo.svg" />
 
 [![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)

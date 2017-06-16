@@ -1,4 +1,4 @@
-# Kocha
+# <img src="https://kt3k.github.io/kocha/media/logo.svg" />
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/kt3k/kocha.svg)](https://greenkeeper.io/)
 
