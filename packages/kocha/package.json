@@ -1,6 +1,6 @@
 {
   "name": "kocha",
-  "version": "1.5.6",
+  "version": "1.6.0",
   "description": "Modern, simpler Mocha clone, no globals, lint friendly",
   "main": "src/index.js",
   "bin": "bin/kocha.js",
