@@ -1,9 +1,11 @@
 const { select } = require('action-selector')
 const pkg = require('../package')
-const { getRunner } = require('./')
+const kocha = require('./')
+const { getRunner } = kocha
 const lookupFilesAll = require('./utils/lookup-files-all')
 const { EventEmitter } = require('events')
 const color = require('./utils/color')
+const ms = require('ms')
 
 /**
  * The command line interface.
@@ -42,6 +44,7 @@ Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+  -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
   kocha "test/**/*.js"      Runs all the tests under test/
@@ -73,9 +76,25 @@ Examples:
       process.exit(1)
     }
 
+    // -r, --require
     const modules = [].concat(this.argv.r, this.argv.require).filter(Boolean)
 
-    modules.forEach(moduleName => require(moduleName))
+    modules.forEach(moduleName => { require(moduleName) })
+
+    // -t, --timeout
+    const timeout = this.argv.t || this.argv.timeout
+
+    if (timeout != null) {
+      const duration = ms(timeout)
+
+      if (duration == null) {
+        console.log(color('error message', 'Error:') + ` The timeout duration is invalid: "${timeout}"`)
+        process.exit(1)
+      }
+
+      console.log(`Setting timeout duration: ${duration}ms`)
+      kocha.timeout(duration)
+    }
 
     const files = lookupFilesAll(this.argv._, { cwd: process.cwd() })
 
