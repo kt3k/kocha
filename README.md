@@ -200,6 +200,7 @@ Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+  -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
   kocha "test/**/*.js"      Runs all the tests under test/
