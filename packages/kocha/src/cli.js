@@ -1,7 +1,7 @@
 const { select } = require('action-selector')
 const pkg = require('../package')
 const { getRunner } = require('./')
-const requireGlob = require('./utils/require-glob')
+const lookupFilesAll = require('./utils/lookup-files-all')
 const { EventEmitter } = require('events')
 const color = require('./utils/color')
 
@@ -77,7 +77,15 @@ Examples:
 
     modules.forEach(moduleName => require(moduleName))
 
-    requireGlob(this.argv._, { cwd: process.cwd() })
+    const files = lookupFilesAll(this.argv._, { cwd: process.cwd() })
+
+    if (files.length === 0) {
+      console.log(color('error message', 'Error:') + ' No input file')
+      console.log('See ' + color('error message', 'kocha -h') + ' for the usage')
+      process.exit(1)
+    }
+
+    files.forEach(file => { require(file) })
 
     const runner = getRunner()
 

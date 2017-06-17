@@ -20,4 +20,22 @@ describe('cli', () => {
       execSync('./packages/kocha/bin/kocha.js')
     }, Error)
   })
+
+  it('throws when the input files are not found', () => {
+    assert.throws(() => {
+      execSync('./packages/kocha/bin/kocha.js abcde')
+    }, Error)
+  })
+
+  it('does not throw when the input files are partially found', () => {
+    execSync('./packages/kocha/bin/kocha.js abcde ./packages/kocha/examples/simple-pass.js')
+  })
+
+  it('does not throw when the input filename + .js exists', () => {
+    execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/simple-pass')
+  })
+
+  it('does not throw when the input arg is directory and it contains .js files', () => {
+    execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/example-dir')
+  })
 })
