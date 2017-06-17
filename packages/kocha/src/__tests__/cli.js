@@ -38,4 +38,20 @@ describe('cli', () => {
   it('does not throw when the input arg is directory and it contains .js files', () => {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/example-dir')
   })
+
+  describe('--timeout option', () => {
+    it('sets the default timeout', () => {
+      execSync('./packages/kocha/bin/kocha.js --timeout 300 ./packages/kocha/examples/resolve200ms-pass')
+
+      assert.throws(() => {
+        execSync('./packages/kocha/bin/kocha.js --timeout 100 ./packages/kocha/examples/resolve200ms-pass')
+      }, Error)
+    })
+
+    it('throws error when the given duration is invalid', () => {
+      assert.throws(() => {
+        execSync('./packages/kocha/bin/kocha.js --timeout 500feet ./packages/kocha/examples/resolve200ms')
+      }, Error)
+    })
+  })
 })
