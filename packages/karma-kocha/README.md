@@ -1,12 +1,17 @@
-# Kocha
+# <img src="https://kt3k.github.io/kocha/media/logo.svg" />
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/kt3k/kocha.svg)](https://greenkeeper.io/)
 
 [![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
 [![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
 
+
 > Modern, simpler Mocha clone, no globals, lint friendly
 
 Supports node.js >= active LTS.
+
+[![Build Status](https://saucelabs.com/browser-matrix/kt3k.svg)](https://saucelabs.com/beta/builds/0cb9b561e92a46e5955e47ef9e7c490a)
 
 # Use in node.js
 
@@ -49,7 +54,7 @@ add
   1 passing (4ms)
 ```
 
-# Use in karma
+# Use in [karma][karma]
 
 ## :cd: Install
 
@@ -142,17 +147,25 @@ const {
 
 Adds the test suite by the `title` and `callback`. In `callback` function you can add child test suites and/or test cases.
 
+**Note**: The alias `context(title, callback)` is also available.
+
 ## describe.skip(title, callback)
 
 Adds the skipped test suite by the `title` and `callback`. The test suites and cases under this suite are all skipped as well.
 
-## it(spec, callback)
+**Note**: The alias `xdescribe(title, callback)` and `xcontext(title, callback)` are also available.
+
+## it(title, callback)
 
 Adds the skipped test case by the `title` and `callback`. `callback` implements your test case.
 
-## it.skip(spec, callback)
+**Note**: The alias `specify(title, callback)` is also available.
+
+## it.skip(title, callback)
 
 Adds the skipped test case by the `title` and `callback`.
+
+**Note**: The alias `xit(title, callback)` and `xspecify(title, callback)` is also available.
 
 ## before(callback)
 
@@ -178,22 +191,50 @@ Sets the timeout duration to the test cases or the test suites.
 
 Sets the retry count of the test cases or the test suites.
 
+# Kocha CLI
+
+```
+Usage: kocha [options] <files, ...>
+
+Options:
+  -h, --help                Shows the help message
+  -v, --version             Shows the version number
+  -r, --require <name>      Requires the given module e.g. --require babel-register
+
+Examples:
+  kocha "test/**/*.js"      Runs all the tests under test/
+
+  kocha "src{/,**/}__tests__/**/*.js"
+                            Runs all the tests under src/**/__tests__/
+
+  kocha --require babel-register "test/**/*.js"
+                            Use babel in tests
+```
+
 # Goals
 
 - Support BDD mode, Spec reporter of [mocha][mocha] in CommonJS environment.
   - This includes Karma environment with CommonJS bundler (browserify, webpack).
+- Keeping the basic usability of Mocha, modernize the rusty old aspects of Mocha.
 
 ## Non-goals
 
 - Kocha isn't a drop-in replacement of [mocha][mocha].
 - Kocha doesn't support interfaces other than `BDD`, like `TDD`, `QUnit`, `Exports` etc
-- Kocha doesn't support standalone mode in browser.
+- Kocha doesn't support standalone mode in browser. Use bundlers and [karma][karma] for browser unit testing.
 - Kocha's BDD interface is not identical to Mocha's BDD interface. See the below for details.
 
 # Differences from mocha
 
+## BDD interface
+
 - Kocha doesn't have `this.timeout(ms)` API. Use `kocha.timeout(ms)` API instead.
 - Kocha doesn't have `this.retries(n)` API. Use `kocha.retries(n)` API instead.
+
+## CLI
+
+- Kocha doesn't support `--opts` option and `mocha.opts` (or `kocha.opts`). Write options directly instead.
+- Kocha doesn't suuport `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
 
 # Migration from mocha
 
@@ -208,7 +249,7 @@ Sets the retry count of the test cases or the test suites.
 
 If the above doesn't work, please file an issue.
 
-## For karma
+## For [karma][karma]
 
 1. Install `karma-kocha` and `kocha`
 1. Set `framework: ['kocha', ...]` instead of `framework: ['mocha', ...]`.
@@ -220,12 +261,21 @@ If the above doesn't work, please file an issue.
 
 If the above doesn't work, please file an issue.
 
+Examples of migration: [1](https://github.com/kt3k/moneybit-app/pull/3/files)
+
 # Name
 
 Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japanese.
 
 # History
 
+- 2017-06-17   v1.6.0   Add --timeout option. Input path handling is now similar to mocha.
+- 2017-06-12   v1.5.6   Fail when done is called multiple times.
+- 2017-06-12   v1.5.5   Add uncaught error handling.
+- 2017-06-11   v1.5.4   Improve hook error handling.
+- 2017-06-11   v1.5.3   Improve error formatting of karma-kocha.
+- 2017-06-10   v1.5.1   Support IE11.
+- 2017-06-09   v1.4.0   Support hook events.
 - 2017-06-07   v1.3.0   Add babel's import support.
 
 # License
@@ -234,3 +284,4 @@ MIT
 
 [mocha]: https://github.com/mochajs/mocha
 [babel]: https://babeljs.com/
+[karma]: https://github.com/karma-runner/karma
