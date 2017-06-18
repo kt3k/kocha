@@ -212,6 +212,33 @@ Examples:
                             Use babel in tests
 ```
 
+## kocha.config.js
+
+kocha command automatically looks up `kocha.config.js` from the current directory and execute it. You can configure the test runner there.
+
+kocha.config.js:
+
+```js
+const { timeout, retries } = require('kocha')
+
+timeout(5000) // Sets the default timeout to 5000ms
+retries(2) // Sets the default retry count to 2
+
+// Other preparations
+
+// For example, babel settings
+require('babel-register')
+require('babel-polyfill')
+
+// For example, power-assert settings
+require('espower-loader')({
+  pattern: 'test/**/*.js'
+})
+
+// For example, coffee-script settings
+require('coffee-script/register')
+```
+
 # Goals
 
 - Support BDD mode, Spec reporter of [mocha][mocha] in CommonJS environment.
@@ -235,7 +262,8 @@ Examples:
 ## CLI
 
 - Kocha doesn't support `--opts` option and `mocha.opts` (or `kocha.opts`). Write options directly instead.
-- Kocha doesn't suuport `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
+- Kocha doesn't support `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
+- Kocha doesn't support `--compilers` option. Use `--require` instead.
 
 # Migration from mocha
 

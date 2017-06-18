@@ -54,4 +54,22 @@ describe('cli', () => {
       }, Error)
     })
   })
+
+  describe('kocha.config.js', () => {
+    it('is automatically loaded', () => {
+      execSync('../../../bin/kocha.js assert-global-foo', { cwd: './packages/kocha/src/__tests__/fixture' })
+    })
+  })
+
+  describe('--config option', () => {
+    it('specifies the config path', () => {
+      execSync('./packages/kocha/bin/kocha.js --config ./packages/kocha/src/__tests__/fixture/kocha.config.js ./packages/kocha/src/__tests__/fixture/assert-global-foo')
+    })
+
+    it('throws when the config path is invalid', () => {
+      assert.throws(() => {
+        execSync('./packages/kocha/bin/kocha.js --config abcde ./packages/kocha/examples/simple-pass.js')
+      }, Error)
+    })
+  })
 })
