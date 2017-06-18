@@ -157,12 +157,14 @@ describe('kocha', t => {
     it('registers the async test case and it emits fail event when the done is called more than twice', () => {
       td.replace(runner, 'emit')
 
-      kocha.it('foo', done => { setTimeout(() => {
-        done()
-        done()
-        done()
-        done()
-      }, 100) })
+      kocha.it('foo', done => {
+        setTimeout(() => {
+          done()
+          done()
+          done()
+          done()
+        }, 100)
+      })
 
       const test = runner.tests[0]
 
@@ -199,13 +201,17 @@ describe('kocha', t => {
 
       td.replace(runner, 'emit')
 
-      kocha.it('foo', done => { setTimeout(() => {
-        throw new Error('uncaught error')
-      }, 100) })
+      kocha.it('foo', done => {
+        setTimeout(() => {
+          throw new Error('uncaught error')
+        }, 100)
+      })
 
-      kocha.it('bar', done => { setTimeout(() => {
-        throw new Error('uncaught error')
-      }, 100) })
+      kocha.it('bar', done => {
+        setTimeout(() => {
+          throw new Error('uncaught error')
+        }, 100)
+      })
 
       const foo = runner.tests[0]
       const bar = runner.tests[0]
@@ -624,7 +630,7 @@ describe('kocha', t => {
     it('stringifies the given object. See https://github.com/twada/stringifier for details', () => {
       const str = kocha.stringify({ foo: 1, bar: new Date(0) })
 
-      assert.strictEqual(str, "Object{foo:1,bar:new Date(\"1970-01-01T00:00:00.000Z\")}")
+      assert.strictEqual(str, 'Object{foo:1,bar:new Date("1970-01-01T00:00:00.000Z")}')
     })
   })
 })

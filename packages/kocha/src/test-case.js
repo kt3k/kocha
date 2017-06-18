@@ -3,7 +3,6 @@ const TestRunnableNode = require('./test-runnable-node')
 const EVENT_START = 'test'
 const EVENT_END = 'test end'
 const EVENT_PASS = 'pass'
-const EVENT_FAIL = 'fail'
 const EVENT_PENDING = 'pending'
 
 class TestCase extends TestRunnableNode {

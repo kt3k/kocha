@@ -1,5 +1,5 @@
 (function (global, factory) {
-  if (typeof exports === 'object' && typeof module !== undefined) {
+  if (typeof exports === 'object' && typeof module !== 'undefined') {
     module.exports = factory(global)
   } else {
     factory(global).setUp(global.__karma__, function () { return global.__kocha__ })

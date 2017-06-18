@@ -1,1 +1,1 @@
-foo = 1
+global.foo = 1

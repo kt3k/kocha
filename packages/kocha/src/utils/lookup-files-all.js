@@ -1,5 +1,4 @@
 const path = require('path')
-const { join } = path
 const glob = require('glob')
 const { statSync, existsSync } = require('fs')
 
@@ -32,8 +31,6 @@ const lookupFilesAll = (patterns, options) => flatten(patterns.map(pattern => {
  * @param {Object} options The options
  */
 const lookupFiles = (pattern, options) => {
-  const { cwd } = options
-
   if (existsSync(pattern)) {
     return lookupFilesFromPath(pattern, options)
   }
