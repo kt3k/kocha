@@ -40,7 +40,7 @@ class Cli extends EventEmitter {
     this['action:version']()
 
     console.log(`
-Usage: ${pkg.name} [options] <files, ...>
+Usage: ${pkg.name} [options] <file[, ...files]>
 
 Options:
   -h, --help                Shows the help message
@@ -50,13 +50,16 @@ Options:
   -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
-  kocha "test/**/*.js"      Runs all the tests under test/
+  kocha test/               Runs all the tests under test/.
 
   kocha "src{/,**/}__tests__/**/*.js"
-                            Runs all the tests under src/**/__tests__/
+                            Runs tests under the directory pattern src/**/__tests__/.
 
-  kocha --require babel-register "test/**/*.js"
-                            Use babel in tests
+  kocha --require babel-register --require babel-polyfill test/
+                            Runs tests under test/ using babel and babel-polyfill.
+
+  kocha --require coffee-script/register "test/**/*.coffee"
+                            Runs coffeescript tests under test/.
 `)
   }
 

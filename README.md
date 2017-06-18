@@ -194,22 +194,26 @@ Sets the retry count of the test cases or the test suites.
 # Kocha CLI
 
 ```
-Usage: kocha [options] <files, ...>
+Usage: kocha [options] <file[, ...files]>
 
 Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+  -c, --config <path>       Specify the config file path e.g. --config kocha.e2e.config.js
   -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
-  kocha "test/**/*.js"      Runs all the tests under test/
+  kocha test/               Runs all the tests under test/.
 
   kocha "src{/,**/}__tests__/**/*.js"
-                            Runs all the tests under src/**/__tests__/
+                            Runs tests under the directory pattern src/**/__tests__/.
 
-  kocha --require babel-register "test/**/*.js"
-                            Use babel in tests
+  kocha --require babel-register --require babel-polyfill test/
+                            Runs tests under test/ using babel and babel-polyfill.
+
+  kocha --require coffee-script/register "test/**/*.coffee"
+                            Runs coffeescript tests under test/.
 ```
 
 ## kocha.config.js
