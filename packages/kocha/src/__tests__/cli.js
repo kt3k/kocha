@@ -5,7 +5,7 @@ describe('cli', () => {
   describe('-h, --help option', () => {
     it('shows the help message', () => {
       const output = execSync('./packages/kocha/bin/kocha.js -h')
-      assert(/Usage: kocha \[options\] <files, \.\.\.>/.test(output))
+      assert(/Usage: kocha \[options\] <file\[, \.\.\.files\]>/.test(output))
     })
   })
   describe('-v, --version', () => {
