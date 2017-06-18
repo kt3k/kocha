@@ -1,11 +1,13 @@
 const { select } = require('action-selector')
 const pkg = require('../package')
 const kocha = require('./')
+const path = require('path')
 const { getRunner } = kocha
 const lookupFilesAll = require('./utils/lookup-files-all')
 const { EventEmitter } = require('events')
 const color = require('./utils/color')
 const ms = require('ms')
+const { existsSync } = require('fs')
 
 /**
  * The command line interface.
@@ -44,6 +46,7 @@ Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+  -c, --config <path>       Specify the config file path e.g. --config kocha.e2e.config.js
   -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
@@ -72,16 +75,39 @@ Examples:
 
     if (this.argv._.length === 0) {
       console.log(color('error message', 'Error:') + ' No input file')
-      console.log('See ' + color('error message', 'kocha -h') + ' for the usage')
+      console.log('See ' + color('cyan', 'kocha -h') + ' for the usage')
       process.exit(1)
     }
 
-    // -r, --require
+    // --require
     const modules = [].concat(this.argv.r, this.argv.require).filter(Boolean)
 
-    modules.forEach(moduleName => { require(moduleName) })
+    modules.forEach(moduleName => {
+      console.log(color('magenta', 'Requiring: ') + moduleName)
+      require(moduleName)
+    })
 
-    // -t, --timeout
+    // --config
+    const config = this.argv.config
+
+    if (config) {
+      if (!existsSync(config)) {
+        console.log(color('error message', 'Error:') + ` The given config file is not found: ${config}`)
+        process.exit(1)
+      }
+
+      const configPath = path.resolve(process.cwd(), config)
+      console.log(color('magenta', 'Requiring: ') + configPath)
+      require(configPath)
+    } else {
+      if (existsSync('kocha.config.js')) {
+        const configPath = path.resolve(process.cwd(), 'kocha.config.js')
+        console.log(color('magenta', 'Requiring: ') + configPath)
+        require(configPath)
+      }
+    }
+
+    // --timeout
     const timeout = this.argv.t || this.argv.timeout
 
     if (timeout != null) {
@@ -100,7 +126,7 @@ Examples:
 
     if (files.length === 0) {
       console.log(color('error message', 'Error:') + ' No input file')
-      console.log('See ' + color('error message', 'kocha -h') + ' for the usage')
+      console.log('See ' + color('cyan', 'kocha -h') + ' for the usage')
       process.exit(1)
     }
 

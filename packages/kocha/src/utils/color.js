@@ -25,7 +25,9 @@ const colors = {
   light: 90,
   'diff gutter': 90,
   'diff added': 32,
-  'diff removed': 31
+  'diff removed': 31,
+  magenta: 35,
+  cyan: 36
 }
 
 /**
