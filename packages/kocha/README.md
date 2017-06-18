@@ -194,21 +194,53 @@ Sets the retry count of the test cases or the test suites.
 # Kocha CLI
 
 ```
-Usage: kocha [options] <files, ...>
+Usage: kocha [options] <file[, ...files]>
 
 Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
   -r, --require <name>      Requires the given module e.g. --require babel-register
+  -c, --config <path>       Specify the config file path e.g. --config kocha.e2e.config.js
+  -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
 Examples:
-  kocha "test/**/*.js"      Runs all the tests under test/
+  kocha test/               Runs all the tests under test/.
 
   kocha "src{/,**/}__tests__/**/*.js"
-                            Runs all the tests under src/**/__tests__/
+                            Runs tests under the directory pattern src/**/__tests__/.
 
-  kocha --require babel-register "test/**/*.js"
-                            Use babel in tests
+  kocha --require babel-register --require babel-polyfill test/
+                            Runs tests under test/ using babel and babel-polyfill.
+
+  kocha --require coffee-script/register "test/**/*.coffee"
+                            Runs coffeescript tests under test/.
+```
+
+## kocha.config.js
+
+kocha command automatically looks up `kocha.config.js` from the current directory and execute it. You can configure the test runner there.
+
+kocha.config.js:
+
+```js
+const { timeout, retries } = require('kocha')
+
+timeout(5000) // Sets the default timeout to 5000ms
+retries(2) // Sets the default retry count to 2
+
+// Other preparations
+
+// For example, babel settings
+require('babel-register')
+require('babel-polyfill')
+
+// For example, power-assert settings
+require('espower-loader')({
+  pattern: 'test/**/*.js'
+})
+
+// For example, coffee-script settings
+require('coffee-script/register')
 ```
 
 # Goals
@@ -234,7 +266,8 @@ Examples:
 ## CLI
 
 - Kocha doesn't support `--opts` option and `mocha.opts` (or `kocha.opts`). Write options directly instead.
-- Kocha doesn't suuport `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
+- Kocha doesn't support `-w, --watch` option. Use `chokidar-cli` and run-scripts instead.
+- Kocha doesn't support `--compilers` option. Use `--require` instead.
 
 # Migration from mocha
 
@@ -269,6 +302,7 @@ Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japane
 
 # History
 
+- 2017-06-18   v1.7.0   Add kocha.config.js feature. Add --config option.
 - 2017-06-17   v1.6.0   Add --timeout option. Input path handling is now similar to mocha.
 - 2017-06-12   v1.5.6   Fail when done is called multiple times.
 - 2017-06-12   v1.5.5   Add uncaught error handling.
