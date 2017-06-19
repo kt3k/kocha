@@ -31,17 +31,12 @@ module.exports = argv => {
 
   files.forEach(file => { require(file) })
 
-  const runner = kocha.getRunner()
-
   const Reporter = require('../reporters/spec')
-  new Reporter(runner) // eslint-disable-line no-new
+  new Reporter(kocha.getRunner()) // eslint-disable-line no-new
 
-  let failed = false
-
-  runner
-    .on('fail', () => { failed = true })
-    .on('end', () => setTimeout(() => process.exit(failed ? 1 : 0)))
-    .run().catch(console.log)
+  kocha.run()
+    .then(allPassed => { process.exit(allPassed ? 0 : 1) })
+    .catch(e => { console.log(e) })
 }
 
 /**

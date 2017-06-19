@@ -99,6 +99,19 @@ exports.retries = n => {
   currentNode().setRetryCount(n)
 }
 
+/**
+ * Runs the test cases. Retruns the promise which resolves with true if all tests passed and returns false when any of the test cases and hooks failed.
+ * @return {Promise<boolean>}
+ */
+exports.run = () => {
+  let failed = false
+
+  return new Promise((resolve, reject) => getRunner()
+    .on('fail', () => { failed = true })
+    .on('end', () => setTimeout(() => resolve(!failed)))
+    .run().catch(reject))
+}
+
 exports.TestSuite = TestSuite
 exports.TestCase = TestCase
 exports.TestHook = TestHook

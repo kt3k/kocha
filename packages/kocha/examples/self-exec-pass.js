@@ -1,6 +1,6 @@
 const assert = require('power-assert')
 
-const { describe, it, getRunner } = require('../src')
+const { describe, it, getRunner, run } = require('../src')
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b
@@ -18,10 +18,6 @@ describe('mul', () => {
   })
 })
 
-let failed = false
-const runner = getRunner()
 const Reporter = require('../src/reporters/spec')
-new Reporter(runner) // eslint-disable-line no-new
-runner.on('fail', () => { failed = true })
-runner.on('end', () => process.exit(failed))
-runner.run()
+new Reporter(getRunner()) // eslint-disable-line no-new
+run().then(allPassed => process.exit(allPassed ? 0 : 1))

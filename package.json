@@ -13,7 +13,7 @@
     "example:nested": "./packages/kocha/bin/kocha.js packages/kocha/examples/nested-pass.js",
     "example:slow": "./packages/kocha/bin/kocha.js packages/kocha/examples/slow-pass.js",
     "example:self-exec-pass": "node packages/kocha/examples/self-exec-pass.js",
-    "example:self-exec-fail": "node --require ./src/__tests__/loader.js packages/kocha/examples/self-exec-fail.js",
+    "example:self-exec-fail": "node --require ./packages/kocha/src/__tests__/loader.js packages/kocha/examples/self-exec-fail.js",
     "example:babel": "./packages/kocha/bin/kocha.js --require babel-register packages/kocha/examples/babel-pass.js",
     "example:hooks": "./packages/kocha/bin/kocha.js packages/kocha/examples/hooks-pass.js",
     "example:hooks-fail": "./packages/kocha/bin/kocha.js packages/kocha/examples/hooks-fail.js",
