@@ -1,6 +1,11 @@
+'use strict'
+
 const assert = require('power-assert')
 
-const { describe, it, timeout } = require('../src')
+const kocha = require('../')
+const describe = kocha.describe
+const it = kocha.it
+const timeout = kocha.timeout
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b

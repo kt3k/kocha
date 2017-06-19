@@ -1,3 +1,5 @@
+'use strict'
+
 const assert = require('power-assert')
 
 const describe = require('../src').describe

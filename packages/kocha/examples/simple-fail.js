@@ -1,6 +1,9 @@
+'use strict'
+
 const assert = require('power-assert')
 
-const { describe, it } = require('../src')
+const describe = require('../src').describe
+const it = require('../src').it
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b

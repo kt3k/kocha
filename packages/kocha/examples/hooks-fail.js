@@ -1,4 +1,10 @@
-const { it, describe, before, after, beforeEach, afterEach } = require('../')
+const kocha = require('../')
+const it = kocha.it
+const describe = kocha.describe
+const before = kocha.before
+const after = kocha.after
+const beforeEach = kocha.beforeEach
+const afterEach = kocha.afterEach
 
 it('test 1', () => {
 })
