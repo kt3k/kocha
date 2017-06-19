@@ -1,3 +1,5 @@
+'use strict'
+
 const td = require('testdouble')
 const assert = require('power-assert')
 const kocha = require('../')
@@ -43,11 +45,9 @@ describe('kocha', t => {
     it('constructs the test suite structure according to the nesting of describe calls', () => {
       kocha.describe('foo', () => {
         kocha.describe('bar', () => {
-          kocha.describe('baz', () => {
-          })
+          kocha.describe('baz', () => {})
         })
-        kocha.describe('quux', () => {
-        })
+        kocha.describe('quux', () => {})
       })
 
       assert(runner.suites[0].title === 'foo')
@@ -67,8 +67,7 @@ describe('kocha', t => {
 
     it('registers the skipped test suite and it has effect to its child suites', () => {
       kocha.describe.skip('foo', () => {
-        kocha.describe('bar', () => {
-        })
+        kocha.describe('bar', () => {})
       })
 
       assert(runner.suites[0].suites[0].title === 'bar')
@@ -105,7 +104,9 @@ describe('kocha', t => {
     it('registers the test case and emits `test end` and `fail` event when the test fails', () => {
       td.replace(runner, 'emit')
 
-      kocha.it('foo', () => { throw new Error('foo') })
+      kocha.it('foo', () => {
+        throw new Error('foo')
+      })
 
       const test = runner.tests[0]
 
@@ -121,7 +122,9 @@ describe('kocha', t => {
     it('registers the async test case and it emits pass event when the done is called', () => {
       td.replace(runner, 'emit')
 
-      kocha.it('foo', done => { setTimeout(() => done(), 100) })
+      kocha.it('foo', done => {
+        setTimeout(() => done(), 100)
+      })
 
       const test = runner.tests[0]
 
@@ -140,7 +143,9 @@ describe('kocha', t => {
 
       const error = new Error('abc')
 
-      kocha.it('foo', done => { setTimeout(() => done(error), 100) })
+      kocha.it('foo', done => {
+        setTimeout(() => done(error), 100)
+      })
 
       const test = runner.tests[0]
 
@@ -181,7 +186,9 @@ describe('kocha', t => {
     it('registers the async test case and it emits fail event when the done is called with non-error non-null object', () => {
       td.replace(runner, 'emit')
 
-      kocha.it('foo', done => { setTimeout(() => done({}), 100) })
+      kocha.it('foo', done => {
+        setTimeout(() => done({}), 100)
+      })
 
       const test = runner.tests[0]
 
@@ -227,7 +234,9 @@ describe('kocha', t => {
         td.verify(runner.emit('end'))
 
         // Restore the original listeners
-        originalListeners.forEach(listener => { process.on('uncaughtException', listener) })
+        originalListeners.forEach(listener => {
+          process.on('uncaughtException', listener)
+        })
       })
     })
 
@@ -322,7 +331,9 @@ describe('kocha', t => {
     it('registers the skipped test case and emits `pending` and `test end` event', () => {
       td.replace(runner, 'emit')
 
-      kocha.it.skip('foo', () => { throw new Error('foo') })
+      kocha.it.skip('foo', () => {
+        throw new Error('foo')
+      })
 
       const test = runner.tests[0]
 
@@ -366,7 +377,9 @@ describe('kocha', t => {
       it('skips the test case', () => {
         td.replace(runner, 'emit')
 
-        const cb0 = () => { throw new Error() }
+        const cb0 = () => {
+          throw new Error()
+        }
 
         kocha.before(cb0)
 
@@ -384,8 +397,12 @@ describe('kocha', t => {
       it('does not skip the after hook', () => {
         td.replace(runner, 'emit')
 
-        const cb0 = () => { throw new Error() }
-        const cb1 = () => { throw new Error() }
+        const cb0 = () => {
+          throw new Error()
+        }
+        const cb1 = () => {
+          throw new Error()
+        }
 
         kocha.before(cb0)
         kocha.after(cb1)
@@ -500,7 +517,9 @@ describe('kocha', t => {
       kocha.describe('foo', () => {
         kocha.timeout(234)
 
-        kocha.it('bar', done => { setTimeout(done, 300) })
+        kocha.it('bar', done => {
+          setTimeout(done, 300)
+        })
       })
 
       assert(runner.getTimeout() === 123)
@@ -555,7 +574,9 @@ describe('kocha', t => {
 
         kocha.timeout(100)
 
-        kocha.it('foo', done => { setTimeout(done, 200) })
+        kocha.it('foo', done => {
+          setTimeout(done, 200)
+        })
 
         const test = runner.tests[0]
 

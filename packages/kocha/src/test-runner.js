@@ -1,3 +1,5 @@
+'use strict'
+
 const TestSuite = require('./test-suite')
 
 const EVENT_UNCAUGHT_EXCEPTION = 'uncaughtException'
@@ -87,8 +89,7 @@ class TestRunner extends TestSuite {
     this.bindToUncaughtException()
     this.total = this.getTotal()
     this.bubbleEvent('start')
-    return super.run()
-      .then(() => this.bubbleEvent('end'))
+    return super.run().then(() => this.bubbleEvent('end'))
   }
 }
 

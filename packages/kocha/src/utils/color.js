@@ -1,12 +1,14 @@
+'use strict'
+
 /**
  * Enable coloring by default, except in the browser interface.
  */
-const useColors = !process.browser && require('supports-color')
+const useColors = !process.browser && require('supports-color'
 
 /**
  * Default color map.
  */
-const colors = {
+); const colors = {
   pass: 90,
   fail: 31,
   'bright pass': 92,
@@ -28,20 +30,19 @@ const colors = {
   'diff removed': 31,
   magenta: 35,
   cyan: 36
-}
 
-/**
- * Color `str` with the given `type`,
- * allowing colors to be disabled,
- * as well as user-defined color
- * schemes.
- *
- * @param {string} type
- * @param {string} str
- * @return {string}
- * @api private
- */
-const color = function (type, str) {
+  /**
+   * Color `str` with the given `type`,
+   * allowing colors to be disabled,
+   * as well as user-defined color
+   * schemes.
+   *
+   * @param {string} type
+   * @param {string} str
+   * @return {string}
+   * @api private
+   */
+}; const color = function color (type, str) {
   if (!useColors) {
     return String(str)
   }

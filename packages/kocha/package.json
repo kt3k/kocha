@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/kt3k/kocha#readme",
   "dependencies": {
-    "action-selector": "^1.0.0",
+    "action-selector": "^1.0.1",
     "diff": "^3.2.0",
     "glob": "^7.1.2",
     "minimisted": "^2.0.0",

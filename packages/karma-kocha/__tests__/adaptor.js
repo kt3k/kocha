@@ -1,9 +1,12 @@
-const { EventEmitter } = require('events')
+const EventEmitter = require('events').EventEmitter
 const assert = require('power-assert')
 const td = require('testdouble')
 const adaptor = require('../adaptor')
 const kocha = require('kocha')
-const { setUp, formatError, processAssertionError, bindContextKarmaToKochaRunner } = adaptor
+const setUp = adaptor.setUp
+const formatError = adaptor.formatError
+const processAssertionError = adaptor.processAssertionError
+const bindContextKarmaToKochaRunner = adaptor.bindContextKarmaToKochaRunner
 
 describe('adaptor', () => {
   afterEach(() => {

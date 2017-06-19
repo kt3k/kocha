@@ -1,4 +1,6 @@
-const { select } = require('action-selector')
+'use strict'
+
+const select = require('action-selector').select
 const pkg = require('../package')
 
 /**
@@ -15,8 +17,7 @@ class Cli {
     const version = argv.version
     const help = argv.help
 
-    select(this, { version: version, help: help, run: true })
-      .on('action', action => action.call(this))
+    select(this, { version: version, help: help, run: true }).on('action', action => action.call(this))
   }
 
   /**

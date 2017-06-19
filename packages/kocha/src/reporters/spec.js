@@ -1,3 +1,5 @@
+'use strict'
+
 const Base = require('./base')
 const color = require('../utils/color')
 
@@ -40,15 +42,10 @@ class Spec extends Base {
     runner.on('pass', test => {
       let fmt
       if (test.speed === 'fast') {
-        fmt = indent() +
-          color('checkmark', '  ' + Base.symbols.ok) +
-          color('pass', ' %s')
+        fmt = indent() + color('checkmark', '  ' + Base.symbols.ok) + color('pass', ' %s')
         console.log(fmt, test.title)
       } else {
-        fmt = indent() +
-          color('checkmark', '  ' + Base.symbols.ok) +
-          color('pass', ' %s') +
-          color(test.speed, ' (%dms)')
+        fmt = indent() + color('checkmark', '  ' + Base.symbols.ok) + color('pass', ' %s') + color(test.speed, ' (%dms)')
         console.log(fmt, test.title, test.duration)
       }
     })

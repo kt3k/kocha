@@ -1,3 +1,5 @@
+'use strict'
+
 const TestSuite = require('./test-suite')
 const TestCase = require('./test-case')
 const TestHook = require('./test-hook')
@@ -15,7 +17,9 @@ const getRunner = exports.getRunner = () => runner
 /**
  * Resets the runner.
  */
-exports.resetRunner = () => { runner = new TestRunner() }
+exports.resetRunner = () => {
+  runner = new TestRunner()
+}
 exports.resetRunner()
 
 const addSuite = (title, cb, skipped) => {
@@ -106,10 +110,9 @@ exports.retries = n => {
 exports.run = () => {
   let failed = false
 
-  return new Promise((resolve, reject) => getRunner()
-    .on('fail', () => { failed = true })
-    .on('end', () => setTimeout(() => resolve(!failed)))
-    .run().catch(reject))
+  return new Promise((resolve, reject) => getRunner().on('fail', () => {
+    failed = true
+  }).on('end', () => setTimeout(() => resolve(!failed))).run().catch(reject))
 }
 
 exports.TestSuite = TestSuite

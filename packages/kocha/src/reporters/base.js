@@ -1,14 +1,17 @@
+'use strict'
+
 const diff = require('diff')
 const ms = require('ms')
 const stringify = require('stringifier').stringify
 const color = require('../utils/color')
-const { colorLines } = color
+const colorLines = color.colorLines
 
 /**
  * Save timer references to avoid Sinon interfering.
  * See: https://github.com/mochajs/mocha/issues/237
  */
 /* eslint-disable no-unused-vars, no-native-reassign */
+
 const Date = global.Date
 const setTimeout = global.setTimeout
 const setInterval = global.setInterval
@@ -39,12 +42,10 @@ if (process.platform === 'win32') {
  * @api public
  * @param {Array} failures
  */
-const list = function (failures) {
+const list = function list (failures) {
   console.log()
   failures.forEach(function (test, i) {
-    var fmt = color('error title', '  %s) %s:\n') +
-      color('error message', '     %s') +
-      color('error stack', '\n%s\n')
+    var fmt = color('error title', '  %s) %s:\n') + color('error message', '     %s') + color('error stack', '\n%s\n')
 
     let msg
     let err = test.err
@@ -91,7 +92,7 @@ const list = function (failures) {
     // indent stack trace
     stack = stack.replace(/^/gm, '  ')
 
-    console.log(fmt, (i + 1), test.fullTitle(), msg, stack)
+    console.log(fmt, i + 1, test.fullTitle(), msg, stack)
   })
 }
 
@@ -224,11 +225,7 @@ function unifiedDiff (err) {
   }
   const msg = diff.createPatch('string', err.actual, err.expected)
   const lines = msg.split('\n').splice(4)
-  return '\n      ' +
-    colorLines('diff added', '+ expected') + ' ' +
-    colorLines('diff removed', '- actual') +
-    '\n\n' +
-    lines.map(cleanUp).filter(notBlank).join('\n')
+  return '\n      ' + colorLines('diff added', '+ expected') + ' ' + colorLines('diff removed', '- actual') + '\n\n' + lines.map(cleanUp).filter(notBlank).join('\n')
 }
 
 /**
