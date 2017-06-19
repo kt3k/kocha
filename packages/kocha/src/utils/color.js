@@ -3,12 +3,12 @@
 /**
  * Enable coloring by default, except in the browser interface.
  */
-const useColors = !process.browser && require('supports-color'
+const useColors = !process.browser && require('supports-color')
 
 /**
  * Default color map.
  */
-); const colors = {
+const colors = {
   pass: 90,
   fail: 31,
   'bright pass': 92,
@@ -30,6 +30,7 @@ const useColors = !process.browser && require('supports-color'
   'diff removed': 31,
   magenta: 35,
   cyan: 36
+}
 
   /**
    * Color `str` with the given `type`,
@@ -42,9 +43,9 @@ const useColors = !process.browser && require('supports-color'
    * @return {string}
    * @api private
    */
-}; const color = function color (type, str) {
+const color = function color (type, str) {
   if (!useColors) {
-    return String(str)
+    return str
   }
   return '\u001b[' + colors[type] + 'm' + str + '\u001b[0m'
 }
