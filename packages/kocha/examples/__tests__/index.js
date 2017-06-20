@@ -3,6 +3,7 @@ const assert = require('power-assert')
 
 describe('simple-pass example', function () {
   this.timeout(4000)
+  this.retries(1)
   it('passes', () => {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/simple-pass.js')
   })
@@ -33,6 +34,7 @@ describe('slow-pass example', () => {
 })
 describe('babel-pass example', function () {
   this.timeout(4500)
+  this.retries(1)
   it('passes', () => {
     execSync('./packages/kocha/bin/kocha.js --require babel-register ./packages/kocha/examples/slow-pass.js')
   })
