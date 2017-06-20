@@ -2,7 +2,7 @@
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/kt3k/kocha.svg)](https://greenkeeper.io/)
 
-[![CircleCI](https://circleci.com/gh/kt3k/kocha.svg?style=svg)](https://circleci.com/gh/kt3k/kocha)
+[![Build Status](https://travis-ci.org/kt3k/kocha.svg?branch=master)](https://travis-ci.org/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
 [![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
 
@@ -302,6 +302,7 @@ Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japane
 
 # History
 
+- 2017-06-20   v1.8.0   Add node v4 support.
 - 2017-06-18   v1.7.0   Add kocha.config.js feature. Add --config option.
 - 2017-06-17   v1.6.0   Add --timeout option. Input path handling is now similar to mocha.
 - 2017-06-12   v1.5.6   Fail when done is called multiple times.
