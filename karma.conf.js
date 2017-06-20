@@ -24,7 +24,11 @@ if (process.env.CI) {
   options.customLaunchers = customLaunchers
   options.browsers = Object.keys(options.customLaunchers)
   options.reporters.push('saucelabs')
-  options.sauceLabs = { testName: 'kocha-ci' }
+  options.sauceLabs = {
+    testName: 'kocha-ci'
+    startConnect: false,
+    tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
+  }
 }
 
 module.exports = config => config.set(options)
