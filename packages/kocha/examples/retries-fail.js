@@ -1,6 +1,11 @@
+'use strict'
+
 const assert = require('power-assert')
 
-const { describe, it, retries } = require('../src')
+const kocha = require('../src')
+const describe = kocha.describe
+const it = kocha.it
+const retries = kocha.retries
 
 const add = (a, b) => a + b
 const mul = (a, b) => a * b

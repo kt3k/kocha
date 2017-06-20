@@ -1,5 +1,6 @@
-const { EventEmitter } = require('events')
+'use strict'
 
+const EventEmitter = require('events').EventEmitter
 const wait = dur => new Promise(resolve => setTimeout(resolve, dur))
 
 /**
@@ -17,10 +18,19 @@ const runAsyncCb = (func, onDoubleCall) => new Promise((resolve, reject) => {
   let doneCalledCount = 0
   const done = result => {
     doneCalledCount += 1
-    if (doneCalledCount === 2) { return onDoubleCall() }
-    if (doneCalledCount > 2) { return } // Ignores excessive calls of done
-    if (result instanceof Error) { return reject(result) }
-    if (result) { return reject(new Error(`done() invoked with non-Error: ${result}`)) }
+    if (doneCalledCount === 2) {
+      return onDoubleCall()
+    }
+    if (doneCalledCount > 2) {
+      // Ignores excessive calls of done
+      return
+    }
+    if (result instanceof Error) {
+      return reject(result)
+    }
+    if (result) {
+      return reject(new Error(`done() invoked with non-Error: ${result}`))
+    }
 
     resolve()
   }

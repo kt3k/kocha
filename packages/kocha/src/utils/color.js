@@ -1,3 +1,5 @@
+'use strict'
+
 /**
  * Enable coloring by default, except in the browser interface.
  */
@@ -30,20 +32,20 @@ const colors = {
   cyan: 36
 }
 
-/**
- * Color `str` with the given `type`,
- * allowing colors to be disabled,
- * as well as user-defined color
- * schemes.
- *
- * @param {string} type
- * @param {string} str
- * @return {string}
- * @api private
- */
-const color = function (type, str) {
+  /**
+   * Color `str` with the given `type`,
+   * allowing colors to be disabled,
+   * as well as user-defined color
+   * schemes.
+   *
+   * @param {string} type
+   * @param {string} str
+   * @return {string}
+   * @api private
+   */
+const color = function color (type, str) {
   if (!useColors) {
-    return String(str)
+    return str
   }
   return '\u001b[' + colors[type] + 'm' + str + '\u001b[0m'
 }

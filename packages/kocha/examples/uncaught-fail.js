@@ -1,4 +1,4 @@
-const { it } = require('../')
+const it = require('../').it
 
 it('Uncaught error 1', done => {
   setTimeout(() => {

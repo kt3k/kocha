@@ -1,4 +1,12 @@
-const { describe, before, beforeEach, after, afterEach, it } = require('../../')
+'use strict'
+
+const kocha = require('../..')
+const describe = kocha.describe
+const before = kocha.before
+const beforeEach = kocha.beforeEach
+const after = kocha.after
+const afterEach = kocha.afterEach
+const it = kocha.it
 const assert = require('power-assert')
 
 let b = 0

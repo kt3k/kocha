@@ -1,3 +1,5 @@
+'use strict'
+
 const TestNode = require('./test-node')
 
 class TestSuite extends TestNode {

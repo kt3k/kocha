@@ -1,3 +1,5 @@
+'use strict'
+
 const TestRunnableNode = require('./test-runnable-node')
 
 const EVENT_START = 'hook'

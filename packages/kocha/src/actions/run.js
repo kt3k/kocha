@@ -1,5 +1,7 @@
+'use strict'
+
 const path = require('path')
-const { existsSync } = require('fs')
+const existsSync = require('fs').existsSync
 const ms = require('ms')
 const kocha = require('../')
 const lookupFilesAll = require('../utils/lookup-files-all')
@@ -29,21 +31,25 @@ module.exports = argv => {
     noInputFilesAndExit()
   }
 
-  files.forEach(file => { require(file) })
+  files.forEach(file => {
+    require(file)
+  })
 
   const Reporter = require('../reporters/spec')
   new Reporter(kocha.getRunner()) // eslint-disable-line no-new
 
-  kocha.run()
-    .then(allPassed => { process.exit(allPassed ? 0 : 1) })
-    .catch(e => { console.log(e) })
+  kocha.run().then(allPassed => {
+    process.exit(allPassed ? 0 : 1)
+  }).catch(e => {
+    console.log(e)
+  })
 }
 
 /**
  * Processes --require option
  * @param {string|string[]|undefined} requireOption The require option
  */
-const processRequireOption = (requireOption) => {
+const processRequireOption = requireOption => {
   const modules = [].concat(requireOption).filter(Boolean)
 
   modules.forEach(moduleName => {
@@ -55,7 +61,7 @@ const processRequireOption = (requireOption) => {
  * Processes --config option
  * @param {?string} config The config path
  */
-const processConfigOption = (config) => {
+const processConfigOption = config => {
   if (config) {
     if (!existsSync(config)) {
       showErrorAndExit(`The given config file is not found: ${config}`)
@@ -72,7 +78,7 @@ const processConfigOption = (config) => {
  * Processes --timeout option
  * @param {?string} timeout The timeout duration
  */
-const processTimeoutOption = (timeout) => {
+const processTimeoutOption = timeout => {
   if (timeout == null) {
     return
   }

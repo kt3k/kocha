@@ -1,6 +1,11 @@
+'use strict'
+
 const path = require('path')
 const glob = require('glob')
-const { statSync, existsSync } = require('fs')
+
+const fs = require('fs')
+const statSync = fs.statSync
+const existsSync = fs.existsSync
 
 /**
  * Flattens the given arrays.
@@ -23,14 +28,14 @@ const lookupFilesAll = (patterns, options) => flatten(patterns.map(pattern => {
   }
 
   return files
-}))
+})
 
 /**
  * Looks up the files from the given pattern
  * @param {string[]} pattern The pattern
  * @param {Object} options The options
  */
-const lookupFiles = (pattern, options) => {
+); const lookupFiles = (pattern, options) => {
   if (existsSync(pattern)) {
     return lookupFilesFromPath(pattern, options)
   }
@@ -43,14 +48,14 @@ const lookupFiles = (pattern, options) => {
 }
 
 const lookupFilesFromGlob = (pattern, options) => {
-  const { cwd } = options
+  const cwd = options.cwd
 
-  return glob.sync(pattern, options)
-    .map(scriptPath => path.resolve(cwd, scriptPath))
+  return glob.sync(pattern, options).map(scriptPath => path.resolve(cwd, scriptPath))
 }
 
 const lookupFilesFromPath = (filepath, options) => {
-  const { cwd } = options
+  const cwd = options.cwd
+
   let stat
 
   try {

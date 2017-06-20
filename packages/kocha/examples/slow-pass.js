@@ -1,4 +1,5 @@
-const { describe, it } = require('../')
+const describe = require('../').describe
+const it = require('../').it
 
 describe('slow example', () => {
   it('passes slowly', done => {

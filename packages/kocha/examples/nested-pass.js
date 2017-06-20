@@ -1,4 +1,7 @@
-const { describe, it } = require('../')
+'use strict'
+
+const describe = require('../').describe
+const it = require('../').it
 
 describe('foo', () => {
   describe('bar', () => {

@@ -1,12 +1,19 @@
+'use strict'
+
 const TestNode = require('./test-node')
-const { EVENT } = require('./const')
-const { runCb, throwAfterTimeout } = TestNode
+
+const Const = require('./const')
+
+const EVENT = Const.EVENT
+const runCb = TestNode.runCb
+const throwAfterTimeout = TestNode.throwAfterTimeout
 
 /**
  * The runnable node of the test tree.
  *
  * The parent class of TestCase and TestHook.
  */
+
 class TestRunnableNode extends TestNode {
   /**
    * @param {string} title The title of the runnable node

@@ -1,4 +1,6 @@
-const { it } = require('../')
+'use strict'
+
+const it = require('../').it
 
 it('fails', done => {
   setTimeout(() => {
