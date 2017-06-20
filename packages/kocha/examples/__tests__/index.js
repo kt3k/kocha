@@ -2,7 +2,7 @@ const execSync = require('child_process').execSync
 const assert = require('power-assert')
 
 describe('simple-pass example', function () {
-  this.timeout(4000)
+  this.timeout(10000)
   it('passes', () => {
     execSync('./packages/kocha/bin/kocha.js ./packages/kocha/examples/simple-pass.js')
   })
@@ -32,7 +32,7 @@ describe('slow-pass example', () => {
   })
 })
 describe('babel-pass example', function () {
-  this.timeout(90000)
+  this.timeout(20000)
   it('passes', () => {
     execSync('./packages/kocha/bin/kocha.js --require babel-register ./packages/kocha/examples/babel-pass.js')
   })
