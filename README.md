@@ -9,7 +9,7 @@
 
 > Modern, simpler Mocha clone, no globals, lint friendly
 
-Supports node.js >= active LTS.
+Supports node.js >= maintained LTS.
 
 [![Build Status](https://saucelabs.com/browser-matrix/kt3k.svg)](https://saucelabs.com/beta/builds/0cb9b561e92a46e5955e47ef9e7c490a)
 
