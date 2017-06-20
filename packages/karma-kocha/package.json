@@ -1,6 +1,6 @@
 {
   "name": "karma-kocha",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "A Karma plugin. Adaptor for Kocha testing framework.",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,6 @@
   },
   "homepage": "https://github.com/kt3k/kocha#readme",
   "devDependencies": {
-    "kocha": "^1.7.0"
+    "kocha": "^1.8.0"
   }
 }
