@@ -1,9 +1,0 @@
-machine:
-  node:
-    version: 6
-dependencies:
-  post:
-    - ./node_modules/.bin/lerna bootstrap
-test:
-  post:
-    - npm run codecov

@@ -1,0 +1,15 @@
+language: node_js
+matrix:
+  include:
+  - node_js: 4 # to be removed 2018-04-01
+    env: CMD="npm run test:kocha"
+  - node_js: 6 # to be removed 2019-04-01
+    env: CMD="npm run codecov"
+    addons:
+      sauce_connect: true
+  - node_js: 7 # to be removed 2017-06-30
+    env: CMD="npm run test:kocha"
+  - node_js: 8
+    env: CMD="npm run test:kocha"
+before_script: ./node_modules/.bin/lerna bootstrap
+script: $CMD
