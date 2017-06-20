@@ -25,7 +25,7 @@ if (process.env.CI) {
   options.browsers = Object.keys(options.customLaunchers)
   options.reporters.push('saucelabs')
   options.sauceLabs = {
-    testName: 'kocha-ci'
+    testName: 'kocha-ci',
     startConnect: false,
     tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
   }
