@@ -45,7 +45,7 @@ Then run it by `kocha` command.
 
 This outputs the report like the below:
 
-```
+```console
 $ ./node_modules/.bin/kocha test.js
 
 add
@@ -106,7 +106,7 @@ Then hit the command `karma start`:
 
 It outputs the test result like the below:
 
-```
+```console
 $ karma start
 07 06 2017 13:41:07.792:INFO [framework.browserify]: bundle built
 07 06 2017 13:41:07.809:INFO [karma]: Karma v1.7.0 server started at http://0.0.0.0:9876/
