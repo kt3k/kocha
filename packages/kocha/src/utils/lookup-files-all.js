@@ -28,14 +28,14 @@ const lookupFilesAll = (patterns, options) => flatten(patterns.map(pattern => {
   }
 
   return files
-})
+}))
 
 /**
  * Looks up the files from the given pattern
  * @param {string[]} pattern The pattern
  * @param {Object} options The options
  */
-); const lookupFiles = (pattern, options) => {
+const lookupFiles = (pattern, options) => {
   if (existsSync(pattern)) {
     return lookupFilesFromPath(pattern, options)
   }
