@@ -5,6 +5,7 @@ const pkg = require('../package')
 
 /**
  * The command line interface.
+ *
  */
 class Cli {
   /**
