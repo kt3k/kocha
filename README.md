@@ -302,6 +302,7 @@ Kocha (紅茶, pronounced like ko-cha, not like ko-ka) means black tea in Japane
 
 # History
 
+- 2017-12-14   v1.9.0   Change handling of --require option.
 - 2017-06-20   v1.8.0   Add node v4 support.
 - 2017-06-18   v1.7.0   Add kocha.config.js feature. Add --config option.
 - 2017-06-17   v1.6.0   Add --timeout option. Input path handling is now similar to mocha.
