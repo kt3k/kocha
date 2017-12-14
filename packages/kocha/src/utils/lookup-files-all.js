@@ -77,3 +77,4 @@ const lookupFilesFromPath = (filepath, options) => {
 }
 
 module.exports = lookupFilesAll
+module.exports.lookupFiles = lookupFiles

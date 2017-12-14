@@ -74,4 +74,18 @@ describe('cli', () => {
       }, Error)
     })
   })
+
+  describe('--require option', () => {
+    it('requires the module under node_modules', () => {
+      execSync('./packages/kocha/bin/kocha.js --require codecov ./packages/kocha/examples/simple-pass')
+    })
+
+    it('requires the script of relative path from cwd', () => {
+      execSync('./packages/kocha/bin/kocha.js --require karma.config.js ./packages/kocha/examples/simple-pass')
+      execSync('./packages/kocha/bin/kocha.js --require karma.config ./packages/kocha/examples/simple-pass')
+    })
+
+    it('throws when the module or script not found', () => {
+    })
+  })
 })

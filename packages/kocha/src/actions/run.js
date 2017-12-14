@@ -5,6 +5,7 @@ const existsSync = require('fs').existsSync
 const ms = require('ms')
 const kocha = require('../')
 const lookupFilesAll = require('../utils/lookup-files-all')
+const lookupFiles = lookupFilesAll.lookupFiles
 const color = require('../utils/color')
 
 /**
@@ -53,7 +54,7 @@ const processRequireOption = requireOption => {
   const modules = [].concat(requireOption).filter(Boolean)
 
   modules.forEach(moduleName => {
-    requireModuleAndShowMessage(moduleName)
+    processSingleRequireOption(moduleName)
   })
 }
 
@@ -103,12 +104,37 @@ const noInputFilesAndExit = () => {
 }
 
 /**
- * Requires the module and shows the message.
+ * Processes the signle require option path.
  * @param {string} modulePath The module path
  */
-const requireModuleAndShowMessage = modulePath => {
-  console.log(color('magenta', 'Requiring: ') + modulePath)
-  require(modulePath)
+const processSingleRequireOption = modulePath => {
+  try {
+    const resolvedPath = require.resolve(modulePath)
+
+    requireModuleAndShowMessage(resolvedPath)
+  } catch (e) {
+    const modules = lookupFiles(modulePath, { cwd: process.cwd() })
+
+    if (modules.length > 0) {
+      modules.forEach(module => {
+        const resolvedPath = path.resolve(module)
+
+        requireModuleAndShowMessage(resolvedPath)
+      })
+    } else {
+      console.log(color('fail', `Error: module not found, ${modulePath}`))
+      process.exit(1)
+    }
+  }
+}
+
+/**
+ * Requires the module of the resolved path and shows the message.
+ * @param {string} resolvedPath The resolved path name
+ */
+const requireModuleAndShowMessage = resolvedPath => {
+  console.log(color('magenta', 'Requiring: ') + resolvedPath)
+  require(resolvedPath)
 }
 
 /**
