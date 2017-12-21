@@ -48,7 +48,7 @@
     "codecov": "^3.0.0",
     "coffee-script": "^1.12.6",
     "espower-loader": "^1.2.2",
-    "karma": "^1.7.0",
+    "karma": "^2.0.0",
     "karma-browserify": "^5.1.1",
     "karma-chrome-launcher": "^2.1.1",
     "karma-sauce-launcher": "^1.1.0",
