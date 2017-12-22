@@ -81,8 +81,8 @@ describe('cli', () => {
     })
 
     it('requires the script of relative path from cwd', () => {
-      execSync('./packages/kocha/bin/kocha.js --require karma.config.js ./packages/kocha/examples/simple-pass')
-      execSync('./packages/kocha/bin/kocha.js --require karma.config ./packages/kocha/examples/simple-pass')
+      execSync('./packages/kocha/bin/kocha.js --require karma.conf.js ./packages/kocha/examples/simple-pass')
+      execSync('./packages/kocha/bin/kocha.js --require karma.conf ./packages/kocha/examples/simple-pass')
     })
 
     it('throws when the module or script not found', () => {
