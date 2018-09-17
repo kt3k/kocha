@@ -34,7 +34,7 @@ describe('slow-pass example', () => {
 describe('babel-pass example', function () {
   this.timeout(20000)
   it('passes', () => {
-    execSync('./packages/kocha/bin/kocha.js --require babel-register ./packages/kocha/examples/babel-pass.js')
+    execSync('./packages/kocha/bin/kocha.js --require @babel/register ./packages/kocha/examples/babel-pass.js')
   })
 })
 describe('hooks-pass example', function () {
