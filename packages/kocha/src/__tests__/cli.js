@@ -75,7 +75,9 @@ describe('cli', () => {
     })
   })
 
-  describe('--require option', () => {
+  describe('--require option', function () {
+    this.timeout(8000)
+
     it('requires the module under node_modules', () => {
       execSync('./packages/kocha/bin/kocha.js --require codecov ./packages/kocha/examples/simple-pass')
     })
