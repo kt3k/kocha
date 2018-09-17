@@ -199,7 +199,7 @@ Usage: kocha [options] <file[, ...files]>
 Options:
   -h, --help                Shows the help message
   -v, --version             Shows the version number
-  -r, --require <name>      Requires the given module e.g. --require babel-register
+  -r, --require <name>      Requires the given module e.g. --require @babel/register
   -c, --config <path>       Specify the config file path e.g. --config kocha.e2e.config.js
   -t, --timeout <ms>        Sets the test-case timeout in milliseconds. Default is 2000.
 
@@ -209,8 +209,8 @@ Examples:
   kocha "src{/,**/}__tests__/**/*.js"
                             Runs tests under the directory pattern src/**/__tests__/.
 
-  kocha --require babel-register --require babel-polyfill test/
-                            Runs tests under test/ using babel and babel-polyfill.
+  kocha --require @babel/register --require @babel/polyfill test/
+                            Runs tests under test/ using @babel/register and @babel/polyfill.
 
   kocha --require coffee-script/register "test/**/*.coffee"
                             Runs coffeescript tests under test/.
@@ -231,8 +231,8 @@ retries(2) // Sets the default retry count to 2
 // Other preparations
 
 // For example, babel settings
-require('babel-register')
-require('babel-polyfill')
+require('@babel/register')
+require('@babel/polyfill')
 
 // For example, power-assert settings
 require('espower-loader')({
