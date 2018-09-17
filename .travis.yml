@@ -7,7 +7,7 @@ matrix:
     env: CMD="npm run codecov"
   - node_js: 8 # to be removed December 2019
     env: CMD="npm run test:kocha"
-  - node_js: 9 # to be removed June 2018
+  - node_js: 10
     env: CMD="npm run test:kocha"
 before_script: ./node_modules/.bin/lerna bootstrap
 script: $CMD
