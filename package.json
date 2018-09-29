@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/kt3k/kocha#readme",
   "devDependencies": {
-    "@babel/core": "^7.0.1",
+    "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.0.0",
     "@babel/register": "^7.0.0",
     "browserify": "^16.0.0",
