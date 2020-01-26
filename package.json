@@ -53,7 +53,7 @@
     "karma-chrome-launcher": "^3.0.0",
     "karma-sauce-launcher": "^2.0.0",
     "lerna": "^3.14.0",
-    "mocha": "^6.1.2",
+    "mocha": "^7.0.1",
     "nyc": "^15.0.0",
     "power-assert": "^1.4.2",
     "standard": "^14.3.0",
