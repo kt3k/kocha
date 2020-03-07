@@ -1,6 +1,6 @@
 # <img src="https://kt3k.github.io/kocha/media/logo.svg" />
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/kt3k/kocha.svg)](https://greenkeeper.io/)
+
 
 [![Build Status](https://travis-ci.org/kt3k/kocha.svg?branch=master)](https://travis-ci.org/kt3k/kocha)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
