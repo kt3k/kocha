@@ -21,7 +21,7 @@
     "example:coffee": "./packages/kocha/bin/kocha.js --require coffee-script/register packages/kocha/examples/coffee-pass.coffee",
     "example:uncaught": "./packages/kocha/bin/kocha.js packages/kocha/examples/uncaught-fail.js",
     "example:multiple-done-fail": "./packages/kocha/bin/kocha.js packages/kocha/examples/multiple-done-fail.js",
-    "cov": "nyc --reporter=text-summary --reporter=lcov npm test:kocha"
+    "cov": "nyc --reporter=text-summary --reporter=lcov npm run test:kocha"
   },
   "repository": {
     "type": "git",
