@@ -21,8 +21,7 @@
     "example:coffee": "./packages/kocha/bin/kocha.js --require coffee-script/register packages/kocha/examples/coffee-pass.coffee",
     "example:uncaught": "./packages/kocha/bin/kocha.js packages/kocha/examples/uncaught-fail.js",
     "example:multiple-done-fail": "./packages/kocha/bin/kocha.js packages/kocha/examples/multiple-done-fail.js",
-    "cov": "nyc --reporter=text-summary --reporter=lcov npm test:kocha",
-    "codecov": "npm run cov && codecov"
+    "cov": "nyc --reporter=text-summary --reporter=lcov npm test:kocha"
   },
   "repository": {
     "type": "git",
@@ -45,7 +44,6 @@
     "@babel/preset-env": "^7.8.3",
     "@babel/register": "^7.8.3",
     "browserify": "^16.0.0",
-    "codecov": "^3.0.0",
     "coffee-script": "^1.12.6",
     "espower-loader": "^1.2.2",
     "karma": "^4.0.0",

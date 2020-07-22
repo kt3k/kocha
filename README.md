@@ -11,8 +11,6 @@
 
 Supports node.js >= maintained LTS.
 
-[![Build Status](https://saucelabs.com/browser-matrix/kt3k.svg)](https://saucelabs.com/beta/builds/0cb9b561e92a46e5955e47ef9e7c490a)
-
 # Use in node.js
 
 ## :cd: Install
