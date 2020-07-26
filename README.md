@@ -2,7 +2,7 @@
 
 
 
-[![Build Status](https://travis-ci.org/kt3k/kocha.svg?branch=master)](https://travis-ci.org/kt3k/kocha)
+![CI](https://github.com/kt3k/kocha/workflows/CI/badge.svg)
 [![codecov](https://codecov.io/gh/kt3k/kocha/branch/master/graph/badge.svg)](https://codecov.io/gh/kt3k/kocha)
 [![npm](https://img.shields.io/npm/v/kocha.svg)](https://npm.im/kocha)
 
