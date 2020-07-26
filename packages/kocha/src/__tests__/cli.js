@@ -79,7 +79,7 @@ describe('cli', () => {
     this.timeout(8000)
 
     it('requires the module under node_modules', () => {
-      execSync('./packages/kocha/bin/kocha.js --require codecov ./packages/kocha/examples/simple-pass')
+      execSync('./packages/kocha/bin/kocha.js --require testdouble ./packages/kocha/examples/simple-pass')
     })
 
     it('requires the script of relative path from cwd', () => {
