@@ -46,7 +46,7 @@
     "browserify": "^16.0.0",
     "coffee-script": "^1.12.6",
     "espower-loader": "^1.2.2",
-    "karma": "^4.0.0",
+    "karma": "^6.3.14",
     "karma-browserify": "^6.0.0",
     "karma-chrome-launcher": "^3.0.0",
     "karma-sauce-launcher": "^2.0.0",
